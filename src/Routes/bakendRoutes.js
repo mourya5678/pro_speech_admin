@@ -1,4 +1,9 @@
-export const baseUrl = 'http://localhost:4000/';
-export const applicationJsonHeader = '';
-export const loginEndPointURL = '';
-export const signupEndPointURL = '';
+export const baseUrl = 'http://54.88.46.234:4000/api/';
+export const loginEndPointURL = 'auth/login';
+export const forgotPasswordEndPointURL = "auth/forgot-password";
+export const getProfileDataEndPointURL = "auth/profile";
+export const updateProfileEndPointURl = "auth/profile";
+export const sideBarValuesEndPointURL = "admin/sidebar";
+export const getLessonByIdEndpointURL = "lessons/module-id/";
+export const deleteLessonById = "admin/lessons/";
+export const addQuizInLessonEndPointURL = "quizzes";
