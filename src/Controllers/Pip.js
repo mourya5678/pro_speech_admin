@@ -38,7 +38,7 @@ export const pipSaveUserData = (token) => {
 };
 
 export const pipGetUserData = () => {
-    JSON.parse(localStorage.setItem('user_info'));
+    return JSON.parse(localStorage.getItem('user_info'));
 };
 
 // Get Api

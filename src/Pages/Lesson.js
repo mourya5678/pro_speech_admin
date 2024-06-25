@@ -96,8 +96,8 @@ const Lesson = () => {
                                                             </td>
                                                             <td className="text-end">
                                                                 <a href="javascript:void(0)"> <button className="ct_edit_btn ct_custom_btn w-auto py-2 h-auto" onClick={() => navigate(pageRoutes.add_quiz, { state: { value: state } })}><i className="fa-solid fa-plus me-2"></i> Add Quiz</button></a>
-                                                                <a href="add-lesson.detail.html"><button className="ct_edit_btn ct_custom_btn w-auto py-2 h-auto"  ><i className="fa-solid fa-plus me-2"></i>Add Lession Detail</button></a>
-                                                                {/* <button className="ct_delete_btn" onClick={() => onHandleDeleteLesson(item?._id)}><i className="fa-solid fa-trash"></i></button> */}
+                                                                <a href="javascript:void(0)"><button className="ct_edit_btn ct_custom_btn w-auto py-2 h-auto" onClick={() => navigate(pageRoutes.addLessonDetail, { state: { value: state } })}><i className="fa-solid fa-plus me-2"></i>{item?.lessonDetails == "" ? "Add Lession Detail" : "Edit Lession Detail"}</button></a>
+                                                                {/* <button className="ct_delete_btn" onClick={() => onHandleDeleteLesson(item?._id)}><i className="fa-solid fa-trash"></i></button>*/}
                                                             </td>
                                                         </tr>
                                                     ))}

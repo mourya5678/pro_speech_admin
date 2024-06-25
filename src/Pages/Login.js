@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { pipApiResponse, pipSaveToken } from '../Controllers/Pip';
+import { pipApiResponse, pipSaveToken, pipSaveUserData } from '../Controllers/Pip';
 import { Schema_login_form1 } from '../Controllers/Schema';
 import { Formik } from 'formik';
 import { pageRoutes } from '../Routes/pageRoutes';
 import { useNavigate } from 'react-router-dom';
 import ErrorMessage from '../Controllers/ErrorMessage';
-import { baseUrl, loginEndPointURL } from '../Routes/bakendRoutes';
+import { baseUrl, getProfileDataEndPointURL, loginEndPointURL } from '../Routes/bakendRoutes';
 
 const Login = () => {
     const navigate = useNavigate();
@@ -23,6 +23,18 @@ const Login = () => {
         resetForm();
         console.log(apiResponse);
         pipSaveToken(apiResponse?.token);
+        apiResponse?.success == true && getUserProfileData(apiResponse?.token)
+    }
+
+    const getUserProfileData = async (token) => {
+        const headers = {
+            'Content-Type': 'application/json',
+            'accept': 'application/json',
+            Authorization: `Bearer ${token}`
+        }
+        var apiResponse = await pipApiResponse('get', `${baseUrl + getProfileDataEndPointURL}`, headers, false);
+        console.log(apiResponse);
+        pipSaveUserData(apiResponse?.profile);
         apiResponse?.success == true && navigate(pageRoutes?.home);
     }
 
@@ -86,7 +98,7 @@ const Login = () => {
                                             <button type="button" className="ct_custom_btn mx-auto d-block " onClick={handleSubmit}> Submit</button>
                                         </div>
                                     </form>
-                                )   
+                                )
                             }
                         </Formik>
                     </div>

@@ -4,6 +4,7 @@ import MyProfile from "../Pages/MyProfile";
 import EditProfile from "../Pages/EditProfile";
 import Lesson from "../Pages/Lesson";
 import AddQuiz from "../Pages/AddQuiz";
+import AddLessonDetail from "../Pages/AddLessonDetail";
 
 
 export const pageRoutes = {
@@ -15,6 +16,7 @@ export const pageRoutes = {
     editProfile: '/edit-profile',
     changePassword: '/change-password',
     lesson: '/lesson',
+    addLessonDetail: '/add-lesson-details',
     add_quiz: '/add-quiz',
 };
 
@@ -47,6 +49,12 @@ export const AllRoutes = [
         name: 'Lesson',
         path: '/lesson',
         element: <Lesson />,
+        isPrivate: true
+    },
+    {
+        name: 'Lesson-Details',
+        path: '/add-lesson-details',
+        element: <AddLessonDetail />,
         isPrivate: true
     },
     {

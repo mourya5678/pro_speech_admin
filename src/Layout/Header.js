@@ -1,11 +1,18 @@
 import React, { useEffect, useState } from 'react'
-import { pipApiResponse, pipDeleteToken, pipGetToken } from '../Controllers/Pip';
+import { pipApiResponse, pipDeleteToken, pipGetToken, pipGetUserData } from '../Controllers/Pip';
 import { useNavigate } from 'react-router-dom';
 import { pageRoutes } from '../Routes/pageRoutes';
 import { baseUrl } from '../Routes/bakendRoutes';
 
 const Header = () => {
     const navigate = useNavigate();
+    const [userData, setUserData] = useState();
+
+    useEffect(() => {
+        const profileData = pipGetUserData();
+        console.log(profileData)
+        setUserData(profileData);
+    }, []);
 
     const onHandleLogout = () => {
         const data = pipDeleteToken();
@@ -13,19 +20,20 @@ const Header = () => {
         navigate(pageRoutes.login)
     };
 
+
     return (
         <>
             <div className="main-header">
                 <div className="main-header-logo">
                     <div className="logo-header" data-background-color="dark">
-                        <a href="index.html" className="logo">
+                        {/* <a href="index.html" className="logo">
                             <img
-                                src="assets/img/ProSpeech/logo_light.svg"
+                                src="assets/img/user124.jpg"
                                 alt="navbar brand"
                                 className="navbar-brand"
                                 height="20"
                             />
-                        </a>
+                        </a> */}
                         <div className="nav-toggle">
                             <button className="btn btn-toggle toggle-sidebar">
                                 <i className="gg-menu-right"></i>
@@ -50,7 +58,7 @@ const Header = () => {
                                 <a
                                     className="nav-link dropdown-toggle"
                                     data-bs-toggle="dropdown"
-                                    href="#"
+                                    href="javascipt:void(0)"
                                     role="button"
                                     aria-expanded="false"
                                     aria-haspopup="true"
@@ -73,19 +81,19 @@ const Header = () => {
                                 <a
                                     className="dropdown-toggle profile-pic"
                                     data-bs-toggle="dropdown"
-                                    href="#"
+                                    href="javascript:void(0)"
                                     aria-expanded="false"
                                 >
                                     <div className="avatar-sm">
                                         <img
-                                            src="assets/img/profile.jpg"
+                                            src="assets/img/user124.jpg"
                                             alt="..."
                                             className="avatar-img rounded-circle"
                                         />
                                     </div>
                                     <span className="profile-username">
                                         <span className="op-7">Hi,</span>
-                                        <span className="fw-bold">Hizrian</span>
+                                        <span className="fw-bold">{userData?.fullName}</span>
                                     </span>
                                 </a>
                                 <ul className="dropdown-menu dropdown-user animated fadeIn ct_profile_drop12">

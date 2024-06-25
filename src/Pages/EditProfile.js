@@ -1,26 +1,81 @@
 import { Formik } from 'formik'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { pipApiResponse, pipGetToken, pipGetUserData } from '../Controllers/Pip'
 import { Schema_edit_profile_form } from '../Controllers/Schema'
 import Footer from '../Layout/Footer'
 import Header from '../Layout/Header'
 import Sidebar from '../Layout/Sidebar'
+import { baseUrl, updateUserProfileDataEndPointURL } from '../Routes/bakendRoutes'
 
 const EditProfile = () => {
     const [fullName, setFullName] = useState();
     const [dateOfBirth, setDateOfBirth] = useState();
+    const [email, setEmail] = useState();
     const [phone, setPhone] = useState();
-    const [gender, setGender] = useState();
-    const [profileImage, setProfileImage] = useState();
-
-    let userData = {
-        fullName: '',
+    const [gender, setGender] = useState('Male');
+    const [profileImage, setProfileImage] = useState('');
+    const [profileImageChange, setProfileImageChange] = useState('');
+    const [errorMessage, setErrorMessage] = useState({
+        fullNameError: '',
         dateOfBirth: '',
         phone: '',
+        gender: '',
         profileImage: ''
+    })
+
+    useEffect(() => {
+        const userData = pipGetUserData();
+        setFullName(userData?.fullName);
+        setEmail(userData?.email);
+        setPhone(userData?.phone);
+    }, []);
+
+    const onHandleSubmitData = async () => {
+        if (fullName && dateOfBirth && phone && profileImage || profileImageChange && gender) {
+            console.log("Hello")
+            const token = pipGetToken();
+            const headers = {
+                'Content-Type': 'application/json',
+                'accept': 'application/json',
+                Authorization: `Bearer ${token}`
+            }
+            const formData = new FormData();
+            formData.append("fullName", fullName)
+            formData.append("nickName", fullName)
+            formData.append("dateOfBirth", dateOfBirth)
+            formData.append("phone", phone)
+            formData.append("gender", gender)
+            formData.append("profileImage", profileImageChange ?? profileImage)
+            // const data = {
+            //     fullName: fullName,
+            //     nickName: fullName,
+            //     dateOfBirth: dateOfBirth,
+            //     phone: phone,
+            //     gender: gender,
+            //     profileImage: profileImageChange ?? profileImage
+            // }
+            var apiResponse = await pipApiResponse('post', `${baseUrl + updateUserProfileDataEndPointURL}`, headers, true, formData);
+        } else {
+            setErrorMessage({
+                ...errorMessage, fullNameError: !fullName ? "Please enter fullName" : '',
+                dateOfBirth: !dateOfBirth ? "Please select the Dob" : '',
+                phone: !phone ? "Please enter 10 digit phone number" : phone?.length >= 10 ? "Please enter 10 digit phone number" : '',
+                gender: !gender ? "Please select gender" : '',
+                profileImage: !profileImage || !profileImageChange ? "Please select the image" : ''
+            })
+        }
     }
 
-    const onHandleSubmitData = (values) => {
-        console.log(values)
+    // const onHandleValueChange = (field, value) => {
+    //     console.log(field, value);
+    //     setFullName();
+    //     setEmail();
+    //     setPhone();
+    // }
+
+    const handleDocumentsChange = (e) => {
+        console.log(e.target.files[0], { e }, "eeeeeeeeeee")
+        setProfileImageChange(e.target.files[0]);
     }
 
     return (
@@ -39,72 +94,61 @@ const EditProfile = () => {
                                                 <h4 className="card-title ct_fw_700 mb-0 text-center">Edit Profile</h4>
                                             </div>
                                         </div>
-                                        <Formik
-                                            initialValues={userData}
-                                            validationSchema={Schema_edit_profile_form}
-                                            onSubmit={(values, actions) => {
-                                                onHandleSubmitData(values, actions)
-                                            }}
-                                        >
-                                            {
-                                                ({
-                                                    values,
-                                                    errors,
-                                                    touched,
-                                                    handleChange,
-                                                    handleBlur,
-                                                    handleSubmit,
-                                                    isSubmitting,
-                                                }) => (
-                                                    <form className="pt-0">
-                                                        <div className="ct_proile_img ct_edit_profile_img mx-auto mb-5">
-                                                            <img src="assets/img/profile.jpg" alt="" />
-                                                            <i className="fa-solid fa-camera"></i>
-                                                        </div>
-                                                        <div className="row">
-                                                            <div className="col-md-6 ">
-                                                                <div className="form-floating mb-4 ct_custom_input">
-                                                                    <input type="text" className="form-control" id="floatingInput" placeholder="Enter Name" value="John Doe" />
-                                                                    <label for="floatingInput">Name</label>
-                                                                </div>
-                                                            </div>
-                                                            <div className="col-md-6 ">
-                                                                <div className="form-floating ct_custom_input mb-4">
-                                                                    <input type="email" className="form-control" id="floatingPassword" placeholder="Enter Email" value="johndoe@gmail.com" readOnly />
-                                                                    <label for="floatingPassword">Email</label>
-                                                                </div>
-                                                            </div>
-                                                            <div className="col-md-6 ">
-                                                                <div className="form-floating ct_custom_input mb-4">
-                                                                    <input type="number" className="form-control" id="floatingPassword" placeholder="Enter Number" value="9874563120" />
-                                                                    <label for="floatingPassword">Number</label>
-                                                                </div>
-                                                            </div>
-                                                            <div className="col-md-6 ">
-                                                                <div className="form-floating ct_custom_input mb-4">
-                                                                    <input type="date" className="form-control" />
-                                                                    <label for="floatingPassword">Dob</label>
-                                                                </div>
-                                                            </div>
-                                                            <div className="col-md-12 ">
-                                                                <div className="form-floating  mb-4">
-                                                                    <select className="form-select" id="floatingSelect" aria-label="Floating label select example">
-                                                                        {/* <option selected>Gender</option> */}
-                                                                        <option value="1">Male</option>
-                                                                        <option value="2">Female</option>
-                                                                        <option value="3">Other</option>
-                                                                    </select>
-                                                                    <label for="floatingSelect">Please Select Gender</label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div className="pt-4">
-                                                            <button type="button" className="ct_custom_btn mx-auto d-block "> Submit</button>
-                                                        </div>
-                                                    </form>
-                                                )
-                                            }
-                                        </Formik>
+                                        <form className="pt-0">
+                                            <div className="ct_proile_img ct_edit_profile_img mx-auto mb-5">
+                                                <label for="ct_profile_edit">
+                                                    <img src={profileImage ? profileImage : profileImageChange ? URL.createObjectURL(profileImageChange) : 'assets/img/user124.jpg'} alt="" />
+                                                    <input
+                                                        className={profileImageChange == '' && profileImage == "" ? 'form-control d-none' : 'form-control d-none'}
+                                                        type="file" id="ct_profile_edit"
+                                                        multiple
+                                                        onChange={handleDocumentsChange}
+                                                        accept="image/*,application/pdf"
+                                                    />
+                                                    <i className="fa-solid fa-camera" style={{ top: "44%" }}></i>
+                                                </label>
+                                            </div>
+                                            {console.log({ errorMessage })}
+                                            <div className="row">
+                                                <div className="col-md-6 ">
+                                                    <div className="form-floating mb-4 ct_custom_input">
+                                                        <input type="text" value={fullName} onChange={(e) => setFullName(e.target.value)} className="form-control" placeholder="Enter Name" />
+                                                        <label>Name</label>
+                                                    </div>
+                                                </div>
+                                                <div className="col-md-6 ">
+                                                    <div className="form-floating ct_custom_input mb-4">
+                                                        <input type="email" className="form-control" placeholder="Enter Email" value={email} readOnly />
+                                                        <label>Email</label>
+                                                    </div>
+                                                </div>
+                                                <div className="col-md-6 ">
+                                                    <div className="form-floating ct_custom_input mb-4">
+                                                        <input type="number" className="form-control" placeholder="Enter Number" value={phone} onChange={(e) => setPhone(e.target.value)} />
+                                                        <label>Number</label>
+                                                    </div>
+                                                </div>
+                                                <div className="col-md-6 ">
+                                                    <div className="form-floating ct_custom_input mb-4">
+                                                        <input type="date" className="form-control" value={dateOfBirth} onChange={(e) => setDateOfBirth(e.target.value)} />
+                                                        <label >Dob</label>
+                                                    </div>
+                                                </div>
+                                                <div className="col-md-12 ">
+                                                    <div className="form-floating  mb-4">
+                                                        <select className="form-select" aria-label="Floating label select example" value={gender} onChange={(e) => setGender(e.target.value)} >
+                                                            <option value="Male">Male</option>
+                                                            <option value="Female">Female</option>
+                                                            <option value="Other">Other</option>
+                                                        </select>
+                                                        <label>Please Select Gender</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="pt-4">
+                                                <button type="button" onClick={onHandleSubmitData} className="ct_custom_btn mx-auto d-block"> Submit</button>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>

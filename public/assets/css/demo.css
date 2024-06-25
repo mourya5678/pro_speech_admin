@@ -542,6 +542,14 @@ table.dataTable td.dt-type-date {
   font-size: 20px;
   z-index: 999;
 }
+.ct_edit_profile_img img {
+  filter: brightness(0.8);
+  width: 120px;
+  height: 120px;
+  margin-inline: auto;
+  display: block;
+  object-fit: cover;
+}
 @media screen and (max-width: 1200px) {
   #modalShowcase .modal-dialog {
     padding: 3rem !important;

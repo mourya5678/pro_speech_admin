@@ -75,7 +75,7 @@
   border-radius: 10px;
 }
 .ct_edit_profile_img img {
-  filter: brightness(0.5);
+  filter: brightness(0.8);
 }
 .ct_edit_profile_img {
   position: relative;
@@ -89,4 +89,18 @@
   left: 50%;
   transform: translate(-50%, -50%);
   color: #fff;
+}
+
+#container {
+  width: 1000px;
+  margin: 20px auto;
+}
+.ck-editor__editable[role="textbox"] {
+  /* Editing area */
+  min-height: 200px;
+}
+.ck-content .image {
+  /* Block images */
+  max-width: 80%;
+  margin: 20px auto;
 }
