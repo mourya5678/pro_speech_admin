@@ -1,4 +1,5 @@
-export const baseUrl = 'http://54.88.46.234:4000/api/';
+// export const baseUrl = 'http://54.88.46.234:4000/api/'; Live Url
+export const baseUrl = 'http://192.168.29.104:4005/api/'; // Local Url
 export const loginEndPointURL = 'auth/login';
 export const forgotPasswordEndPointURL = "auth/forgot-password";
 export const getProfileDataEndPointURL = "auth/profile";
@@ -9,4 +10,8 @@ export const deleteLessonById = "admin/lessons/";
 export const addQuizInLessonEndPointURL = "admin/quizzes";
 export const getAllQuizByLessonIdEndPointURL = "quizzes/lesson-id/";
 export const updateQuizByLessonIdEndPointURL = "admin/quizzes/";
-export const updateUserProfileDataEndPointURL = "admin/auth/profile";
+export const updateUserProfileDataEndPointURL = "auth/profile";
+export const changePasswordEndPointURL = "auth/change-password";
+export const getLessaonByIdEndPointURL = "lessons/";
+export const updateLessonEndPointURL = "admin/lessons/";
+export const getAllUserDataEndPointURL = "admin/get-user-list";

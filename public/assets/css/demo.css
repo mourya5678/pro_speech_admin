@@ -499,8 +499,13 @@ table.dataTable td.dt-type-date {
   font-size: 16px;
 }
 .ct_profile_detail p {
-  display: grid;
-  grid-template-columns: 12% 6% auto;
+  /* display: grid;
+  grid-template-columns: 12% 6% auto; */
+}
+.ct_profile_detail p {
+  display: flex;
+  width: 80%;
+  margin-inline: auto;
 }
 .ct_back_btn {
   /* position: absolute; */
@@ -508,6 +513,11 @@ table.dataTable td.dt-type-date {
   color: #000;
   transition: 0.4s ease all;
   font-size: 18px;
+}
+.ct_profile_detail p span {
+  max-width: 33.33%;
+  width: 100%;
+  flex: 1 1 0;
 }
 /* .ct_add_more_right{
   position: absolute !important;

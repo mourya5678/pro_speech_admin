@@ -10,13 +10,13 @@ const Header = () => {
 
     useEffect(() => {
         const profileData = pipGetUserData();
-        console.log(profileData)
+        // console.log(profileData)
         setUserData(profileData);
     }, []);
 
     const onHandleLogout = () => {
         const data = pipDeleteToken();
-        console.log(data)
+        // console.log(data)
         navigate(pageRoutes.login)
     };
 
@@ -86,7 +86,7 @@ const Header = () => {
                                 >
                                     <div className="avatar-sm">
                                         <img
-                                            src="assets/img/user124.jpg"
+                                            src={userData?.profileImage ?? "assets/img/user124.jpg"}
                                             alt="..."
                                             className="avatar-img rounded-circle"
                                         />

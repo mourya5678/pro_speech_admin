@@ -1,32 +1,100 @@
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { pipApiResponse, pipGetToken } from '../Controllers/Pip'
 import Footer from '../Layout/Footer'
 import Header from '../Layout/Header'
 import Sidebar from '../Layout/Sidebar'
-import { baseUrl } from '../Routes/bakendRoutes'
+import { baseUrl, getLessaonByIdEndPointURL, updateLessonEndPointURL } from '../Routes/bakendRoutes'
 import { pageRoutes } from '../Routes/pageRoutes'
-import { CKEditor } from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+// import ReactQuill from 'react-quill';
+// import 'react-quill/dist/quill.snow.css';
+import { Editor } from '@tinymce/tinymce-react';
+
 
 const AddLessonDetail = () => {
     const { state } = useLocation();
     const navigate = useNavigate();
-    const initialValues = {
-        lessonName: '',
-        lessonDetail: '',
-    };
+    const [editorValue, setEditorValue] = useState();
+    const [name, setName] = useState();
+    const [isLoader, setIsLoader] = useState(false);
+    const editorRef = useRef(null);
+    const [errorMessage, setErroMessage] = useState({
+        nameError: '',
+        editerError: ''
+    });
 
-    // const onHandleAddLessonDetail = async (values) => {
-    //     const token = pipGetToken();
-    //     const headers = {
-    //         'Content-Type': 'application/json',
-    //         'accept': 'application/json',
-    //         Authorization: `Bearer ${token}`
-    //     }
-    //     var apiResponse = await pipApiResponse('post', `${baseUrl}`, headers, true, values);
-    //     console.log(apiResponse);
-    // };
+    let modules = {
+        toolbar: [
+            [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
+            [{ size: [] }],
+            ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+            // [{ color: ['color-picker'] }, { background: ['color-picker'] }],
+            [{ 'list': 'ordered' }, { 'list': 'bullet' },
+            { 'indent': '-1' }, { 'indent': '+1' }],
+            ['link', 'image', 'video'],
+            ['clean']
+        ],
+        clipboard: {
+            matchVisual: false,
+        }
+    };
+    let formats = [
+        'header', 'font', 'size',
+        'bold', 'italic', 'underline', 'strike', 'blockquote',
+        'list', 'bullet', 'indent',
+        'link', 'image', 'video'
+    ];
+
+    useEffect(() => {
+        getLessonByID();
+    }, []);
+
+    const getLessonByID = async () => {
+        setIsLoader(true);
+        const token = pipGetToken();
+        const headers = {
+            'Content-Type': 'application/json',
+            'accept': 'application/json',
+            Authorization: `Bearer ${token}`
+        }
+        var apiResponse = await pipApiResponse('get', `${baseUrl + getLessaonByIdEndPointURL + state?.item}`, headers, false);
+        setName(apiResponse?.data?.lesson_name)
+        setEditorValue(apiResponse?.data?.lessonDetails)
+        setIsLoader(false);
+    }
+
+    const onHandleAddLessonDetail = async () => {
+        let data = editorRef.current.getContent();
+        setEditorValue(data);
+        if (name && data) {
+            setIsLoader(true);
+            setErroMessage({
+                ...errorMessage,
+                nameError: '',
+                editerError: ''
+            })
+            const dataas = {
+                lesson_name: name,
+                lessonDetails: data
+            }
+            const token = pipGetToken();
+            const headers = {
+                'Content-Type': 'application/json',
+                'accept': 'application/json',
+                Authorization: `Bearer ${token}`
+            }
+            var apiResponse = await pipApiResponse('put', `${baseUrl + updateLessonEndPointURL + state?.item}`, headers, true, dataas);
+            setIsLoader(false);
+            console.log({ apiResponse }, { dataas })
+            apiResponse?.success == true && navigate(-1);
+        } else {
+            setErroMessage({
+                ...errorMessage,
+                nameError: name ? '' : 'Please enter lesson name',
+                editerError: editorValue ? '' : 'Please enter lesson detail'
+            })
+        }
+    };
 
     return (
         <div className="wrapper">
@@ -34,63 +102,89 @@ const AddLessonDetail = () => {
             <div className="main-panel">
                 <Header />
                 <div className="container">
-                    <div className="page-inner">
-                        <div className="row">
-                            <div className="col-md-10 mx-auto">
-                                <div className="card card-round">
-                                    <div className="card-body pt-5">
-                                        <div className="card-head-row card-tools-still-right mb-5">
-                                            <div className="d-flex align-items-center justify-content-between gap-3 flex-wrap w-100">
-                                                <a href="javascript:void(0)" onClick={() => navigate(-1)} className="ct_back_btn">
-                                                    <i className="fa-solid fa-arrow-left-long"></i>
-                                                </a>
-                                                <h4 className="card-title ct_fw_700 mb-0 mx-auto">Add Lesson Detail</h4>
-                                            </div>
-                                        </div>
-                                        <form className="pt-0">
-                                            <div className="row" id="ct_append_quiz">
-                                                <div className="col-md-12 ">
-                                                    <div className="form-group p-0 mb-4 ct_custom_input">
-                                                        <label className="ct_fw_600 mb-2">Lession Name</label>
-                                                        <input type="text" className="form-control" id="floatingInput" placeholder="Enter Lession Name" />
-                                                    </div>
+                    {isLoader == true ?
+                        <div class="ct_loader_main">
+                            <div class="loader"></div>
+                        </div>
+                        :
+                        <div className="page-inner">
+                            <div className="row">
+                                <div className="col-md-10 mx-auto">
+                                    <div className="card card-round">
+                                        <div className="card-body pt-5">
+                                            <div className="card-head-row card-tools-still-right mb-5">
+                                                <div className="d-flex align-items-center justify-content-between gap-3 flex-wrap w-100">
+                                                    <a href="javascript:void(0)" onClick={() => navigate(-1)} className="ct_back_btn">
+                                                        <i className="fa-solid fa-arrow-left-long"></i>
+                                                    </a>
+                                                    <h4 className="card-title ct_fw_700 mb-0 mx-auto">Add Lesson Detail</h4>
                                                 </div>
-                                                <div className="col-md-12 ">
-                                                    <div className="form-group p-0 mb-4 ct_custom_input">
-                                                        <label className="ct_fw_600 mb-2">Lesson Detail</label>
-                                                        <div id="container">
-                                                            {/* <div id="editor"></div>
-                                                            <p>This is some sample content.</p> */}
-                                                            <CKEditor
-                                                                editor={ClassicEditor}
-                                                                data="<p>Hello from CKEditor&nbsp;5!</p>"
-                                                                onReady={editor => {
-                                                                    // You can store the "editor" and use when it is needed.
-                                                                    console.log('Editor is ready to use!', editor);
-                                                                }}
-                                                                onChange={(event) => {
-                                                                    console.log(event);
-                                                                }}
-                                                                onBlur={(event, editor) => {
-                                                                    console.log('Blur.', editor);
-                                                                }}
-                                                                onFocus={(event, editor) => {
-                                                                    console.log('Focus.', editor);
-                                                                }}
-                                                            />
+                                            </div>
+                                            <form className="pt-0">
+                                                <div className="row" id="ct_append_quiz">
+                                                    <div className="col-md-12 ">
+                                                        <div className="form-group p-0 mb-4 ct_custom_input">
+                                                            <label className="ct_fw_600 mb-2">Lesson Name</label>
+                                                            <input type="text" value={name} onChange={(e) => setName(e.target.value)} className="form-control" id="floatingInput" placeholder="Enter Lesson Name" />
+                                                            {errorMessage?.nameError != '' &&
+                                                                <span style={{ color: "red" }}>
+                                                                    {errorMessage?.nameError}
+                                                                </span>
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                    <div className="col-md-12 ">
+                                                        <div className="form-group p-0 mb-4 ct_custom_input">
+                                                            <label className="ct_fw_600 mb-2">Lesson Detail</label>
+                                                            <div id="">
+                                                                {/* <ReactQuill
+                                                                    id="editor"
+                                                                    theme="snow"
+                                                                    value={editorValue}
+                                                                    onChange={setEditorValue}
+                                                                    modules={modules}
+                                                                    formats={formats}
+                                                                /> */}
+                                                                <Editor
+                                                                    apiKey='iu3kqbs7z6b23a94nqmktcf7ay4gvdpky5fz85bh1qsv3h9x'
+                                                                    onInit={(evt, editor) => (editorRef.current = editor)}
+                                                                    init={{
+                                                                        plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate ai mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss markdown',
+                                                                        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+                                                                        tinycomments_mode: 'embedded',
+                                                                        tinycomments_author: 'Author name',
+                                                                        mergetags_list: [
+                                                                            { value: 'First.Name', title: 'First Name' },
+                                                                            { value: 'Email', title: 'Email' },
+                                                                        ],
+                                                                        ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
+                                                                    }}
+                                                                    initialValue={editorValue}
+                                                                // onChange={(event) => {
+                                                                //      setEditorValue(event?.getContent());
+                                                                //     console.log(event.setContent());
+                                                                // }}
+                                                                // onInit={(_evt, editor) => setEditorValue(editor?.getContent())}
+                                                                />
+                                                            </div>
+                                                            {errorMessage?.editerError != '' &&
+                                                                <span style={{ color: "red" }}>
+                                                                    {errorMessage?.editerError}
+                                                                </span>
+                                                            }
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div className="pt-4">
-                                                <button type="button" className="ct_custom_btn mx-auto d-block "> Submit</button>
-                                            </div>
-                                        </form>
+                                                <div className="pt-4">
+                                                    <button type="button" className="ct_custom_btn mx-auto d-block " onClick={onHandleAddLessonDetail}> Submit</button>
+                                                </div>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    }
                 </div>
                 <Footer />
             </div>

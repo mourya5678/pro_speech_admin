@@ -8,7 +8,7 @@ import { baseUrl, sideBarValuesEndPointURL } from '../Routes/bakendRoutes';
 const Sidebar = () => {
     const navigate = useNavigate();
     const [sideBar, setSideBar] = useState([]);
-
+    const [open, setOpen] = useState([]);
 
     useEffect(() => {
         getSideBarValue();
@@ -22,8 +22,17 @@ const Sidebar = () => {
             Authorization: `Bearer ${token}`
         }
         var apiResponse = await pipApiResponse('get', `${baseUrl + sideBarValuesEndPointURL}`, headers, false);
-        console.log(apiResponse?.data);
+        // console.log(apiResponse?.data);
         setSideBar(apiResponse?.data ?? []);
+    };
+
+    const onHandleOpenClose = (val) => {
+        if (!open?.includes(val)) {
+            open?.push(val);
+            setOpen(open => open?.filter(item => item));
+        } else {
+            setOpen(open => open?.filter(item => item != val));
+        }
     }
 
     return (
@@ -60,7 +69,6 @@ const Sidebar = () => {
                                 onClick={() => navigate(pageRoutes.home)}
                             >
                                 <p>Dashboard</p>
-
                             </a>
                         </li>
                         {sideBar && sideBar?.map((item) => (
@@ -69,11 +77,11 @@ const Sidebar = () => {
                                     <h4 className="text-section">{item?.section}</h4>
                                 </li>
                                 <li className="nav-item">
-                                    <a data-bs-toggle="collapse" href={`#${pipReplaceSpace(item?.section)}`}>
+                                    <a data-bs-toggle="collapse" onClick={() => onHandleOpenClose(item?.section)}>
                                         <p>{item?.section}</p>
                                         <span className="caret"></span>
                                     </a>
-                                    <div className="collapse" id={pipReplaceSpace(item?.section)}>
+                                    <div className={open?.includes(item?.section) ? "collapse show" : "collapse"}>
                                         <ul className="nav nav-collapse">
                                             {item?.modules && item?.modules?.map((items) => (
                                                 <li>

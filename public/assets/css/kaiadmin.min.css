@@ -9575,7 +9575,7 @@ label.error {
   .toggle-on {
   font-size: 11px !important;
 }
-
+/* 
 .is-loading:after,
 .loader {
   display: block;
@@ -9586,7 +9586,7 @@ label.error {
   border-bottom-color: transparent;
   border-radius: 50%;
   animation: 1s spin linear infinite;
-}
+} */
 
 .is-loading-lg:after,
 .loader-lg {

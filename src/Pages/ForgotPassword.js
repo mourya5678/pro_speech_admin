@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { Schema_forgot_form1 } from '../Controllers/Schema';
 import { pageRoutes } from '../Routes/pageRoutes';
@@ -9,18 +9,20 @@ import { baseUrl, forgotPasswordEndPointURL } from '../Routes/bakendRoutes';
 
 const ForgotPassword = () => {
     const navigate = useNavigate();
+    const [isLoader, setIsLoader] = useState(false);
     const userData = {
         email: '',
     }
 
     const onHandleSubmit = async (values, { resetForm }) => {
+        setIsLoader(true);
         const headers = {
             'Content-Type': 'application/json',
             'accept': 'application/json'
         }
         var apiResponse = await pipApiResponse('post', `${baseUrl + forgotPasswordEndPointURL}`, headers, true, values);
-        resetForm()
-        console.log(apiResponse)
+        resetForm();
+        setIsLoader(false);
     }
 
     return (
@@ -31,47 +33,53 @@ const ForgotPassword = () => {
                         <div className="ct_login_head mb-5">
                             <h2 className="text-center">Forgot Password?</h2>
                         </div>
-                        <Formik
-                            initialValues={userData}
-                            validationSchema={Schema_forgot_form1}
-                            onSubmit={(values, actions) => {
-                                onHandleSubmit(values, actions)
-                            }}
-                        >
-                            {
-                                ({
-                                    values,
-                                    errors,
-                                    touched,
-                                    handleChange,
-                                    handleBlur,
-                                    handleSubmit,
-                                    isSubmitting,
-                                }) => (
-                                    <form action="new-password.html" className="pt-0">
-                                        <div className="form-floating mb-4 ct_custom_input">
-                                            <input
-                                                type="email"
-                                                className="form-control"
-                                                id="email"
-                                                value={values?.email}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                placeholder=""
-                                            />
-                                            <label>Email address</label>
-                                            <ErrorMessage errors={errors} touched={touched} fieldName="email" />
-                                        </div>
-                                        <div className="text-end">
-                                            <a href="javascript:void(0)" onClick={() => navigate(pageRoutes.login)} className="ct_fs_16">Sign in</a>
-                                        </div>
-                                        <div className="pt-4">
-                                            <button type="button" className="ct_custom_btn mx-auto d-block" onClick={handleSubmit}> Submit</button>
-                                        </div>
-                                    </form>
-                                )
-                            }
-                        </Formik>
+                        {isLoader == true ?
+                            <div class="ct_loader_main">
+                                <div class="loader"></div>
+                            </div>
+                            :
+                            <Formik
+                                initialValues={userData}
+                                validationSchema={Schema_forgot_form1}
+                                onSubmit={(values, actions) => {
+                                    onHandleSubmit(values, actions)
+                                }}
+                            >
+                                {
+                                    ({
+                                        values,
+                                        errors,
+                                        touched,
+                                        handleChange,
+                                        handleBlur,
+                                        handleSubmit,
+                                        isSubmitting,
+                                    }) => (
+                                        <form action="new-password.html" className="pt-0">
+                                            <div className="form-floating mb-4 ct_custom_input">
+                                                <input
+                                                    type="email"
+                                                    className="form-control"
+                                                    id="email"
+                                                    value={values?.email}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    placeholder=""
+                                                />
+                                                <label>Email address</label>
+                                                <ErrorMessage errors={errors} touched={touched} fieldName="email" />
+                                            </div>
+                                            <div className="text-end">
+                                                <a href="javascript:void(0)" onClick={() => navigate(pageRoutes.login)} className="ct_fs_16">Sign in</a>
+                                            </div>
+                                            <div className="pt-4">
+                                                <button type="button" className="ct_custom_btn mx-auto d-block" onClick={handleSubmit}> Submit</button>
+                                            </div>
+                                        </form>
+                                    )
+                                }
+                            </Formik>
+                        }
                     </div>
                 </div>
             </div>

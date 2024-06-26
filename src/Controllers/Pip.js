@@ -18,6 +18,11 @@ export const pipDateFormate = (date) => {
     return formattedDate;
 };
 
+export const pipDateFormates = (date) => {
+    const formattedDate = moment(date).format('YYYY/MM/DD')
+    return formattedDate;
+};
+
 // Clear Localstorage
 export const pipDeleteToken = () => {
     localStorage.clear();
@@ -50,7 +55,7 @@ export const pipApiResponse = async (method, url, headers = {}, isToast, data = 
             data: data,
             headers: headers
         });
-        console.log(res);
+        // console.log(res);
         if (res?.data?.success == true) {
             isToast == true && pipSuccessMessage(res?.data?.message);
         } else {
