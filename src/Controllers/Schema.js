@@ -24,3 +24,17 @@ export const Schema_change_password = Yup.object({
         .required("Please enter confirm password")
         .oneOf([Yup.ref("newPassword"), null], "Password and confirm password fields must be equal"),
 });
+
+export const Schema_otp_check = Yup.object({
+    otp: Yup.string()
+        .required("Please enter email address")
+});
+
+export const Schema_new_password = Yup.object({
+    newPassword: Yup.string()
+        .required("Please enter your new password")
+        .min(8, "Password cannot be less then 8 characters"),
+    confirmPassword: Yup.string()
+        .required("Please enter confirm password")
+        .oneOf([Yup.ref("newPassword"), null], "Password and confirm password fields must be equal"),
+});

@@ -23,28 +23,6 @@ const AddLessonDetail = () => {
         editerError: ''
     });
 
-    let modules = {
-        toolbar: [
-            [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
-            [{ size: [] }],
-            ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-            // [{ color: ['color-picker'] }, { background: ['color-picker'] }],
-            [{ 'list': 'ordered' }, { 'list': 'bullet' },
-            { 'indent': '-1' }, { 'indent': '+1' }],
-            ['link', 'image', 'video'],
-            ['clean']
-        ],
-        clipboard: {
-            matchVisual: false,
-        }
-    };
-    let formats = [
-        'header', 'font', 'size',
-        'bold', 'italic', 'underline', 'strike', 'blockquote',
-        'list', 'bullet', 'indent',
-        'link', 'image', 'video'
-    ];
-
     useEffect(() => {
         getLessonByID();
     }, []);
@@ -103,8 +81,8 @@ const AddLessonDetail = () => {
                 <Header />
                 <div className="container">
                     {isLoader == true ?
-                        <div class="ct_loader_main">
-                            <div class="loader"></div>
+                        <div className="ct_loader_main">
+                            <div className="loader"></div>
                         </div>
                         :
                         <div className="page-inner">
@@ -137,14 +115,6 @@ const AddLessonDetail = () => {
                                                         <div className="form-group p-0 mb-4 ct_custom_input">
                                                             <label className="ct_fw_600 mb-2">Lesson Detail</label>
                                                             <div id="">
-                                                                {/* <ReactQuill
-                                                                    id="editor"
-                                                                    theme="snow"
-                                                                    value={editorValue}
-                                                                    onChange={setEditorValue}
-                                                                    modules={modules}
-                                                                    formats={formats}
-                                                                /> */}
                                                                 <Editor
                                                                     apiKey='iu3kqbs7z6b23a94nqmktcf7ay4gvdpky5fz85bh1qsv3h9x'
                                                                     onInit={(evt, editor) => (editorRef.current = editor)}
@@ -160,11 +130,6 @@ const AddLessonDetail = () => {
                                                                         ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
                                                                     }}
                                                                     initialValue={editorValue}
-                                                                // onChange={(event) => {
-                                                                //      setEditorValue(event?.getContent());
-                                                                //     console.log(event.setContent());
-                                                                // }}
-                                                                // onInit={(_evt, editor) => setEditorValue(editor?.getContent())}
                                                                 />
                                                             </div>
                                                             {errorMessage?.editerError != '' &&

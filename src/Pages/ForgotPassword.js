@@ -23,6 +23,7 @@ const ForgotPassword = () => {
         var apiResponse = await pipApiResponse('post', `${baseUrl + forgotPasswordEndPointURL}`, headers, true, values);
         resetForm();
         setIsLoader(false);
+        apiResponse?.success == true && navigate(pageRoutes.otp_check, { state: { email: values?.email } });
     }
 
     return (
@@ -34,8 +35,8 @@ const ForgotPassword = () => {
                             <h2 className="text-center">Forgot Password?</h2>
                         </div>
                         {isLoader == true ?
-                            <div class="ct_loader_main">
-                                <div class="loader"></div>
+                            <div className="ct_loader_main">
+                                <div className="loader"></div>
                             </div>
                             :
                             <Formik
@@ -55,7 +56,7 @@ const ForgotPassword = () => {
                                         handleSubmit,
                                         isSubmitting,
                                     }) => (
-                                        <form action="new-password.html" className="pt-0">
+                                        <form className="pt-0">
                                             <div className="form-floating mb-4 ct_custom_input">
                                                 <input
                                                     type="email"

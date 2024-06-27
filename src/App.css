@@ -199,3 +199,20 @@
   color: blue;
   text-decoration: underline;
 } */
+.react-datepicker-wrapper {
+  width: 100%;
+}
+.ct_otp_input {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-direction: column-reverse !important;
+  text-align: center;
+}
+.ct_otp_input input[type="text"] {
+  width: 35px !important;
+  height: 35px !important;
+  border-radius: 5px;
+  border: 1px solid #d4d4d4;
+}

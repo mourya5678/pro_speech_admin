@@ -14,12 +14,12 @@ export const pipErrorMessage = (message) => {
 
 // Date Format
 export const pipDateFormate = (date) => {
-    const formattedDate = moment(date).format('DD/MM/YYYY')
+    const formattedDate = moment(date).format('DD-MM-YYYY')
     return formattedDate;
 };
 
 export const pipDateFormates = (date) => {
-    const formattedDate = moment(date).format('YYYY/MM/DD')
+    const formattedDate = moment(date).format('YYYY-MM-DD')
     return formattedDate;
 };
 

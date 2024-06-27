@@ -51,8 +51,8 @@ const Login = () => {
                             <p className="mb-0 text-center">Sign in to continue</p>
                         </div>
                         {isLoader == true ?
-                            <div class="ct_loader_main">
-                                <div class="loader"></div>
+                            <div className="ct_loader_main">
+                                <div className="loader"></div>
                             </div>
                             :
                             <Formik

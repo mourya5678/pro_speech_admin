@@ -38,8 +38,8 @@ const MyProfile = () => {
                 <Header />
                 <div className="container">
                     {isLoader == true ?
-                        <div class="ct_loader_main">
-                            <div class="loader"></div>
+                        <div className="ct_loader_main">
+                            <div className="loader"></div>
                         </div>
                         :
                         <div className="page-inner">

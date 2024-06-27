@@ -5,6 +5,8 @@ import PageNotFound from './Pages/PageNotFound';
 import PrivateRoute from './Controllers/PrivateRoute';
 import Login from './Pages/Login';
 import ForgotPassword from './Pages/ForgotPassword';
+import OtpCheck from './Pages/OtpCheck';
+import NewPassword from './Pages/NewPassword';
 
 function App() {
   return (
@@ -23,6 +25,8 @@ function App() {
         }
         <Route exact path={pageRoutes.login} element={<Login />} />
         <Route exact path={pageRoutes.forgotPassword} element={<ForgotPassword />} />
+        <Route exact path={pageRoutes.otp_check} element={<OtpCheck />} />
+        <Route exact path={pageRoutes.new_password} element={<NewPassword />} />
         <Route exact path='*' element={<PageNotFound />} />
       </Routes>
     </div>

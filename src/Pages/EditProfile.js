@@ -60,10 +60,12 @@ const EditProfile = () => {
             const formData = new FormData();
             formData.append("fullName", fullName)
             formData.append("nickName", fullName)
-            formData.append("dateOfBirth", pipDateFormate(dateOfBirth))
+            formData.append("dateOfBirth", pipDateFormates(dateOfBirth))
             formData.append("phone", phone)
             formData.append("gender", gender)
-            formData.append("profileImage", profileImageChange ?? profileImage)
+            if (profileImageChange) {
+                formData.append("profileImage", profileImageChange)
+            }
             var apiResponse = await pipApiResponse('put', `${baseUrl + updateUserProfileDataEndPointURL}`, headers, true, formData);
             setIsLoader(false)
             apiResponse?.success == true && navigate(-1)
@@ -91,8 +93,8 @@ const EditProfile = () => {
                 <Header />
                 <div className="container">
                     {isLoader == true ?
-                        <div class="ct_loader_main">
-                            <div class="loader"></div>
+                        <div className="ct_loader_main">
+                            <div className="loader"></div>
                         </div>
                         :
                         <div className="page-inner">
@@ -108,7 +110,7 @@ const EditProfile = () => {
                                             <form className="pt-0">
                                                 <div className="ct_proile_img ct_edit_profile_img text-center mx-auto mb-5">
                                                     <label for="ct_profile_edit">
-                                                        <img src={profileImage ? profileImage : profileImageChange ? URL.createObjectURL(profileImageChange) : 'assets/img/user124.jpg'} alt="" />
+                                                        <img src={profileImageChange ? URL.createObjectURL(profileImageChange) : profileImage ? profileImage : 'assets/img/user124.jpg'} alt="" />
                                                         <input
                                                             className={profileImageChange == '' && profileImage == "" ? 'form-control d-none' : 'form-control d-none'}
                                                             type="file" id="ct_profile_edit"
@@ -127,9 +129,9 @@ const EditProfile = () => {
                                                 {console.log({ errorMessage })}
                                                 <div className="row">
                                                     <div className="col-md-6 ">
-                                                        <div className="form-floating mb-4 ct_custom_input">
-                                                            <input type="text" value={fullName} onChange={(e) => setFullName(e.target.value)} className="form-control" placeholder="Enter Name" />
+                                                        <div className=" mb-4 ct_custom_input">
                                                             <label>Name</label>
+                                                            <input type="text" value={fullName} onChange={(e) => setFullName(e.target.value)} className="form-control" placeholder="Enter Name" />
                                                             {errorMessage?.fullNameError !== "" &&
                                                                 <span style={{ color: "red" }}>
                                                                     {errorMessage?.fullNameError}
@@ -138,15 +140,15 @@ const EditProfile = () => {
                                                         </div>
                                                     </div>
                                                     <div className="col-md-6 ">
-                                                        <div className="form-floating ct_custom_input mb-4">
+                                                        <div className="ct_custom_input mb-4">
+                                                            <label className="mb-2">Email</label>
                                                             <input type="email" className="form-control" placeholder="Enter Email" value={email} readOnly />
-                                                            <label>Email</label>
                                                         </div>
                                                     </div>
                                                     <div className="col-md-6 ">
-                                                        <div className="form-floating ct_custom_input mb-4">
+                                                        <div className=" ct_custom_input mb-4">
+                                                            <label className="mb-2">Number</label>
                                                             <input type="number" className="form-control" placeholder="Enter Number" value={phone} onChange={(e) => setPhone(e.target.value)} />
-                                                            <label>Number</label>
                                                             {errorMessage?.phone !== "" &&
                                                                 <span style={{ color: "red" }}>
                                                                     {errorMessage?.phone}
@@ -155,10 +157,10 @@ const EditProfile = () => {
                                                         </div>
                                                     </div>
                                                     <div className="col-md-6 ">
-                                                        <div className="form-floating ct_custom_input mb-4">
-                                                            <div><DatePicker
-                                                                className="form-control" onChange={(date) => setDateOfBirth(date)} selected={dateOfBirth} /></div>
+                                                        <div className=" ct_custom_input mb-4">
                                                             <label> Dob</label>
+                                                            <div className="w-100"><DatePicker
+                                                                className="form-control " onChange={(date) => setDateOfBirth(date)} selected={dateOfBirth} /></div>
                                                             {errorMessage?.dateOfBirth !== "" &&
                                                                 <span style={{ color: "red" }}>
                                                                     {errorMessage?.dateOfBirth}
@@ -167,13 +169,13 @@ const EditProfile = () => {
                                                         </div>
                                                     </div>
                                                     <div className="col-md-12 ">
-                                                        <div className="form-floating  mb-4">
+                                                        <div className=" mb-4">
+                                                            <label className="mb-2">Please Select Gender</label>
                                                             <select className="form-select" aria-label="Floating label select example" value={gender} onChange={(e) => setGender(e.target.value)} >
                                                                 <option value="Male">Male</option>
                                                                 <option value="Female">Female</option>
                                                                 <option value="Other">Other</option>
                                                             </select>
-                                                            <label>Please Select Gender</label>
                                                             {errorMessage?.gender !== "" &&
                                                                 <span style={{ color: "red" }}>
                                                                     {errorMessage?.gender}

@@ -18,6 +18,8 @@ export const pageRoutes = {
     lesson: '/lesson',
     addLessonDetail: '/add-lesson-details',
     add_quiz: '/add-quiz',
+    otp_check: '/opt-check',
+    new_password: "/new-password",
 };
 
 export const AllRoutes = [

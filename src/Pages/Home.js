@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { pipApiResponse, pipGetToken } from '../Controllers/Pip';
+import { pipApiResponse, pipDateFormate, pipGetToken } from '../Controllers/Pip';
 import Footer from '../Layout/Footer';
 import Header from '../Layout/Header';
 import Sidebar from '../Layout/Sidebar';
@@ -48,8 +48,8 @@ const Home = () => {
 
                 <div className="container">
                     {isLoader == true ?
-                        <div class="ct_loader_main">
-                            <div class="loader"></div>
+                        <div className="ct_loader_main">
+                            <div className="loader"></div>
                         </div>
                         :
                         <div className="page-inner">
@@ -140,11 +140,11 @@ const Home = () => {
                                                         {
                                                             displayUsers && displayUsers?.map((item) => (
                                                                 <tr>
-                                                                    <td>John Doe</td>
-                                                                    <td>johndoe@gmail.com</td>
-                                                                    <td>9874563210</td>
-                                                                    <td>Male</td>
-                                                                    <td>20/004/1999</td>
+                                                                    <td>{console.log({ item })}{item?.profile?.fullName}</td>
+                                                                    <td>{item?.profile?.email}</td>
+                                                                    <td>{item?.profile?.phone}</td>
+                                                                    <td>{item?.profile?.gender}</td>
+                                                                    <td>{pipDateFormate(item?.profile?.dateOfBirth)}</td>
                                                                     <td>
                                                                         <button className="ct_delete_btn"><i className="fa-solid fa-trash"></i></button>
                                                                     </td>
