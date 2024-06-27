@@ -18,6 +18,7 @@ const NewPassword = () => {
     }
 
     const onHandleSubmit = async (values, { resetForm }) => {
+        setIsLoader(true);
         const data = {
             email: state?.email,
             password: values?.newPassword
@@ -40,57 +41,63 @@ const NewPassword = () => {
                         <div className="ct_login_head mb-5">
                             <h2 className="text-center">New Password</h2>
                         </div>
-                        <Formik
-                            initialValues={initialData}
-                            validationSchema={Schema_new_password}
-                            onSubmit={(values, actions) => {
-                                onHandleSubmit(values, actions)
-                            }}
-                        >
-                            {
-                                ({
-                                    values,
-                                    errors,
-                                    touched,
-                                    handleChange,
-                                    handleBlur,
-                                    handleSubmit,
-                                    isSubmitting,
-                                }) => (
-                                    <form className="pt-0">
-                                        <div className="form-floating ct_custom_input mb-2">
-                                            <input
-                                                type="password"
-                                                className="form-control"
-                                                id="newPassword"
-                                                value={values?.newPassword}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                placeholder="New Password"
-                                            />
-                                            <label>New Password</label>
-                                            <ErrorMessage errors={errors} touched={touched} fieldName="newPassword" />
-                                        </div>
-                                        <div className="form-floating ct_custom_input mb-2">
-                                            <input
-                                                type="password"
-                                                className="form-control"
-                                                id="confirmPassword"
-                                                value={values?.confirmPassword}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                placeholder="Confirm Password"
-                                            />
-                                            <label>Confirm Password</label>
-                                            <ErrorMessage errors={errors} touched={touched} fieldName="confirmPassword" />
-                                        </div>
-                                        <div className="pt-4">
-                                            <button type="button" className="ct_custom_btn mx-auto d-block " onClick={handleSubmit}> Submit</button>
-                                        </div>
-                                    </form>
-                                )
-                            }
-                        </Formik>
+                        {isLoader == true ?
+                            <div className="ct_loader_main">
+                                <div className="loader"></div>
+                            </div>
+                            :
+                            <Formik
+                                initialValues={initialData}
+                                validationSchema={Schema_new_password}
+                                onSubmit={(values, actions) => {
+                                    onHandleSubmit(values, actions)
+                                }}
+                            >
+                                {
+                                    ({
+                                        values,
+                                        errors,
+                                        touched,
+                                        handleChange,
+                                        handleBlur,
+                                        handleSubmit,
+                                        isSubmitting,
+                                    }) => (
+                                        <form className="pt-0">
+                                            <div className="form-floating ct_custom_input mb-2">
+                                                <input
+                                                    type="password"
+                                                    className="form-control"
+                                                    id="newPassword"
+                                                    value={values?.newPassword}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    placeholder="New Password"
+                                                />
+                                                <label>New Password</label>
+                                                <ErrorMessage errors={errors} touched={touched} fieldName="newPassword" />
+                                            </div>
+                                            <div className="form-floating ct_custom_input mb-2">
+                                                <input
+                                                    type="password"
+                                                    className="form-control"
+                                                    id="confirmPassword"
+                                                    value={values?.confirmPassword}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    placeholder="Confirm Password"
+                                                />
+                                                <label>Confirm Password</label>
+                                                <ErrorMessage errors={errors} touched={touched} fieldName="confirmPassword" />
+                                            </div>
+                                            <div className="pt-4">
+                                                <button type="button" className="ct_custom_btn mx-auto d-block " onClick={handleSubmit}> Submit</button>
+                                            </div>
+                                        </form>
+                                    )
+                                }
+                            </Formik>
+                        }
                     </div>
                 </div>
             </div>

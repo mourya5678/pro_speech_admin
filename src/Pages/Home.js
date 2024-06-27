@@ -39,13 +39,25 @@ const Home = () => {
         setCurrentPage(data.selected);
     };
 
+    const onHandleDeleteUsers = async (id) => {
+        console.log({ id })
+        setIsLoader(true);
+        const token = pipGetToken();
+        const headers = {
+            'Content-Type': 'application/json',
+            'accept': 'application/json',
+            Authorization: `Bearer ${token}`
+        }
+        var apiResponse = await pipApiResponse('get', baseUrl + getAllUserDataEndPointURL, headers, false);
+        setApiData(apiResponse?.data ?? []);
+        setIsLoader(false)
+    };
 
     return (
         <div className="wrapper">
             <Sidebar />
             <div className="main-panel">
                 <Header />
-
                 <div className="container">
                     {isLoader == true ?
                         <div className="ct_loader_main">
@@ -60,7 +72,7 @@ const Home = () => {
                                     <h3 className="fw-bold mb-3">Dashboard</h3>
                                 </div>
                             </div>
-                            <div className="row">
+                            {/* <div className="row">
                                 <div className="col-sm-6 col-md-3 mb-4">
                                     <div className="card card-stats card-round">
                                         <div className="card-body">
@@ -113,7 +125,7 @@ const Home = () => {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> */}
                             <div className="row">
                                 <div className="col-md-12">
                                     <div className="card card-round">
@@ -140,13 +152,13 @@ const Home = () => {
                                                         {
                                                             displayUsers && displayUsers?.map((item) => (
                                                                 <tr>
-                                                                    <td>{console.log({ item })}{item?.profile?.fullName}</td>
+                                                                    <td>{item?.profile?.fullName}</td>
                                                                     <td>{item?.profile?.email}</td>
                                                                     <td>{item?.profile?.phone}</td>
                                                                     <td>{item?.profile?.gender}</td>
                                                                     <td>{pipDateFormate(item?.profile?.dateOfBirth)}</td>
                                                                     <td>
-                                                                        <button className="ct_delete_btn"><i className="fa-solid fa-trash"></i></button>
+                                                                        <button className="ct_delete_btn" onClick={() => onHandleDeleteUsers(item?._id)}><i className="fa-solid fa-trash"></i></button>
                                                                     </td>
                                                                 </tr>
                                                             ))
