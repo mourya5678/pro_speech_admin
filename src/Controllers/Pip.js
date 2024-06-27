@@ -47,7 +47,7 @@ export const pipGetUserData = () => {
 };
 
 // Get Api
-export const pipApiResponse = async (method, url, headers = {}, isToast, data = null) => {
+export const pipApiResponse = async (method, url, headers = {}, isToast, data) => {
     try {
         const res = await axios({
             method: method,

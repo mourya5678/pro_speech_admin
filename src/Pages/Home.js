@@ -3,7 +3,7 @@ import { pipApiResponse, pipDateFormate, pipGetToken } from '../Controllers/Pip'
 import Footer from '../Layout/Footer';
 import Header from '../Layout/Header';
 import Sidebar from '../Layout/Sidebar';
-import { baseUrl, getAllUserDataEndPointURL, } from '../Routes/bakendRoutes';
+import { baseUrl, deleteUserDataEndPointURL, getAllUserDataEndPointURL, } from '../Routes/bakendRoutes';
 import PaginationDropdown from '../Component/PaginationDropdown';
 import ReactPagination from '../Component/reactPagination';
 
@@ -48,9 +48,9 @@ const Home = () => {
             'accept': 'application/json',
             Authorization: `Bearer ${token}`
         }
-        var apiResponse = await pipApiResponse('get', baseUrl + getAllUserDataEndPointURL, headers, false);
-        setApiData(apiResponse?.data ?? []);
+        var apiResponse = await pipApiResponse('delete', baseUrl + deleteUserDataEndPointURL + id, headers, true);
         setIsLoader(false)
+        apiResponse.success == true && getApiData()
     };
 
     return (

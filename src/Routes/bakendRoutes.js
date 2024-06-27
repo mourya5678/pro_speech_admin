@@ -17,3 +17,4 @@ export const updateLessonEndPointURL = "admin/lessons/";
 export const getAllUserDataEndPointURL = "admin/get-user-list";
 export const otpVerifyEndPointURL = "auth/verify-forgot-password";
 export const newPasswordEndPointURL = "auth/change-password-by-email";
+export const deleteUserDataEndPointURL = "admin/delete-user-by-id/";
