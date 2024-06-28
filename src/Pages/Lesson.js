@@ -64,7 +64,7 @@ const Lesson = () => {
                                         <div className="card-body">
                                             <div className="card-head-row card-tools-still-right mb-4">
                                                 <div className="d-flex align-items-center justify-content-between gap-3 flex-wrap w-100">
-                                                    <h4 className="card-title ct_fw_700 mb-0">All Lessons</h4>
+                                                    <h4 className="card-title ct_fw_700 mb-0">{state?.section_name}</h4>
                                                 </div>
                                             </div>
                                             <div className="table-responsive ct_custom_table">

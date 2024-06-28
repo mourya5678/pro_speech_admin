@@ -1,5 +1,6 @@
 {
   "name": "pro_speech_admin",
+  "homepage": "http://192.168.29.104/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

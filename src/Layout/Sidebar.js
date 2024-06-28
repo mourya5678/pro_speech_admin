@@ -38,7 +38,7 @@ const Sidebar = () => {
         <div className="sidebar" data-background-color="dark">
             <div className="sidebar-logo">
                 <div className="logo-header" data-background-color="dark">
-                    <a href="dashboard.html" className="logo">
+                    <a href="javascript:void(0)" onClick={() => navigate(pageRoutes.home)} className="logo">
                         <img
                             src="assets/img/logo.png"
                             alt="navbar brand"
@@ -62,7 +62,7 @@ const Sidebar = () => {
             <div className="sidebar-wrapper scrollbar scrollbar-inner">
                 <div className="sidebar-content">
                     <ul className="nav nav-secondary">
-                        <li className="nav-item active">
+                        <li className="nav-item">
                             <a
                                 className="collapsed"
                                 onClick={() => navigate(pageRoutes.home)}
@@ -81,7 +81,7 @@ const Sidebar = () => {
                                         <ul className="nav nav-collapse">
                                             {item?.modules && item?.modules?.map((items) => (
                                                 <li>
-                                                    <a href="javascript:void(0)" onClick={() => navigate(pageRoutes.lesson, { state: { data: items } })}>
+                                                    <a href="javascript:void(0)" onClick={() => navigate(pageRoutes.lesson, { state: { data: items, section_name: items?.module_name } })}>
                                                         <span className="sub-item">{items?.module_name}</span>
                                                     </a>
                                                 </li>
