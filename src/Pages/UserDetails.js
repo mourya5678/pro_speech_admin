@@ -14,6 +14,7 @@ const UserDetails = () => {
     const [currentPage, setCurrentPage] = useState(0);
     const [usersPerPage, setUserPerPages] = useState(25);
     const [usersDetails, setUsersDetails] = useState([]);
+    const [scoreData, setScoreData] = useState();
 
     const displayUsers = usersDetails.slice(
         currentPage * usersPerPage,
@@ -40,6 +41,7 @@ const UserDetails = () => {
         setIsLoader(false);
         console.log(apiResponse);
         setUsersDetails(apiResponse?.sectionsWithCompletion ?? []);
+        setScoreData(apiResponse?.scoreData ?? {});
     };
 
     return (
@@ -77,25 +79,15 @@ const UserDetails = () => {
                                     </div>
                                 ))}
                             </div>
-
                             <div className="row mt-4">
                                 <div className="col-md-12 mb-md-0">
                                     <div className="ct_score_card_bg123">
                                         <div className="d-flex align-items-center gap-4 flex-wrap justify-content-center">
                                             <div className="ct_score_card_circle">
                                                 <p className="mb-0">Your Score</p>
-                                                <h4 className="mb-0 ct_fw_600">85%</h4>
+                                                <h4 className="mb-0 ct_fw_600">{scoreData?.percentage}</h4>
                                             </div>
-                                            <div>
-                                                <h5>Yey! You are doing better</h5>
-                                                <div className="d-flex align-items-center gap-2">
-                                                    <i class="fa-solid fa-star ct_reviewed_star"></i>
-                                                    <i class="fa-solid fa-star ct_reviewed_star"></i>
-                                                    <i class="fa-solid fa-star ct_reviewed_star"></i>
-                                                    <i class="fa-solid fa-star ct_reviewed_star"></i>
-                                                    <i class="fa-solid fa-star ct_unreview_star"></i>
-                                                </div>
-                                            </div>
+                                            <h5>{scoreData?.smsMessage}</h5>
                                         </div>
                                     </div>
                                 </div>
@@ -106,47 +98,16 @@ const UserDetails = () => {
                                     <div className="ct_score_card_bg123">
                                         <h4 className="ct_fw_600 mb-4">Your score card</h4>
                                         <div className="ct_score_list_scroll">
-                                            <div className="ct_scror_list_car">
-                                                <p className="mb-0">1</p>
-                                                <div className="ct_play_btn">
-                                                    <i class="fa-solid fa-play"></i>
+                                            {scoreData?.scoreData?.length != 0 ? scoreData?.scoreData?.map((item, i) => (
+                                                < div className="ct_scror_list_car mb-2">
+                                                    <p className="mb-0">{i + 1}</p>
+                                                    <p className="mb-0">{item?.lesson_name}</p>
+                                                    <p className="mb-0">{item?.score_number}/{item?.total_question}</p>
                                                 </div>
-                                                <p className="mb-0">Consonants part 2 (fricatives)</p>
-                                                <p className="mb-0">8/10</p>
-                                            </div>
-                                            <div className="ct_scror_list_car mt-2">
-                                                <p className="mb-0">1</p>
-                                                <div className="ct_play_btn">
-                                                    <i class="fa-solid fa-play"></i>
-                                                </div>
-                                                <p className="mb-0">Consonants part 2 (fricatives)</p>
-                                                <p className="mb-0">8/10</p>
-                                            </div>
-                                            <div className="ct_scror_list_car mt-2">
-                                                <p className="mb-0">1</p>
-                                                <div className="ct_play_btn">
-                                                    <i class="fa-solid fa-play"></i>
-                                                </div>
-                                                <p className="mb-0">Consonants part 2 (fricatives)</p>
-                                                <p className="mb-0">8/10</p>
-                                            </div>
-                                            <div className="ct_scror_list_car mt-2">
-                                                <p className="mb-0">1</p>
-                                                <div className="ct_play_btn">
-                                                    <i class="fa-solid fa-play"></i>
-                                                </div>
-                                                <p className="mb-0">Consonants part 2 (fricatives)</p>
-                                                <p className="mb-0">8/10</p>
-                                            </div>
-                                            <div className="ct_scror_list_car mt-2">
-                                                <p className="mb-0">1</p>
-                                                <div className="ct_play_btn">
-                                                    <i class="fa-solid fa-play"></i>
-                                                </div>
-                                                <p className="mb-0">Consonants part 2 (fricatives)</p>
-                                                <p className="mb-0">8/10</p>
-                                            </div>
-
+                                            ))
+                                                :
+                                                "You haven't attended any lessons yet."
+                                            }
                                         </div>
                                     </div>
                                 </div>
@@ -170,7 +131,7 @@ const UserDetails = () => {
                 </div>
                 <Footer />
             </div>
-        </div>
+        </div >
     )
 }
 
