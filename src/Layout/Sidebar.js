@@ -22,7 +22,6 @@ const Sidebar = () => {
             Authorization: `Bearer ${token}`
         }
         var apiResponse = await pipApiResponse('get', `${baseUrl + sideBarValuesEndPointURL}`, headers, false);
-        // console.log(apiResponse?.data);
         setSideBar(apiResponse?.data ?? []);
     };
 
@@ -73,10 +72,7 @@ const Sidebar = () => {
                         </li>
                         {sideBar && sideBar?.map((item) => (
                             <>
-                                <li className="nav-section">
-                                    <h4 className="text-section">{item?.section}</h4>
-                                </li>
-                                <li className="nav-item">
+                                <li className="nav-item text-section">
                                     <a data-bs-toggle="collapse" onClick={() => onHandleOpenClose(item?.section)}>
                                         <p>{item?.section}</p>
                                         <span className="caret"></span>

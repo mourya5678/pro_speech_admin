@@ -876,7 +876,7 @@ body {
   font-size: 1rem;
   margin-bottom: 0px;
   margin-right: 5px;
-  white-space: nowrap;
+  /* white-space: nowrap; */
   font-weight: 600;
 }
 .sidebar .nav > .nav-item a .caret,

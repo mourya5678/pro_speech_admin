@@ -2,12 +2,12 @@ import { Formik } from 'formik'
 import React, { useEffect, useState } from 'react'
 import { Navigate } from 'react-router'
 import { useNavigate } from 'react-router-dom'
-import { pipApiResponse, pipDateFormates, pipDateFormate, pipGetToken, pipGetUserData } from '../Controllers/Pip'
+import { pipApiResponse, pipDateFormates, pipDateFormate, pipGetToken, pipGetUserData, pipSaveUserData } from '../Controllers/Pip'
 import { Schema_edit_profile_form } from '../Controllers/Schema'
 import Footer from '../Layout/Footer'
 import Header from '../Layout/Header'
 import Sidebar from '../Layout/Sidebar'
-import { baseUrl, updateUserProfileDataEndPointURL } from '../Routes/bakendRoutes'
+import { baseUrl, getProfileDataEndPointURL, updateUserProfileDataEndPointURL } from '../Routes/bakendRoutes'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -67,10 +67,10 @@ const EditProfile = () => {
                 formData.append("profileImage", profileImageChange)
             }
             var apiResponse = await pipApiResponse('put', `${baseUrl + updateUserProfileDataEndPointURL}`, headers, true, formData);
-            setIsLoader(false)
-            apiResponse?.success == true && navigate(-1)
+            setIsLoader(false);
+            apiResponse?.success == true && getAdminProfileData();
         } else {
-            setIsLoader(true)
+            setIsLoader(true);
             setErrorMessage({
                 ...errorMessage, fullNameError: !fullName ? "Please enter fullName" : '',
                 dateOfBirth: !dateOfBirth ? "Please select the Dob" : '',
@@ -78,13 +78,27 @@ const EditProfile = () => {
                 gender: !gender ? "Please select gender" : '',
                 profileImage: !profileImage || !profileImageChange ? "Please select profile image" : ''
             })
-            setIsLoader(false)
+            setIsLoader(false);
         }
-    }
+    };
+
+    const getAdminProfileData = async () => {
+        setIsLoader(true);
+        const token = pipGetToken();
+        const headers = {
+            'Content-Type': 'application/json',
+            'accept': 'application/json',
+            Authorization: `Bearer ${token}`
+        }
+        var apiResponse = await pipApiResponse('get', `${baseUrl + getProfileDataEndPointURL}`, headers, false);
+        apiResponse?.success == true && pipSaveUserData(apiResponse?.profile);
+        apiResponse?.success == true && navigate(-1);
+        setIsLoader(false);
+    };
 
     const handleDocumentsChange = (e) => {
         setProfileImageChange(e.target.files[0]);
-    }
+    };
 
     return (
         <div className="wrapper">
@@ -126,7 +140,6 @@ const EditProfile = () => {
                                                         </span>
                                                     }
                                                 </div>
-                                                {console.log({ errorMessage })}
                                                 <div className="row">
                                                     <div className="col-md-6 ">
                                                         <div className=" mb-4 ct_custom_input">

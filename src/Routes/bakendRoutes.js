@@ -20,3 +20,5 @@ export const newPasswordEndPointURL = "auth/change-password-by-email";
 export const deleteUserDataEndPointURL = "admin/delete-user-by-id/";
 export const getUserDetailsEndPointURL = "admin/get-user-details/";
 export const updateUserDetailsByAdminEndPointURL = "admin/edit-user-profile/";
+export const getAllSectionEndPointURL = "sections";
+export const updateSectionDetailsEndPointURL = "admin/sections/";

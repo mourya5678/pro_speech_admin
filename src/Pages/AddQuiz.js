@@ -15,7 +15,7 @@ const AddQuiz = () => {
     const [createQuiz, setCreateQuiz] = useState(false);
     const [quizId, setQuizId] = useState();
     const [isLoader, setIsLoader] = useState(false);
-
+    console.log({ state })
 
     useEffect(() => {
         getAllQuizDataById();
@@ -29,7 +29,7 @@ const AddQuiz = () => {
             'accept': 'application/json',
             Authorization: `Bearer ${token}`
         }
-        var apiResponse = await pipApiResponse('get', `${baseUrl + getAllQuizByLessonIdEndPointURL + state?.value?.data?._id}`, headers, false);
+        var apiResponse = await pipApiResponse('get', `${baseUrl + getAllQuizByLessonIdEndPointURL + state?.value?._id}`, headers, false);
         let data = []
         if (apiResponse && apiResponse?.data?.length != 0) {
             setQuizId(apiResponse?.data[0]?._id)
@@ -138,12 +138,12 @@ const AddQuiz = () => {
         if (data12?.length == quizQuestion?.length) {
             setIsLoader(true);
             const data = {
-                quiz_name: state?.value?.data?.module_name,
+                quiz_name: state?.value?.module_name,
                 questions: data12,
-                lesson_id: state?.value?.data?._id
+                lesson_id: state?.value?._id
             }
             const data123 = {
-                quiz_name: state?.value?.data?.module_name,
+                quiz_name: state?.value?.module_name,
                 questions: data12,
             }
             const token = pipGetToken();
@@ -156,7 +156,7 @@ const AddQuiz = () => {
             const basicUrl = baseUrl + addQuizInLessonEndPointURL
             var apiResponse = await pipApiResponse(createQuiz == true ? 'post' : 'put', createQuiz == true ? basicUrl : baseurlData, headers, true, createQuiz == true ? data : data123);
             setIsLoader(false);
-            apiResponse?.success == true && navigate(-1, { state: { data: state?.value?.data } })
+            apiResponse?.success == true && navigate(-1)
         };
     };
 

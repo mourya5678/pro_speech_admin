@@ -35,7 +35,13 @@ const MyProfile = () => {
         <div className="wrapper">
             <Sidebar />
             <div className="main-panel">
-                <Header />
+                {isLoader == true ?
+                    <div className="ct_loader_main">
+                        <div className="loader"></div>
+                    </div>
+                    :
+                    <Header />
+                }
                 <div className="container">
                     {isLoader == true ?
                         <div className="ct_loader_main">

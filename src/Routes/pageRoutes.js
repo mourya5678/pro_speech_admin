@@ -7,6 +7,9 @@ import AddQuiz from "../Pages/AddQuiz";
 import AddLessonDetail from "../Pages/AddLessonDetail";
 import UserDetails from "../Pages/UserDetails";
 import EditUserProfile from "../Pages/EditUserProfile";
+import SectionDetails from "../Pages/SectionDetails";
+import EditSection from "../Pages/EditSection";
+import AddNewSection from "../Pages/AddNewSection";
 
 
 export const pageRoutes = {
@@ -24,6 +27,9 @@ export const pageRoutes = {
     new_password: "/new-password",
     user_details: "/user-detail",
     edit_user_profile: "/user-edit-profile",
+    add_section: "/add-section",
+    section_detail: "/section-detail",
+    edit_section: "/edit-section",
 };
 
 export const AllRoutes = [
@@ -79,6 +85,24 @@ export const AllRoutes = [
         name: 'User_Profile_Edit',
         path: '/user-edit-profile',
         element: <EditUserProfile />,
+        isPrivate: true
+    },
+    {
+        name: 'Section_Detail',
+        path: '/section-detail',
+        element: <SectionDetails />,
+        isPrivate: true
+    },
+    {
+        name: 'Add_Section',
+        path: '/add-section',
+        element: <AddNewSection />,
+        isPrivate: true
+    },
+    {
+        name: 'Edit_Section',
+        path: '/edit-section',
+        element: <EditSection />,
         isPrivate: true
     },
 ]
