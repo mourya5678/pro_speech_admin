@@ -88,7 +88,7 @@ const AddQuiz = () => {
             Quiz_Answer: '',
             Quiz_Answer_Error: ''
         }]);
-    };  
+    };
 
     const onHandleDeleteField = (id) => {
         const updatedMedicationDetails = quizQuestion.filter((item) => item.id !== id);
@@ -268,7 +268,7 @@ const AddQuiz = () => {
                                                     </div>
                                                 ))}
                                                 <div className="pt-4 d-flex align-items-center gap-3 justify-content-center">
-                                                    <button className="ct_custom_btn ct_add_more_right" onClick={onHandleAddMoreField}><i className="fa-solid fa-plus me-2"></i> Add
+                                                    <button className="ct_custom_btn ct_add_more_right" type="button" onClick={onHandleAddMoreField}><i className="fa-solid fa-plus me-2"></i> Add
                                                More</button>
                                                     <button type="button" className="ct_custom_btn d-block" onClick={onHandleAddAnswer}> Submit</button>
 

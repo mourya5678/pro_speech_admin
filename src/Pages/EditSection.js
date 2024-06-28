@@ -99,7 +99,7 @@ const EditSection = () => {
                                                                 value={sectionName}
                                                                 type="text"
                                                                 placeholder="Enter section name"
-                                                                onChange={(e) => setSectionName(e.target.values)}
+                                                                onChange={(e) => setSectionName(e.target.value)}
                                                                 className="form-control"
                                                             />
                                                             {errorMessage?.sectionNameError !== "" &&
