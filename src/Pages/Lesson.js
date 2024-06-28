@@ -88,7 +88,7 @@ const Lesson = () => {
                                                                     <span>{item?.question_count}</span>
                                                                 </td>
                                                                 <td className="text-end d-flex align-item-center gap-2 justify-content-end">
-                                                                    <a href="javascript:void(0)"> <button className="ct_edit_btn ct_custom_btn w-auto py-2 h-auto" onClick={() => navigate(pageRoutes.add_quiz, { state: { value: item } })}><i className="fa-solid fa-plus me-2"></i> Add Quiz</button></a>
+                                                                    <a href="javascript:void(0)"> <button className="ct_edit_btn ct_custom_btn w-auto py-2 h-auto" onClick={() => navigate(pageRoutes.add_quiz, { state: { value: item, lesson_id: state?.data?._id } })}><i className="fa-solid fa-plus me-2"></i> Add Quiz</button></a>
                                                                     <a href="javascript:void(0)"><button className="ct_edit_btn ct_custom_btn w-auto py-2 h-auto" onClick={() => navigate(pageRoutes.addLessonDetail, { state: { item: item?._id } })}><i className="fa-solid fa-plus me-2"></i>{item?.lessonDetails == "" ? "Add Lesson Detail" : "Edit Lesson Detail"}</button></a>
                                                                 </td>
                                                             </tr>

@@ -88,8 +88,7 @@ const AddQuiz = () => {
             Quiz_Answer: '',
             Quiz_Answer_Error: ''
         }]);
-
-    };
+    };  
 
     const onHandleDeleteField = (id) => {
         const updatedMedicationDetails = quizQuestion.filter((item) => item.id !== id);
@@ -137,10 +136,11 @@ const AddQuiz = () => {
         console.log(data12, quizQuestion?.length)
         if (data12?.length == quizQuestion?.length) {
             setIsLoader(true);
+            console.log({ state })
             const data = {
                 quiz_name: state?.value?.module_name,
                 questions: data12,
-                lesson_id: state?.value?._id
+                lesson_id: state?.lesson_id
             }
             const data123 = {
                 quiz_name: state?.value?.module_name,
