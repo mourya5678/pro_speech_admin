@@ -1,4 +1,4 @@
-// export const baseUrl = 'http://54.88.46.234:4000/api/'; Live Url
+// export const baseUrl = 'http://54.88.46.234:4000/api/';  // Live Url
 export const baseUrl = 'http://192.168.29.104:4005/api/'; // Local Url
 export const loginEndPointURL = 'auth/login';
 export const forgotPasswordEndPointURL = "auth/forgot-password";
@@ -18,3 +18,5 @@ export const getAllUserDataEndPointURL = "admin/get-user-list";
 export const otpVerifyEndPointURL = "auth/verify-forgot-password";
 export const newPasswordEndPointURL = "auth/change-password-by-email";
 export const deleteUserDataEndPointURL = "admin/delete-user-by-id/";
+export const getUserDetailsEndPointURL = "admin/get-user-details/";
+export const updateUserDetailsByAdminEndPointURL = "admin/edit-user-profile/";

@@ -6,8 +6,11 @@ import Sidebar from '../Layout/Sidebar';
 import { baseUrl, deleteUserDataEndPointURL, getAllUserDataEndPointURL, } from '../Routes/bakendRoutes';
 import PaginationDropdown from '../Component/PaginationDropdown';
 import ReactPagination from '../Component/reactPagination';
+import { useNavigate } from 'react-router-dom';
+import { pageRoutes } from '../Routes/pageRoutes';
 
 const Home = () => {
+    const navigate = useNavigate();
     const [apiData, setApiData] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [usersPerPage, setUserPerPages] = useState(25);
@@ -53,6 +56,10 @@ const Home = () => {
         apiResponse.success == true && getApiData()
     };
 
+    const onHandleEditUsers = async (id) => {
+        navigate(pageRoutes.edit_user_profile, { state: { id: id } });
+    };
+
     return (
         <div className="wrapper">
             <Sidebar />
@@ -72,60 +79,6 @@ const Home = () => {
                                     <h3 className="fw-bold mb-3">Dashboard</h3>
                                 </div>
                             </div>
-                            {/* <div className="row">
-                                <div className="col-sm-6 col-md-3 mb-4">
-                                    <div className="card card-stats card-round">
-                                        <div className="card-body">
-                                            <p className="mb-1">0% Completed</p>
-                                            <div className="progress ct_progress">
-                                                <div className="progress-bar w-75" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
-                                            <img src="assets/img/file.png" alt="" />
-                                            <h4 className="mb-0 ct_fw_600 text-center">International Phonetic Alphabet
-                    </h4>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-sm-6 col-md-3 mb-4">
-                                    <div className="card card-stats card-round">
-                                        <div className="card-body">
-                                            <p className="mb-1">30% Completed</p>
-                                            <div className="progress ct_progress">
-                                                <div className="progress-bar w-75" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
-                                            <img src="assets/img/file.png" alt="" />
-                                            <h4 className="mb-0 ct_fw_600 text-center">Connected Speech
-                    </h4>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-sm-6 col-md-3 mb-4">
-                                    <div className="card card-stats card-round">
-                                        <div className="card-body">
-                                            <p className="mb-1">0% Completed</p>
-                                            <div className="progress ct_progress">
-                                                <div className="progress-bar w-75" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
-                                            <img src="assets/img/file.png" alt="" />
-                                            <h4 className="mb-0 ct_fw_600 text-center">Rhythm
-                    </h4>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-sm-6 col-md-3 mb-4">
-                                    <div className="card card-stats card-round">
-                                        <div className="card-body">
-                                            <p className="mb-1">0% Completed</p>
-                                            <div className="progress ct_progress">
-                                                <div className="progress-bar w-75" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
-                                            <img src="assets/img/file.png" alt="" />
-                                            <h4 className="mb-0 ct_fw_600 text-center">Syllable Types
-                    </h4>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> */}
                             <div className="row">
                                 <div className="col-md-12">
                                     <div className="card card-round">
@@ -158,6 +111,8 @@ const Home = () => {
                                                                     <td>{item?.profile?.gender}</td>
                                                                     <td>{pipDateFormate(item?.profile?.dateOfBirth)}</td>
                                                                     <td>
+                                                                        <button className="ct_eye_btn" onClick={() => navigate(pageRoutes.user_details, { state: { id: item?._id } })}><i className="fa-solid fa-eye"></i></button>
+                                                                        <button className="ct_eye_btn" onClick={() => onHandleEditUsers(item?._id)}><i className="fa-solid fa-edit"></i></button>
                                                                         <button className="ct_delete_btn" onClick={() => onHandleDeleteUsers(item?._id)}><i className="fa-solid fa-trash"></i></button>
                                                                     </td>
                                                                 </tr>

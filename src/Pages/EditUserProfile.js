@@ -1,18 +1,19 @@
 import { Formik } from 'formik'
 import React, { useEffect, useState } from 'react'
 import { Navigate } from 'react-router'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { pipApiResponse, pipDateFormates, pipDateFormate, pipGetToken, pipGetUserData } from '../Controllers/Pip'
 import { Schema_edit_profile_form } from '../Controllers/Schema'
 import Footer from '../Layout/Footer'
 import Header from '../Layout/Header'
 import Sidebar from '../Layout/Sidebar'
-import { baseUrl, updateUserProfileDataEndPointURL } from '../Routes/bakendRoutes'
+import { baseUrl, getUserDetailsEndPointURL, updateUserDetailsByAdminEndPointURL, updateUserProfileDataEndPointURL } from '../Routes/bakendRoutes'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-const EditProfile = () => {
+const EditUserProfile = () => {
     const navigate = useNavigate();
+    const { state } = useLocation();
     const [fullName, setFullName] = useState();
     const [dateOfBirth, setDateOfBirth] = useState();
     const [email, setEmail] = useState();
@@ -27,19 +28,30 @@ const EditProfile = () => {
         phone: '',
         gender: '',
         profileImage: ''
-    })
+    });
 
     useEffect(() => {
-        setIsLoader(true);
-        const userData = pipGetUserData();
-        setFullName(userData?.fullName ?? '');
-        setEmail(userData?.email ?? '');
-        setPhone(userData?.phone ?? '');
-        setProfileImage(userData?.profileImage ?? '');
-        setDateOfBirth(pipDateFormates(userData?.dateOfBirth) ?? '');
-        setGender(userData?.gender ?? 'Male');
-        setIsLoader(false);
+        getUserDetailByID();
     }, []);
+
+    const getUserDetailByID = async () => {
+        setIsLoader(true);
+        const token = pipGetToken();
+        const headers = {
+            'Content-Type': 'multipart/form-data',
+            'accept': 'application/json',
+            Authorization: `Bearer ${token}`
+        }
+        var apiResponse = await pipApiResponse('get', `${baseUrl + getUserDetailsEndPointURL + state?.id}`, headers, false);
+        setFullName(apiResponse?.userData?.profile?.fullName ?? '');
+        setEmail(apiResponse?.userData?.profile?.email ?? '');
+        setPhone(apiResponse?.userData?.profile?.phone ?? '');
+        setProfileImage(apiResponse?.userData?.profile?.profileImage ?? '');
+        setDateOfBirth(pipDateFormates(apiResponse?.userData?.profile?.dateOfBirth) ?? '');
+        setGender(apiResponse?.userData?.profile?.gender ?? 'Male');
+        setIsLoader(false)
+        console.log(apiResponse?.userData?.profile)
+    };
 
     const onHandleSubmitData = async () => {
         if (fullName && dateOfBirth && phone && profileImage || profileImageChange && gender) {
@@ -66,7 +78,7 @@ const EditProfile = () => {
             if (profileImageChange) {
                 formData.append("profileImage", profileImageChange)
             }
-            var apiResponse = await pipApiResponse('put', `${baseUrl + updateUserProfileDataEndPointURL}`, headers, true, formData);
+            var apiResponse = await pipApiResponse('put', `${baseUrl + updateUserDetailsByAdminEndPointURL + state?.id}`, headers, true, formData);
             setIsLoader(false)
             apiResponse?.success == true && navigate(-1)
         } else {
@@ -86,6 +98,7 @@ const EditProfile = () => {
         setProfileImageChange(e.target.files[0]);
     }
 
+
     return (
         <div className="wrapper">
             <Sidebar />
@@ -104,7 +117,7 @@ const EditProfile = () => {
                                         <div className="card-body">
                                             <div className="card-head-row card-tools-still-right mb-5">
                                                 <div className="d-flex align-items-center justify-content-center gap-3 flex-wrap w-100">
-                                                    <h4 className="card-title ct_fw_700 mb-0 text-center">Edit Profile</h4>
+                                                    <h4 className="card-title ct_fw_700 mb-0 text-center">Edit User Profile</h4>
                                                 </div>
                                             </div>
                                             <form className="pt-0">
@@ -126,7 +139,6 @@ const EditProfile = () => {
                                                         </span>
                                                     }
                                                 </div>
-                                                {console.log({ errorMessage })}
                                                 <div className="row">
                                                     <div className="col-md-6 ">
                                                         <div className=" mb-4 ct_custom_input">
@@ -201,4 +213,4 @@ const EditProfile = () => {
     )
 }
 
-export default EditProfile
+export default EditUserProfile
