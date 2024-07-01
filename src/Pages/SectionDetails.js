@@ -43,7 +43,7 @@ const SectionDetails = () => {
                                                         <tr>
                                                             <td>1</td>
                                                             <td>
-                                                                <img src={`http://192.168.29.104:4005/${item?.module_image}`} className="ct_user_icon" />
+                                                                <img src={`http://54.88.46.234:4005/${item?.module_image}`} className="ct_user_icon" />
                                                             </td>
                                                             <td>{item?.module_name} </td>
                                                             <td>{item?.lessons?.length} </td>
