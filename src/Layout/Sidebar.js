@@ -65,6 +65,7 @@ const Sidebar = () => {
                         <li className="nav-item">
                             <a
                                 className="collapsed"
+                                href="javascript:void(0)"
                                 onClick={() => navigate(pageRoutes.home)}
                             >
                                 <p>Dashboard</p>
@@ -73,7 +74,7 @@ const Sidebar = () => {
                         {sideBar && sideBar?.map((item) => (
                             <>
                                 <li className="nav-item text-section">
-                                    <a data-bs-toggle="collapse" onClick={() => onHandleOpenClose(item?.section)}>
+                                    <a href="javascript:void(0)" data-bs-toggle="collapse" onClick={() => onHandleOpenClose(item?.section)}>
                                         <p>{item?.section}</p>
                                         <span className="caret"></span>
                                     </a>
@@ -91,6 +92,29 @@ const Sidebar = () => {
                                 </li>
                             </>
                         ))}
+                        <li className="nav-item text-section">
+                            <a href="javascript:void(0)" data-bs-toggle="collapse" onClick={() => onHandleOpenClose("Manage Content")}>
+                                <p>Manage Content</p>
+                                <span className="caret"></span>
+                            </a>
+                            <div className={open?.includes("Manage Content") ? "collapse show" : "collapse"}>
+                                <ul className="nav nav-collapse">
+                                    <li>
+                                        <a href="javascript:void(0)"
+                                            onClick={() => navigate(pageRoutes.manage_Content)}
+                                        >
+                                            <span className="sub-item">Terms & Condition</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0)"
+                                            onClick={() => navigate(pageRoutes.privacy_policy)}                                        >
+                                            <span className="sub-item">Privacy & Policy</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
                     </ul>
                 </div>
             </div>

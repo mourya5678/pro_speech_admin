@@ -23,7 +23,8 @@ const ForgotPassword = () => {
         var apiResponse = await pipApiResponse('post', `${baseUrl + forgotPasswordEndPointURL}`, headers, true, values);
         resetForm();
         setIsLoader(false);
-        apiResponse?.success == true && navigate(pageRoutes.otp_check, { state: { email: values?.email } });
+        // apiResponse?.success == true && navigate(pageRoutes.otp_check, { state: { email: values?.email } });
+        apiResponse?.success == true && navigate(pageRoutes.login);
     }
 
     return (

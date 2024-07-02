@@ -42,7 +42,8 @@ const EditProfile = () => {
     }, []);
 
     const onHandleSubmitData = async () => {
-        if (fullName && dateOfBirth && phone && profileImage || profileImageChange && gender) {
+        const mobileNumberPattern = /^\d{10}$/;
+        if (fullName && dateOfBirth && mobileNumberPattern.test(phone) && profileImage || profileImageChange && gender) {
             setIsLoader(true)
             setErrorMessage({
                 ...errorMessage, fullNameError: '',
@@ -74,7 +75,7 @@ const EditProfile = () => {
             setErrorMessage({
                 ...errorMessage, fullNameError: !fullName ? "Please enter fullName" : '',
                 dateOfBirth: !dateOfBirth ? "Please select the Dob" : '',
-                phone: !phone ? "Please enter 10 digit phone number" : phone?.length >= 10 ? "Please enter 10 digit phone number" : '',
+                phone: "Please enter 10 digit phone number",
                 gender: !gender ? "Please select gender" : '',
                 profileImage: !profileImage || !profileImageChange ? "Please select profile image" : ''
             })
@@ -100,8 +101,24 @@ const EditProfile = () => {
         setProfileImageChange(e.target.files[0]);
     };
 
+    const phoneNumberChange = (e) => {
+        setPhone(e.target.value)
+        const mobileNumberPattern = /^\d{10}$/;
+        if (mobileNumberPattern.test(e.target.value)) {
+            setErrorMessage({
+                ...errorMessage,
+                phone: "",
+            })
+        } else {
+            setErrorMessage({
+                ...errorMessage,
+                phone: "Please enter 10 digit phone number",
+            })
+        }
+    }
+
     return (
-        <div className="wrapper">
+        <div className="wrapper ct_main_dashboard">
             <Sidebar />
             <div className="main-panel">
                 <Header />
@@ -128,7 +145,7 @@ const EditProfile = () => {
                                                         <input
                                                             className={profileImageChange == '' && profileImage == "" ? 'form-control d-none' : 'form-control d-none'}
                                                             type="file" id="ct_profile_edit"
-                                                            multiple
+                                                            // multiple
                                                             onChange={handleDocumentsChange}
                                                             accept="image/*,application/pdf"
                                                         />
@@ -161,7 +178,7 @@ const EditProfile = () => {
                                                     <div className="col-md-6 ">
                                                         <div className=" ct_custom_input mb-4">
                                                             <label className="mb-2">Number</label>
-                                                            <input type="number" className="form-control" placeholder="Enter Number" value={phone} onChange={(e) => setPhone(e.target.value)} />
+                                                            <input type="number" onWheel={() => document.activeElement.blur()} className="form-control" placeholder="Enter Number" value={phone} onChange={(e) => phoneNumberChange(e)} />
                                                             {errorMessage?.phone !== "" &&
                                                                 <span style={{ color: "red" }}>
                                                                     {errorMessage?.phone}
@@ -173,6 +190,7 @@ const EditProfile = () => {
                                                         <div className=" ct_custom_input mb-4">
                                                             <label> Dob</label>
                                                             <div className="w-100"><DatePicker
+                                                                maxDate={new Date()}
                                                                 className="form-control " onChange={(date) => setDateOfBirth(date)} selected={dateOfBirth} /></div>
                                                             {errorMessage?.dateOfBirth !== "" &&
                                                                 <span style={{ color: "red" }}>

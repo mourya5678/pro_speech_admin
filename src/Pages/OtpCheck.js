@@ -40,7 +40,7 @@ const OtpCheck = () => {
                 <div className="ct_login_main_center">
                     <div className="ct_login_bg">
                         <div className="ct_login_head mb-5">
-                            <h2 className="text-center">Otp Check</h2>
+                            <h2 className="text-center">Otp Verification</h2>
                         </div>
                         {isLoader == true ?
                             <div className="ct_loader_main">

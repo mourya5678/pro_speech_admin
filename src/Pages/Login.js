@@ -6,10 +6,12 @@ import { pageRoutes } from '../Routes/pageRoutes';
 import { useNavigate } from 'react-router-dom';
 import ErrorMessage from '../Controllers/ErrorMessage';
 import { baseUrl, getProfileDataEndPointURL, loginEndPointURL } from '../Routes/bakendRoutes';
+import EyeButton from '../Layout/EyeButton';
 
 const Login = () => {
     const navigate = useNavigate();
     const [isLoader, setIsLoader] = useState(false);
+    const [eyes, setEyes] = useState(false);
     const userData = {
         email: '',
         password: ''
@@ -24,8 +26,7 @@ const Login = () => {
         var apiResponse = await pipApiResponse('post', `${baseUrl + loginEndPointURL}`, headers, true, values);
         resetForm();
         pipSaveToken(apiResponse?.token);
-        apiResponse?.success == true && getUserProfileData(apiResponse?.token)
-        setIsLoader(false);
+        apiResponse ? apiResponse?.success == true && getUserProfileData(apiResponse?.token) : setIsLoader(false);
     }
 
     const getUserProfileData = async (token) => {
@@ -37,8 +38,8 @@ const Login = () => {
         }
         var apiResponse = await pipApiResponse('get', `${baseUrl + getProfileDataEndPointURL}`, headers, false);
         pipSaveUserData(apiResponse?.profile);
-        setIsLoader(false);
         apiResponse?.success == true && navigate(pageRoutes?.home);
+        setIsLoader(false);
     }
 
     return (
@@ -86,9 +87,9 @@ const Login = () => {
                                                 <label>Email address</label>
                                                 <ErrorMessage errors={errors} touched={touched} fieldName="email" />
                                             </div>
-                                            <div className="form-floating ct_custom_input mb-2">
+                                            <div className="form-floating ct_custom_input mb-2 position-relative">
                                                 <input
-                                                    type="password"
+                                                    type={eyes == true ? 'text' : 'password'}
                                                     className="form-control"
                                                     id="password"
                                                     value={values?.password}
@@ -97,6 +98,7 @@ const Login = () => {
                                                     placeholder="Password"
                                                 />
                                                 <label>Password</label>
+                                                <EyeButton onClick={() => setEyes(!eyes)} data={eyes == false ? 'fa-eye-slash' : 'fa-eye'} />
                                                 <ErrorMessage errors={errors} touched={touched} fieldName="password" />
                                             </div>
                                             <div className="text-end">

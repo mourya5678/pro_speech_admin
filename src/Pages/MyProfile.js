@@ -32,7 +32,7 @@ const MyProfile = () => {
     }
 
     return (
-        <div className="wrapper">
+        <div className="wrapper ct_main_dashboard">
             <Sidebar />
             <div className="main-panel">
                 {isLoader == true ?
@@ -62,7 +62,7 @@ const MyProfile = () => {
                                             </div>
                                             <div className="ct_profile_detail">
                                                 <div className="ct_proile_img text-center">
-                                                    <img src={profileDetail?.profileImage ?? 'assets/img/user124.jpg'} alt="" />
+                                                    <img src={profileDetail?.profileImage != "" ? profileDetail?.profileImage ?? 'assets/img/user124.jpg' : 'assets/img/user124.jpg'} alt="" />
                                                 </div>
                                                 <div className="">
                                                     <p><span>Name</span> <span>:</span> <span>{profileDetail?.fullName ?? ''}</span></p>

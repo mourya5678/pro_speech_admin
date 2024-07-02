@@ -6,6 +6,7 @@ import { pipApiResponse, pipDateFormate, pipGetToken } from '../Controllers/Pip'
 import Footer from '../Layout/Footer';
 import Header from '../Layout/Header';
 import Sidebar from '../Layout/Sidebar';
+import { SlideshowLightbox } from "lightbox.js-react";
 import { baseUrl, getUserDetailsEndPointURL } from '../Routes/bakendRoutes';
 
 const UserDetails = () => {
@@ -15,6 +16,8 @@ const UserDetails = () => {
     const [usersPerPage, setUserPerPages] = useState(25);
     const [usersDetails, setUsersDetails] = useState([]);
     const [scoreData, setScoreData] = useState();
+    const [userName, setUserName] = useState();
+    const [userImage, setUserImage] = useState();
 
     const displayUsers = usersDetails.slice(
         currentPage * usersPerPage,
@@ -42,10 +45,12 @@ const UserDetails = () => {
         console.log(apiResponse);
         setUsersDetails(apiResponse?.sectionsWithCompletion ?? []);
         setScoreData(apiResponse?.scoreData ?? {});
+        setUserName(apiResponse?.userData?.profile?.fullName)
+        setUserImage(apiResponse?.userData?.profile?.profileImage)
     };
 
     return (
-        <div className="wrapper">
+        <div className="wrapper ct_main_dashboard">
             <Sidebar />
             <div className="main-panel">
                 <Header />
@@ -60,7 +65,10 @@ const UserDetails = () => {
                                 className="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4"
                             >
                                 <div>
-                                    <h3 className="fw-bold mb-3">User Details</h3>
+                                    <h3 className="fw-bold mb-3">{userName ?? ''}</h3>
+                                    {/* <SlideshowLightbox className=" mx-auto" data-bs-toggle="modal" data-bs-target="#ct_user_profile_img"> */}
+                                    <img className="ct_user_icon" data-bs-toggle="modal" data-bs-target="#ct_user_profile_img" src={userImage != '' ? userImage ?? "assets/img/user124.jpg" : "assets/img/user124.jpg"} />
+                                    {/* </SlideshowLightbox> */}
                                 </div>
                             </div>
                             <div className="row">
@@ -125,8 +133,21 @@ const UserDetails = () => {
                                     </div>
                                 </div>
                             </div> */}
+                            <div class="modal fade" id="ct_user_profile_img" tabindex="-1" aria-labelledby="ct_user_profile_imgLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header border-0">
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div className="ct_modal_img_view text-center">
+                                                <img style={{ width: "200px", height: "200px", objectFit: "cover" }} src={userImage != '' ? userImage ?? "assets/img/user124.jpg" : "assets/img/user124.jpg"} />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-
                     }
                 </div>
                 <Footer />

@@ -10,6 +10,10 @@ import EditUserProfile from "../Pages/EditUserProfile";
 import SectionDetails from "../Pages/SectionDetails";
 import EditSection from "../Pages/EditSection";
 import AddNewSection from "../Pages/AddNewSection";
+import UpdateModule from "../Pages/UpdateModule";
+import QuizDetails from "../Pages/QuizDetails";
+import TermsCondition from "../Pages/TermsCondition";
+import PrivacyPolicy from "../Pages/PrivacyPolicy";
 
 
 export const pageRoutes = {
@@ -30,6 +34,10 @@ export const pageRoutes = {
     add_section: "/add-section",
     section_detail: "/section-detail",
     edit_section: "/edit-section",
+    edit_module: "/edit-module",
+    quiz_Details: "/quiz-detail",
+    manage_Content: "/terms-condition",
+    privacy_policy: "/privacy-policy"
 };
 
 export const AllRoutes = [
@@ -103,6 +111,30 @@ export const AllRoutes = [
         name: 'Edit_Section',
         path: '/edit-section',
         element: <EditSection />,
+        isPrivate: true
+    },
+    {
+        name: 'Edit_Module',
+        path: '/edit-module',
+        element: <UpdateModule />,
+        isPrivate: true
+    },
+    {
+        name: 'Quiz_Details',
+        path: '/quiz-detail',
+        element: <QuizDetails />,
+        isPrivate: true
+    },
+    {
+        name: 'Manage_Content',
+        path: '/terms-condition',
+        element: <TermsCondition />,
+        isPrivate: true
+    },
+    {
+        name: 'Privacy_Policy',
+        path: '/privacy-policy',
+        element: <PrivacyPolicy />,
         isPrivate: true
     },
 ]

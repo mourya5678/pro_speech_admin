@@ -1,31 +1,25 @@
-import React, { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { pipApiResponse, pipGetToken, pipSaveUserData } from '../Controllers/Pip';
-import Footer from '../Layout/Footer';
-import Header from '../Layout/Header';
-import Sidebar from '../Layout/Sidebar';
-import { baseUrl, updateSectionDetailsEndPointURL } from '../Routes/bakendRoutes';
+import React, { useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { pipApiResponse, pipGetToken } from '../Controllers/Pip'
+import Footer from '../Layout/Footer'
+import Header from '../Layout/Header'
+import Sidebar from '../Layout/Sidebar'
+import { addSectionEndPointURL, baseUrl, updateModulesDetailEndPointURL } from '../Routes/bakendRoutes'
 
-const EditSection = () => {
-    const { state } = useLocation();
+
+const UpdateModule = () => {
     const navigate = useNavigate();
+    const { state } = useLocation();
     const [isLoader, setIsLoader] = useState(false);
-    const [sectionImage, setSectionImage] = useState(state?.id?.section_image ?? '');
-    const [sectionName, setSectionName] = useState(state?.id?.section_name ?? '');
+    const [sectionImage, setSectionImage] = useState(state?.data?.module_image ?? '');
+    const [sectionName, setSectionName] = useState(state?.data?.module_name ?? '');
     const [changeImage, setChangeImage] = useState();
+
     const [errorMessage, setErrorMessage] = useState({
         sectionNameError: '',
         sectionImageError: ''
-    })
-    console.log(state?.id);
-
-    const handleDocumentsChange = (e) => {
-        setChangeImage(e.target.files[0]);
-        setErrorMessage({
-            ...errorMessage,
-            sectionImageError: ''
-        })
-    };
+    });
+    console.log({ state });
 
     const onHandleSubmitDetails = async () => {
         if (sectionImage || changeImage && sectionName) {
@@ -42,20 +36,29 @@ const EditSection = () => {
                 Authorization: `Bearer ${token}`
             }
             const formData = new FormData();
-            formData.append("section_name", sectionName);
+            formData.append("module_name", sectionName);
             if (changeImage) {
-                formData.append("section_image", changeImage);
+                formData.append("module_image", changeImage);
             }
-            var apiResponse = await pipApiResponse('put', `${baseUrl + updateSectionDetailsEndPointURL + state?.id?._id}`, headers, true, formData);
+            var apiResponse = await pipApiResponse('put', `${baseUrl + updateModulesDetailEndPointURL + state?.data?._id}`, headers, true, formData);
             setIsLoader(false);
             apiResponse?.success == true && navigate(-1);
         } else {
             setErrorMessage({
                 ...errorMessage,
-                sectionNameError: sectionName ? '' : "Please enter section name",
-                sectionImageError: sectionImage || changeImage ? '' : "Please select section image"
+                sectionNameError: sectionName ? '' : "Please enter module name",
+                sectionImageError: sectionImage || changeImage ? '' : "Please select module image"
             })
         }
+    };
+
+    const handleDocumentsChange = (e) => {
+        setChangeImage(e.target.files[0]);
+        console.log(e.target.files[0])
+        setErrorMessage({
+            ...errorMessage,
+            sectionImageError: ''
+        })
     };
 
     const onHandleChangeName = (e) => {
@@ -93,14 +96,13 @@ const EditSection = () => {
                                         <div className="card-body">
                                             <div className="card-head-row card-tools-still-right mb-5">
                                                 <div className="d-flex align-items-center justify-content-center gap-3 flex-wrap w-100">
-                                                    <h4 className="card-title ct_fw_700 mb-0 text-center">Edit Section</h4>
+                                                    <h4 className="card-title ct_fw_700 mb-0 text-center">Edit Module</h4>
                                                 </div>
                                             </div>
                                             <form className="pt-0">
                                                 <div className="row">
                                                     <div className="ct_proile_img ct_edit_profile_img text-center mx-auto mb-4">
                                                         <label for="ct_profile_edit">
-                                                            {/* src={profileImageChange ? URL.createObjectURL(profileImageChange) : profileImage ? profileImage : 'assets/img/user124.jpg'} */}
                                                             <img src={changeImage ? URL.createObjectURL(changeImage) : sectionImage ?? "assets/img/user124.jpg"} alt="" />
                                                             <input
                                                                 className='form-control d-none'
@@ -111,12 +113,12 @@ const EditSection = () => {
                                                             />
                                                             <i className="fa-solid fa-camera" style={{ top: "44%" }}></i>
                                                         </label>
-                                                        {errorMessage?.sectionImageError !== "" &&
-                                                            <span className="ct_proile_img text-center mx-auto" style={{ color: "red" }}>
-                                                                {errorMessage?.sectionImageError}
-                                                            </span>
-                                                        }
                                                     </div>
+                                                    {errorMessage?.sectionImageError !== "" &&
+                                                        <span className="ct_proile_img text-center mx-auto" style={{ color: "red" }}>
+                                                            {errorMessage?.sectionImageError}
+                                                        </span>
+                                                    }
                                                     <div className="row">
                                                         <div className="col-md-12 mx-auto">
                                                             <div className="form-group mb-4">
@@ -154,4 +156,4 @@ const EditSection = () => {
     )
 }
 
-export default EditSection
+export default UpdateModule

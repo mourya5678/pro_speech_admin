@@ -116,11 +116,11 @@ $(document).ready(function () {
 		var toggle = $('.sidenav-toggler');
 		toggle.on('click', function () {
 			if (nav_open == 1) {
-				$('html').removeClass('nav_open');
+				$('.ct_main_dashboard').removeClass('nav_open');
 				toggle.removeClass('toggled');
 				nav_open = 0;
 			} else {
-				$('html').addClass('nav_open');
+				$('.ct_main_dashboard').addClass('nav_open');
 				toggle.addClass('toggled');
 				nav_open = 1;
 			}
@@ -131,12 +131,12 @@ $(document).ready(function () {
 		var toggle = $('.quick-sidebar-toggler');
 		toggle.on('click', function () {
 			if (nav_open == 1) {
-				$('html').removeClass('quick_sidebar_open');
+				$('.ct_main_dashboard').removeClass('quick_sidebar_open');
 				$('.quick-sidebar-overlay').remove();
 				toggle.removeClass('toggled');
 				quick_sidebar_open = 0;
 			} else {
-				$('html').addClass('quick_sidebar_open');
+				$('.ct_main_dashboard').addClass('quick_sidebar_open');
 				toggle.addClass('toggled');
 				$('<div class="quick-sidebar-overlay"></div>').insertAfter('.quick-sidebar');
 				quick_sidebar_open = 1;

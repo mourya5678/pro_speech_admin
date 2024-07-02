@@ -1,59 +1,52 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
-import { pipApiResponse, pipGetToken } from '../Controllers/Pip'
+import { useNavigate } from 'react-router-dom'
 import Footer from '../Layout/Footer'
 import Header from '../Layout/Header'
 import Sidebar from '../Layout/Sidebar'
-import { baseUrl, getLessaonByIdEndPointURL, updateLessonEndPointURL } from '../Routes/bakendRoutes'
-import { pageRoutes } from '../Routes/pageRoutes'
-// import ReactQuill from 'react-quill';
-// import 'react-quill/dist/quill.snow.css';
 import { Editor } from '@tinymce/tinymce-react';
+import { pipApiResponse, pipGetToken } from '../Controllers/Pip'
+import { baseUrl, createPrivacyAndPolicyEndPointURL, getPrivacyPolicyEndPointURL } from '../Routes/bakendRoutes'
 
-
-const AddLessonDetail = () => {
-    const { state } = useLocation();
-    const navigate = useNavigate();
-    const [editorValue, setEditorValue] = useState();
-    const [name, setName] = useState();
+const PrivacyPolicy = () => {
     const [isLoader, setIsLoader] = useState(false);
-    const editorRef = useRef(null);
+    const navigate = useNavigate();
     const [errorMessage, setErroMessage] = useState({
-        nameError: '',
-        editerError: ''
+        titleError: '',
+        subTitleError: '',
+        editorValueError: ''
     });
+    const [editorValue, setEditorValue] = useState();
+    const editorRef = useRef(null);
 
     useEffect(() => {
-        getLessonByID();
+        getDataOfTermsCondition();
     }, []);
 
-    const getLessonByID = async () => {
-        setIsLoader(true);
+    const getDataOfTermsCondition = async () => {
         const token = pipGetToken();
         const headers = {
             'Content-Type': 'application/json',
             'accept': 'application/json',
             Authorization: `Bearer ${token}`
         }
-        var apiResponse = await pipApiResponse('get', `${baseUrl + getLessaonByIdEndPointURL + state?.item}`, headers, false);
-        setName(apiResponse?.data?.lesson_name)
-        setEditorValue(apiResponse?.data?.lessonDetails)
+        var apiResponse = await pipApiResponse('get', `${baseUrl + getPrivacyPolicyEndPointURL}`, headers, false);
         setIsLoader(false);
-    }
+        setEditorValue(apiResponse?.data?.html);
+    };
 
-    const onHandleAddLessonDetail = async () => {
+    const onHandleAddPrivacyPolicy = async () => {
         let data = editorRef.current.getContent();
         setEditorValue(data);
-        if (name && data) {
+        if (data) {
             setIsLoader(true);
             setErroMessage({
                 ...errorMessage,
-                nameError: '',
-                editerError: ''
+                titleError: '',
+                subTitleError: '',
+                editorValueError: ''
             })
             const dataas = {
-                lesson_name: name,
-                lessonDetails: data
+                html: data
             }
             const token = pipGetToken();
             const headers = {
@@ -61,15 +54,14 @@ const AddLessonDetail = () => {
                 'accept': 'application/json',
                 Authorization: `Bearer ${token}`
             }
-            var apiResponse = await pipApiResponse('put', `${baseUrl + updateLessonEndPointURL + state?.item}`, headers, true, dataas);
+            var apiResponse = await pipApiResponse('put', `${baseUrl + createPrivacyAndPolicyEndPointURL}`, headers, true, dataas);
             setIsLoader(false);
             console.log({ apiResponse }, { dataas })
             apiResponse?.success == true && navigate(-1);
         } else {
             setErroMessage({
                 ...errorMessage,
-                nameError: name ? '' : 'Please enter lesson name',
-                editerError: editorValue ? '' : 'Please enter lesson detail'
+                editorValueError: data ? '' : 'Please enter the content'
             })
         }
     };
@@ -95,25 +87,14 @@ const AddLessonDetail = () => {
                                                     <a href="javascript:void(0)" onClick={() => navigate(-1)} className="ct_back_btn">
                                                         <i className="fa-solid fa-arrow-left-long"></i>
                                                     </a>
-                                                    <h4 className="card-title ct_fw_700 mb-0 mx-auto">Add Lesson Detail</h4>
+                                                    <h4 className="card-title ct_fw_700 mb-0 mx-auto">Add Privacy Policy</h4>
                                                 </div>
                                             </div>
                                             <form className="pt-0">
                                                 <div className="row" id="ct_append_quiz">
                                                     <div className="col-md-12 ">
                                                         <div className="form-group p-0 mb-4 ct_custom_input">
-                                                            <label className="ct_fw_600 mb-2">Lesson Name</label>
-                                                            <input type="text" value={name} onChange={(e) => setName(e.target.value)} className="form-control" id="floatingInput" placeholder="Enter Lesson Name" />
-                                                            {errorMessage?.nameError != '' &&
-                                                                <span style={{ color: "red" }}>
-                                                                    {errorMessage?.nameError}
-                                                                </span>
-                                                            }
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-md-12 ">
-                                                        <div className="form-group p-0 mb-4 ct_custom_input">
-                                                            <label className="ct_fw_600 mb-2">Lesson Detail</label>
+                                                            <label className="ct_fw_600 mb-2">Content</label>
                                                             <div id="">
                                                                 <Editor
                                                                     apiKey='iu3kqbs7z6b23a94nqmktcf7ay4gvdpky5fz85bh1qsv3h9x'
@@ -132,16 +113,18 @@ const AddLessonDetail = () => {
                                                                     initialValue={editorValue}
                                                                 />
                                                             </div>
-                                                            {errorMessage?.editerError != '' &&
+                                                            {errorMessage?.editorValueError != '' &&
                                                                 <span style={{ color: "red" }}>
-                                                                    {errorMessage?.editerError}
+                                                                    {errorMessage?.editorValueError}
                                                                 </span>
                                                             }
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div className="pt-4">
-                                                    <button type="button" className="ct_custom_btn mx-auto d-block " onClick={onHandleAddLessonDetail}> Submit</button>
+                                                    <button type="button" className="ct_custom_btn mx-auto d-block "
+                                                        onClick={onHandleAddPrivacyPolicy}
+                                                    > Submit</button>
                                                 </div>
                                             </form>
                                         </div>
@@ -157,4 +140,4 @@ const AddLessonDetail = () => {
     )
 }
 
-export default AddLessonDetail
+export default PrivacyPolicy

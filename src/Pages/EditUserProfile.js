@@ -54,7 +54,8 @@ const EditUserProfile = () => {
     };
 
     const onHandleSubmitData = async () => {
-        if (fullName && dateOfBirth && phone && profileImage || profileImageChange && gender) {
+        const mobileNumberPattern = /^\d{10}$/;
+        if (fullName && dateOfBirth && mobileNumberPattern.test(phone) && profileImage || profileImageChange && gender) {
             setIsLoader(true)
             setErrorMessage({
                 ...errorMessage, fullNameError: '',
@@ -80,13 +81,13 @@ const EditUserProfile = () => {
             }
             var apiResponse = await pipApiResponse('put', `${baseUrl + updateUserDetailsByAdminEndPointURL + state?.id}`, headers, true, formData);
             setIsLoader(false)
-            apiResponse?.success == true && navigate(-1)
+            apiResponse?.success == true && navigate(-1);
         } else {
             setIsLoader(true)
             setErrorMessage({
                 ...errorMessage, fullNameError: !fullName ? "Please enter fullName" : '',
                 dateOfBirth: !dateOfBirth ? "Please select the Dob" : '',
-                phone: !phone ? "Please enter 10 digit phone number" : phone?.length >= 10 ? "Please enter 10 digit phone number" : '',
+                phone: "Please enter 10 digit phone number",
                 gender: !gender ? "Please select gender" : '',
                 profileImage: !profileImage || !profileImageChange ? "Please select profile image" : ''
             })
@@ -98,9 +99,25 @@ const EditUserProfile = () => {
         setProfileImageChange(e.target.files[0]);
     }
 
+    const phoneNumberChange = (e) => {
+        setPhone(e.target.value)
+        const mobileNumberPattern = /^\d{10}$/;
+        if (mobileNumberPattern.test(e.target.value)) {
+            setErrorMessage({
+                ...errorMessage,
+                phone: "",
+            })
+        } else {
+            setErrorMessage({
+                ...errorMessage,
+                phone: "Please enter 10 digit phone number",
+            })
+        }
+    }
+
 
     return (
-        <div className="wrapper">
+        <div className="wrapper ct_main_dashboard">
             <Sidebar />
             <div className="main-panel">
                 <Header />
@@ -127,7 +144,7 @@ const EditUserProfile = () => {
                                                         <input
                                                             className={profileImageChange == '' && profileImage == "" ? 'form-control d-none' : 'form-control d-none'}
                                                             type="file" id="ct_profile_edit"
-                                                            multiple
+                                                            // multiple
                                                             onChange={handleDocumentsChange}
                                                             accept="image/*,application/pdf"
                                                         />
@@ -160,7 +177,7 @@ const EditUserProfile = () => {
                                                     <div className="col-md-6 ">
                                                         <div className=" ct_custom_input mb-4">
                                                             <label className="mb-2">Number</label>
-                                                            <input type="number" className="form-control" placeholder="Enter Number" value={phone} onChange={(e) => setPhone(e.target.value)} />
+                                                            <input onWheel={() => document.activeElement.blur()} type="number" className="form-control" placeholder="Enter Number" value={phone} onChange={(e) => phoneNumberChange(e)} />
                                                             {errorMessage?.phone !== "" &&
                                                                 <span style={{ color: "red" }}>
                                                                     {errorMessage?.phone}

@@ -427,7 +427,7 @@ div.dt-container div.dt-paging ul.pagination {
   text-align: left;
 }
 button.ct_custom_btn {
-  background: #0081ff;
+  background: linear-gradient(180deg, #00101e 30%, #017df5 100%);
   color: #fff;
   height: 48px;
   padding: 4px 15px;
@@ -464,7 +464,7 @@ button.ct_custom_btn {
   box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.09);
 }
 .ct_login_bg .ct_login_head {
-  background-color: #0081ff;
+  background: linear-gradient(180deg, #00101e 30%, #017df5 100%);
   color: #fff;
   padding-block: 30px;
   border-radius: 0px 0px 50px 50px;
@@ -586,6 +586,7 @@ table.dataTable td.dt-type-date {
 .ct_unreview_star {
   color: "#D9D9D9";
 }
+
 .ct_score_card_bg123 {
   padding-block: 40px;
   background-color: #fff;
@@ -674,6 +675,10 @@ table.dataTable td.dt-type-date {
     padding-right: 0;
     padding-bottom: 0;
   }
+}
+
+.ct_custom_checkbox {
+  accent-color: #017df5;
 }
 @media screen and (max-width: 576px) {
   .custom-template .custom-content {

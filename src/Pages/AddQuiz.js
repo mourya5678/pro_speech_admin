@@ -108,7 +108,7 @@ const AddQuiz = () => {
         updatedEmploymentHistoryDetails[index].Option_4 = value4;
         updatedEmploymentHistoryDetails[index].Option_4_Error = value4 == '' ? 'Please enter the option' : '';
         updatedEmploymentHistoryDetails[index].Quiz_Answer = answer;
-        updatedEmploymentHistoryDetails[index].Quiz_Answer_Error = answer == '' ? 'Please enter the answer' : '';
+        updatedEmploymentHistoryDetails[index].Quiz_Answer_Error = answer == '' ? 'Please select the answer' : '';
         setQuizQuestion(updatedEmploymentHistoryDetails);
     };
 
@@ -129,7 +129,7 @@ const AddQuiz = () => {
                 updatedEmploymentHistoryDetails[i].Option_2_Error = quizQuestion[i].Option_2 == '' ? 'Please enter the option' : '';
                 updatedEmploymentHistoryDetails[i].Option_3_Error = quizQuestion[i].Option_3 == '' ? 'Please enter the option' : '';
                 updatedEmploymentHistoryDetails[i].Option_4_Error = quizQuestion[i].Option_4 == '' ? 'Please enter the option' : '';
-                updatedEmploymentHistoryDetails[i].Quiz_Answer_Error = quizQuestion[i].Quiz_Answer == '' ? 'Please enter the answer' : '';
+                updatedEmploymentHistoryDetails[i].Quiz_Answer_Error = quizQuestion[i].Quiz_Answer == '' ? 'Please select the answer' : '';
                 setQuizQuestion(updatedEmploymentHistoryDetails);
             }
         };
@@ -160,8 +160,15 @@ const AddQuiz = () => {
         };
     };
 
+    const onHandleChangeAnswer = (value, i) => {
+        const updatedEmploymentHistoryDetails = [...quizQuestion];
+        updatedEmploymentHistoryDetails[i].Quiz_Answer = value;
+        updatedEmploymentHistoryDetails[i].Quiz_Answer_Error = '';
+        setQuizQuestion(updatedEmploymentHistoryDetails);
+    }
+
     return (
-        <div className="wrapper">
+        <div className="wrapper ct_main_dashboard">
             <Sidebar />
             <div className="main-panel">
                 <Header />
@@ -182,13 +189,12 @@ const AddQuiz = () => {
                                                         <i className="fa-solid fa-arrow-left-long"></i>
                                                     </a>
                                                     <h4 className="card-title ct_fw_700 mb-0 mx-auto">Add Quiz</h4>
-
                                                 </div>
                                             </div>
                                             <form className="pt-0">
                                                 {quizQuestion && quizQuestion?.map((item, i) => (
                                                     <div className="row ct_append_quiz" id="ct_append_quiz">
-                                                        {quizQuestion?.length != 1 && <button type="button" className="ct_delete_btn ct_quiz_delete" onClick={() => onHandleDeleteField(item?.id)}><i className="fa-solid fa-trash"></i></button>}
+                                                        {quizQuestion?.length != 1 && <button type="button" className="ct_delete_btn ct_quiz_delete"><i className="fa-solid fa-trash" onClick={() => onHandleDeleteField(item?.id)}></i></button>}
                                                         <div className="col-md-12 ">
                                                             <div className="form-group p-0 mb-4 ct_custom_input">
                                                                 <label className="ct_fw_600 mb-2">Question {i + 1}</label>
@@ -202,10 +208,21 @@ const AddQuiz = () => {
                                                         </div>
                                                         <div className="col-md-6 ">
                                                             <div className="form-group p-0 mb-4 ct_custom_input">
-                                                                <label className="ct_fw_600 mb-2">Option 1</label>
+                                                                <div className="d-flex align-items-center gap-2 mb-2">
+                                                                    <input type="checkbox" className="ct_custom_checkbox"
+                                                                        checked={item?.Quiz_Answer != "" ? item?.Quiz_Answer == item?.Option_1 ? true : false : false}
+                                                                        onClick={() => onHandleChangeAnswer(item?.Option_1, i)}
+                                                                    />
+                                                                    <label className="ct_fw_600 mb-0">Option 1</label>
+                                                                </div>
+                                                                {item?.Quiz_Answer_Error != '' &&
+                                                                    <span className="mb-2 d-block" style={{ color: "red" }}>
+                                                                        {item?.Quiz_Answer_Error}
+                                                                    </span>
+                                                                }
                                                                 <input type="text" className="form-control"
                                                                     value={item?.Option_1} onChange={(e) => onHandleChangeFiled("Option_1", i, item?.Question, e.target.value, item?.Option_2, item?.Option_3, item?.Option_4, item?.Quiz_Answer)}
-                                                                    id="floatingInput" placeholder="Enter Question" />
+                                                                    id="floatingInput" placeholder="Enter Answer" />
                                                                 {item?.Option_1_Error != '' &&
                                                                     <span style={{ color: "red" }}>
                                                                         {item?.Option_1_Error}
@@ -215,10 +232,22 @@ const AddQuiz = () => {
                                                         </div>
                                                         <div className="col-md-6 ">
                                                             <div className="form-group p-0 mb-4 ct_custom_input">
-                                                                <label className="ct_fw_600 mb-2">Option 2</label>
+                                                                <div className="d-flex align-items-center gap-2 mb-2">
+                                                                    <input type="checkbox" className="ct_custom_checkbox"
+                                                                        checked={item?.Quiz_Answer != "" ? item?.Quiz_Answer == item?.Option_2 ? true : false : false}
+                                                                        onClick={() => onHandleChangeAnswer(item?.Option_2, i)}
+                                                                    />
+                                                                    <label className="ct_fw_600 mb-0">Option 2</label>
+                                                                </div>
+
+                                                                {item?.Quiz_Answer_Error != '' &&
+                                                                    <span className="mb-2 d-block" style={{ color: "red" }}>
+                                                                        {item?.Quiz_Answer_Error}
+                                                                    </span>
+                                                                }
                                                                 <input type="text" className="form-control"
                                                                     value={item?.Option_2} onChange={(e) => onHandleChangeFiled("Option_2", i, item?.Question, item?.Option_1, e.target.value, item?.Option_3, item?.Option_4, item?.Quiz_Answer)}
-                                                                    id="floatingInput" placeholder="Enter Question" />
+                                                                    id="floatingInput" placeholder="Enter Answer" />
                                                                 {item?.Option_2_Error != '' &&
                                                                     <span style={{ color: "red" }}>
                                                                         {item?.Option_2_Error}
@@ -228,10 +257,21 @@ const AddQuiz = () => {
                                                         </div>
                                                         <div className="col-md-6 ">
                                                             <div className="form-group p-0 mb-4 ct_custom_input">
-                                                                <label className="ct_fw_600 mb-2">Option 3</label>
+                                                                <div className="d-flex align-items-center gap-2 mb-2">
+                                                                    <input type="checkbox" className="ct_custom_checkbox"
+                                                                        onClick={() => onHandleChangeAnswer(item?.Option_3, i)}
+                                                                        checked={item?.Quiz_Answer != "" ? item?.Quiz_Answer == item?.Option_3 ? true : false : false}
+                                                                    />
+                                                                    <label className="ct_fw_600 mb-0">Option 3</label>
+                                                                </div>
+                                                                {item?.Quiz_Answer_Error != '' &&
+                                                                    <span className="d-block mb-2" style={{ color: "red" }}>
+                                                                        {item?.Quiz_Answer_Error}
+                                                                    </span>
+                                                                }
                                                                 <input type="text" className="form-control"
                                                                     value={item?.Option_3} onChange={(e) => onHandleChangeFiled("Option_3", i, item?.Question, item?.Option_1, item?.Option_2, e.target.value, item?.Option_4, item?.Quiz_Answer)}
-                                                                    id="floatingInput" placeholder="Enter Question" />
+                                                                    id="floatingInput" placeholder="Enter Answer" />
                                                                 {item?.Option_3_Error != '' &&
                                                                     <span style={{ color: "red" }}>
                                                                         {item?.Option_3_Error}
@@ -241,10 +281,22 @@ const AddQuiz = () => {
                                                         </div>
                                                         <div className="col-md-6 ">
                                                             <div className="form-group p-0 mb-4 ct_custom_input">
-                                                                <label className="ct_fw_600 mb-2">Option 4</label>
+                                                                <div className="d-flex align-items-center gap-2 mb-2">
+                                                                    <input type="checkbox" className="ct_custom_checkbox"
+                                                                        onClick={() => onHandleChangeAnswer(item?.Option_4, i)}
+                                                                        checked={item?.Quiz_Answer != "" ? item?.Quiz_Answer == item?.Option_4 ? true : false : false}
+                                                                    />
+                                                                    <label className="ct_fw_600 mb-0">Option 4</label>
+                                                                </div>
+
+                                                                {item?.Quiz_Answer_Error != '' &&
+                                                                    <span className="d-block mb-2" style={{ color: "red" }}>
+                                                                        {item?.Quiz_Answer_Error}
+                                                                    </span>
+                                                                }
                                                                 <input type="text" className="form-control"
                                                                     value={item?.Option_4} onChange={(e) => onHandleChangeFiled("Option_4", i, item?.Question, item?.Option_1, item?.Option_2, item?.Option_3, e.target.value, item?.Quiz_Answer)}
-                                                                    id="floatingInput" placeholder="Enter Question" />
+                                                                    id="floatingInput" placeholder="Enter Answer" />
                                                                 {item?.Option_4_Error != '' &&
                                                                     <span style={{ color: "red" }}>
                                                                         {item?.Option_4_Error}
@@ -252,7 +304,7 @@ const AddQuiz = () => {
                                                                 }
                                                             </div>
                                                         </div>
-                                                        <div className="col-md-12 ">
+                                                        {/* <div className="col-md-12 ">
                                                             <div className="form-group p-0 mb-4 ct_custom_input">
                                                                 <label className="ct_fw_600 mb-2">Quiz Answer</label>
                                                                 <input type="text" className="form-control"
@@ -264,7 +316,7 @@ const AddQuiz = () => {
                                                                     </span>
                                                                 }
                                                             </div>
-                                                        </div>
+                                                        </div> */}
                                                     </div>
                                                 ))}
                                                 <div className="pt-4 d-flex align-items-center gap-3 justify-content-center">

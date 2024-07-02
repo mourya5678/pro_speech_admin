@@ -1,27 +1,33 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom';
+import PaginationDropdown from '../Component/PaginationDropdown';
+import ReactPagination from '../Component/reactPagination';
+import { pipApiResponse, pipGetToken } from '../Controllers/Pip';
 import Footer from '../Layout/Footer';
 import Header from '../Layout/Header';
 import Sidebar from '../Layout/Sidebar';
-import { useLocation } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
-import { pipApiResponse, pipGetToken } from '../Controllers/Pip';
-import { baseUrl, deleteLessonById, getLessonByIdEndpointURL } from '../Routes/bakendRoutes';
+import { baseUrl, getAllQuizByLessonIdEndPointURL } from '../Routes/bakendRoutes';
 import { pageRoutes } from '../Routes/pageRoutes';
-import PaginationDropdown from '../Component/PaginationDropdown';
-import ReactPagination from '../Component/reactPagination';
 
-const Lesson = () => {
-    const { state } = useLocation();
+const QuizDetails = () => {
     const navigate = useNavigate();
-    const [allLessons, setAllLessons] = useState([]);
+    const { state } = useLocation();
     const [isLoader, setIsLoader] = useState(false);
+    const [currentPage, setCurrentPage] = useState(0);
+    const [usersPerPage, setUserPerPages] = useState(25);
+    const [allModules, setAllModules] = useState([])
 
+    const displayUsers = allModules.slice(
+        currentPage * usersPerPage,
+        (currentPage + 1) * usersPerPage
+    );
+    console.log(state);
 
     useEffect(() => {
-        getSideBarValue();
-    }, [state?.data?._id]);
+        getQuizById();
+    }, []);
 
-    const getSideBarValue = async () => {
+    const getQuizById = async () => {
         setIsLoader(true)
         const token = pipGetToken();
         const headers = {
@@ -29,22 +35,14 @@ const Lesson = () => {
             'accept': 'application/json',
             Authorization: `Bearer ${token}`
         }
-        var apiResponse = await pipApiResponse('get', `${baseUrl + getLessonByIdEndpointURL + state?.data?._id}`, headers, false);
-        setAllLessons(apiResponse?.data ?? []);
+        var apiResponse = await pipApiResponse('get', `${baseUrl + getAllQuizByLessonIdEndPointURL + state?.id}`, headers, false);
+        setAllModules(apiResponse?.data?.[0]?.questions ?? []);
         setIsLoader(false)
-    }
-
-    const [currentPage, setCurrentPage] = useState(0);
-    const [usersPerPage, setUserPerPages] = useState(25);
+    };
 
     const handlePageClick = (data) => {
         setCurrentPage(data.selected);
     };
-
-    const displayUsers = allLessons.slice(
-        currentPage * usersPerPage,
-        (currentPage + 1) * usersPerPage
-    );
 
     return (
         <div className="wrapper ct_main_dashboard">
@@ -53,8 +51,8 @@ const Lesson = () => {
                 <Header />
                 <div className="container">
                     {isLoader == true ?
-                        <div class="ct_loader_main">
-                            <div class="loader"></div>
+                        <div className="ct_loader_main">
+                            <div className="loader"></div>
                         </div>
                         :
                         <div className="page-inner">
@@ -64,7 +62,7 @@ const Lesson = () => {
                                         <div className="card-body">
                                             <div className="card-head-row card-tools-still-right mb-4">
                                                 <div className="d-flex align-items-center justify-content-between gap-3 flex-wrap w-100">
-                                                    <h4 className="card-title ct_fw_700 mb-0">{state?.section_name}</h4>
+                                                    <h4 className="card-title ct_fw_700 mb-0">{state?.lesson_name}</h4>
                                                 </div>
                                             </div>
                                             <div className="table-responsive ct_custom_table">
@@ -74,33 +72,45 @@ const Lesson = () => {
                                                     <thead>
                                                         <tr>
                                                             <th>S No.</th>
-                                                            <th>Lesson Name</th>
-                                                            <th>Number Of Questions</th>
-                                                            <th className="text-end">Quiz Action</th>
-                                                            <th className="text-end">Lesson Action</th>
+                                                            <th>Questions</th>
+                                                            <th>Option 1</th>
+                                                            <th>Option 2</th>
+                                                            <th>Option 3</th>
+                                                            <th>Option 4</th>
+                                                            <th>Answer</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        {displayUsers && displayUsers?.map((item, i) => (
+                                                        {displayUsers ? displayUsers?.map((item, i) => (
                                                             <tr>
                                                                 <td>{i + 1}</td>
-                                                                <td>{item?.lesson_name}</td>
+                                                                <td>{item?.text}</td>
                                                                 <td className="text-left">
-                                                                    <span>{item?.question_count}</span>
+                                                                    <span>{item?.options[0]}</span>
                                                                 </td>
-                                                                <td className="text-end d-flex align-item-center gap-2 justify-content-end">
-                                                                    <button className="ct_eye_btn" onClick={() => navigate(pageRoutes.quiz_Details, { state: { id: item?._id, lesson_name: item?.lesson_name } })}><i className="fa-solid fa-eye"></i></button>
-                                                                    <a href="javascript:void(0)"> <button className="ct_edit_btn  w-auto py-2 h-auto" onClick={() => navigate(pageRoutes.add_quiz, { state: { value: item, lesson_id: item?._id } })}><i className="fa-solid fa-plus me-2"></i></button></a>
+                                                                <td className="text-left">
+                                                                    <span>{item?.options[1]}</span>
                                                                 </td>
-                                                                <td className="text-end">
-                                                                    <a href="javascript:void(0)"><button className="ct_edit_btn  w-auto py-2 h-auto" onClick={() => navigate(pageRoutes.addLessonDetail, { state: { item: item?._id } })}>{item?.lessonDetails == "" ? <i className="fa-solid fa-plus me-2"></i> : <button className="ct_eye_btn" ><i className="fa-solid fa-edit"></i></button>}</button></a>
+                                                                <td className="text-left">
+                                                                    <span>{item?.options[2]}</span>
+                                                                </td>
+                                                                <td className="text-left">
+                                                                    <span>{item?.options[3]}</span>
+                                                                </td>
+                                                                <td className="text-left">
+                                                                    <span>{item?.correctOption}</span>
                                                                 </td>
                                                             </tr>
-                                                        ))}
+                                                        ))
+                                                            :
+                                                            <tr>
+                                                                <td>No data found</td>
+                                                            </tr>
+                                                        }
                                                     </tbody>
                                                 </table>
                                                 {
-                                                    allLessons?.length > 0 && <div className="d-flex align-items-center flex-wrap justify-content-between gap-3 mb-3">
+                                                    allModules?.length > 0 && <div className="d-flex align-items-center flex-wrap justify-content-between gap-3 mb-3">
                                                         <PaginationDropdown
                                                             onChange={(val) => {
                                                                 setUserPerPages(val);
@@ -109,7 +119,7 @@ const Lesson = () => {
                                                         />
                                                         <ReactPagination
                                                             pageCount={Math.ceil(
-                                                                allLessons.length / usersPerPage
+                                                                allModules.length / usersPerPage
                                                             )}
                                                             onPageChange={handlePageClick}
                                                         />
@@ -125,8 +135,8 @@ const Lesson = () => {
                 </div>
                 <Footer />
             </div>
-        </div>
+        </div >
     )
 }
 
-export default Lesson
+export default QuizDetails

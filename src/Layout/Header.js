@@ -86,7 +86,7 @@ const Header = () => {
                                 >
                                     <div className="avatar-sm">
                                         <img
-                                            src={userData?.profileImage ?? "assets/img/user124.jpg"}
+                                            src={userData?.profileImage != "" ? userData?.profileImage ?? 'assets/img/user124.jpg' : 'assets/img/user124.jpg'}
                                             alt="..."
                                             className="avatar-img rounded-circle"
                                         />
@@ -101,9 +101,9 @@ const Header = () => {
                                         <li>
                                             <a className="dropdown-item" href="javascript:void(0)" onClick={() => navigate(pageRoutes.myprofile)}>My Profile</a>
                                         </li>
-                                        <li>
+                                        {/* <li>
                                             <a className="dropdown-item" href="javascript:void(0)" onClick={() => navigate(pageRoutes.editProfile)}>Edit Profile</a>
-                                        </li>
+                                        </li> */}
                                         <li>
                                             <a className="dropdown-item" href="javascript:void(0)" onClick={() => navigate(pageRoutes.changePassword)}>Change Password</a>
                                         </li>
@@ -135,7 +135,7 @@ const Header = () => {
               </p>
                                 <div className="modal-footer border-0 justify-content-center">
                                     <button type="button" className="ct_custom_btn ct_dark_btn_clr ct_btn_radius ct_cancle_btn" data-bs-dismiss="modal" style={{ backgroundColor: "#eee" }}> Cancel</button>
-                                    <button type="button" className="ct_custom_btn ct_dark_btn_clr ct_btn_radius bg-danger ct_logout_text_modal ct_cancle_btn" data-bs-dismiss="modal" style={{ borderColor: "rgb(220, 53, 69)" }} onClick={onHandleLogout}>Yes Logout!</button>
+                                    <button type="button" className="ct_custom_btn ct_dark_btn_clr ct_btn_radius bg-danger text-white ct_logout_text_modal " data-bs-dismiss="modal" style={{ borderColor: "rgb(220, 53, 69)" }} onClick={onHandleLogout}>Log Out</button>
                                 </div>
                                 <div>
                                 </div>

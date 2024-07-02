@@ -31,7 +31,6 @@ const Home = () => {
 
     useEffect(() => {
         getApiData();
-        getSectionApiData();
     }, []);
 
     const handlePageSectionClick = (data) => {
@@ -47,7 +46,8 @@ const Home = () => {
         }
         var apiResponse = await pipApiResponse('get', baseUrl + getAllUserDataEndPointURL, headers, false);
         setApiData(apiResponse?.data ?? []);
-        setIsLoader(false)
+        // setIsLoader(false);
+        getSectionApiData();
     };
 
     const getSectionApiData = async () => {
@@ -90,7 +90,7 @@ const Home = () => {
     };
 
     return (
-        <div className="wrapper">
+        <div className="wrapper ct_main_dashboard">
             <Sidebar />
             <div className="main-panel">
                 <Header />
@@ -122,6 +122,7 @@ const Home = () => {
                                                 >
                                                     <thead>
                                                         <tr>
+                                                            <th>Image</th>
                                                             <th>Name</th>
                                                             <th>Email</th>
                                                             <th>Number</th>
@@ -134,6 +135,7 @@ const Home = () => {
                                                         {
                                                             displayUsers && displayUsers?.map((item) => (
                                                                 <tr>
+                                                                    <td><img className="ct_user_icon" src={item?.profile?.profileImage != "" ? item?.profile?.profileImage ?? "assets/img/user124.jpg" : "assets/img/user124.jpg"} /></td>
                                                                     <td>{item?.profile?.fullName}</td>
                                                                     <td>{item?.profile?.email}</td>
                                                                     <td>{item?.profile?.phone}</td>
@@ -174,6 +176,7 @@ const Home = () => {
                                         <div className="card-body">
                                             <div className="card-head-row card-tools-still-right mb-4">
                                                 <div className="card-title ct_fw_700">All Section</div>
+                                                {/* <a href="javascript:void(0)" onClick={() => navigate(pageRoutes.add_section)}> <button className="ct_edit_btn ct_custom_btn w-auto py-2 h-auto"><i className="fa-solid fa-plus me-2"></i> Add Section</button></a> */}
                                             </div>
                                             <div className="table-responsive ct_custom_table">
                                                 <table
@@ -191,7 +194,7 @@ const Home = () => {
                                                         {
                                                             displaySection && displaySection?.map((item) => (
                                                                 <tr>
-                                                                    <td><img src={item?.section_image} className="ct_user_icon" /></td>
+                                                                    <td><img src={item?.section_image != "" ? item?.section_image ?? "assets/img/user124.jpg" : "assets/img/user124.jpg"} className="ct_user_icon" /></td>
                                                                     <td>{item?.section_name}</td>
                                                                     <td>
                                                                         <button className="ct_eye_btn" onClick={() => navigate(pageRoutes.section_detail, { state: { id: item } })}><i className="fa-solid fa-eye"></i></button>
