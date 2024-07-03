@@ -151,11 +151,6 @@ const EditProfile = () => {
                                                         />
                                                         <i className="fa-solid fa-camera" style={{ top: "44%" }}></i>
                                                     </label>
-                                                    {errorMessage?.profileImage !== "" &&
-                                                        <span style={{ color: "red" }}>
-                                                            {errorMessage?.profileImage}
-                                                        </span>
-                                                    }
                                                 </div>
                                                 <div className="row">
                                                     <div className="col-md-6 ">

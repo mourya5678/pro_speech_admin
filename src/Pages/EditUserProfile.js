@@ -80,18 +80,17 @@ const EditUserProfile = () => {
                 formData.append("profileImage", profileImageChange)
             }
             var apiResponse = await pipApiResponse('put', `${baseUrl + updateUserDetailsByAdminEndPointURL + state?.id}`, headers, true, formData);
-            setIsLoader(false)
+            setIsLoader(false);
             apiResponse?.success == true && navigate(-1);
         } else {
-            setIsLoader(true)
+            setIsLoader(true);
             setErrorMessage({
                 ...errorMessage, fullNameError: !fullName ? "Please enter fullName" : '',
                 dateOfBirth: !dateOfBirth ? "Please select the Dob" : '',
                 phone: "Please enter 10 digit phone number",
                 gender: !gender ? "Please select gender" : '',
-                profileImage: !profileImage || !profileImageChange ? "Please select profile image" : ''
             })
-            setIsLoader(false)
+            setIsLoader(false);
         }
     }
 
@@ -150,11 +149,6 @@ const EditUserProfile = () => {
                                                         />
                                                         <i className="fa-solid fa-camera" style={{ top: "44%" }}></i>
                                                     </label>
-                                                    {errorMessage?.profileImage !== "" &&
-                                                        <span style={{ color: "red" }}>
-                                                            {errorMessage?.profileImage}
-                                                        </span>
-                                                    }
                                                 </div>
                                                 <div className="row">
                                                     <div className="col-md-6 ">
@@ -189,6 +183,7 @@ const EditUserProfile = () => {
                                                         <div className=" ct_custom_input mb-4">
                                                             <label> Dob</label>
                                                             <div className="w-100"><DatePicker
+                                                                maxDate={new Date()}
                                                                 className="form-control " onChange={(date) => setDateOfBirth(date)} selected={dateOfBirth} /></div>
                                                             {errorMessage?.dateOfBirth !== "" &&
                                                                 <span style={{ color: "red" }}>
