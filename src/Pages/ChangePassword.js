@@ -2,6 +2,7 @@ import { Formik } from 'formik'
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import ErrorMessage from '../Controllers/ErrorMessage'
+import Loader from '../Controllers/Loader'
 import { pipApiResponse, pipGetToken } from '../Controllers/Pip'
 import { Schema_change_password } from '../Controllers/Schema'
 import EyeButton from '../Layout/EyeButton'
@@ -12,6 +13,8 @@ import { baseUrl, changePasswordEndPointURL } from '../Routes/bakendRoutes'
 
 const ChangePassword = () => {
     const navigate = useNavigate();
+    const [isToggle, setIsToggle] = useState(false);
+    const [isToggle1, setIsToggle1] = useState(false);
     const [isLoader, setIsLoader] = useState(false);
     const [eyes, setEyes] = useState({
         eye1: false,
@@ -44,10 +47,10 @@ const ChangePassword = () => {
     };
 
     return (
-        <div className="wrapper ct_main_dashboard">
+        <div className={`wrapper ct_main_dashboard ${isToggle ? "nav_open" : ""} ${isToggle1 ? "topbar_open" : ""}`}>
             <Sidebar />
             <div className="main-panel">
-                <Header />
+                <Header onClick={() => setIsToggle(!isToggle)} onPress={() => setIsToggle1(!isToggle1)} />
                 <div className="container">
                     <div className="page-inner">
                         <div className="row">
@@ -60,9 +63,7 @@ const ChangePassword = () => {
                                             </div>
                                         </div>
                                         {isLoader == true ?
-                                            <div className="ct_loader_main">
-                                                <div className="loader"></div>
-                                            </div>
+                                            <Loader />
                                             :
                                             <Formik
                                                 initialValues={changePasswordField}

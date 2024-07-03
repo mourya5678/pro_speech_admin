@@ -8,16 +8,19 @@ import PaginationDropdown from '../Component/PaginationDropdown';
 import ReactPagination from '../Component/reactPagination';
 import { useNavigate } from 'react-router-dom';
 import { pageRoutes } from '../Routes/pageRoutes';
+import Loader from '../Controllers/Loader';
 
 const Home = () => {
     const navigate = useNavigate();
     const [apiData, setApiData] = useState([]);
     const [sectionData, setSectionData] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
-    const [usersPerPage, setUserPerPages] = useState(25);
+    const [usersPerPage, setUserPerPages] = useState(10);
     const [isLoader, setIsLoader] = useState(false);
     const [currentPageSection, setCurrentPageSection] = useState(0);
-    const [usersPerPageSection, setUserPerPagesSection] = useState(25);
+    const [usersPerPageSection, setUserPerPagesSection] = useState(10);
+    const [isToggle, setIsToggle] = useState(false);
+    const [isToggle1, setIsToggle1] = useState(false);
 
     const displayUsers = apiData.slice(
         currentPage * usersPerPage,
@@ -90,15 +93,13 @@ const Home = () => {
     };
 
     return (
-        <div className="wrapper ct_main_dashboard">
+        <div className={`wrapper ct_main_dashboard ${isToggle ? "nav_open" : ""} ${isToggle1 ? "topbar_open" : ""}`} >
             <Sidebar />
             <div className="main-panel">
-                <Header />
+                <Header onClick={() => setIsToggle(!isToggle)} onPress={() => setIsToggle1(!isToggle1)} />
                 <div className="container">
                     {isLoader == true ?
-                        <div className="ct_loader_main">
-                            <div className="loader"></div>
-                        </div>
+                        <Loader />
                         :
                         <div className="page-inner">
                             <div
@@ -231,7 +232,7 @@ const Home = () => {
                 </div>
                 <Footer />
             </div>
-        </div>
+        </div >
     )
 }
 

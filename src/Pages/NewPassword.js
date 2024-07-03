@@ -2,6 +2,7 @@ import { Formik } from 'formik';
 import React, { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import ErrorMessage from '../Controllers/ErrorMessage';
+import Loader from '../Controllers/Loader';
 import { pipApiResponse } from '../Controllers/Pip';
 import { Schema_new_password } from '../Controllers/Schema';
 import { baseUrl, newPasswordEndPointURL } from '../Routes/bakendRoutes';
@@ -42,9 +43,7 @@ const NewPassword = () => {
                             <h2 className="text-center">New Password</h2>
                         </div>
                         {isLoader == true ?
-                            <div className="ct_loader_main">
-                                <div className="loader"></div>
-                            </div>
+                            <Loader />
                             :
                             <Formik
                                 initialValues={initialData}

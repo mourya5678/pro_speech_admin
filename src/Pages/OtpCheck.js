@@ -7,6 +7,7 @@ import { pipApiResponse } from '../Controllers/Pip';
 import ErrorMessage from '../Controllers/ErrorMessage';
 import { baseUrl, forgotPasswordEndPointURL, otpVerifyEndPointURL } from '../Routes/bakendRoutes';
 import OtpInput from 'react-otp-input';
+import Loader from '../Controllers/Loader';
 
 const OtpCheck = () => {
     const navigate = useNavigate();
@@ -43,9 +44,7 @@ const OtpCheck = () => {
                             <h2 className="text-center">Otp Verification</h2>
                         </div>
                         {isLoader == true ?
-                            <div className="ct_loader_main">
-                                <div className="loader"></div>
-                            </div>
+                            <Loader />
                             :
                             <form className="pt-0">
                                 <div className=" mb-4 ct_custom_input ct_otp_input">

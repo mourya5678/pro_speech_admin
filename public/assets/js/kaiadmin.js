@@ -163,11 +163,11 @@ $(document).ready(function () {
 		var topbar = $('.topbar-toggler');
 		topbar.on('click', function () {
 			if (topbar_open == 1) {
-				$('html').removeClass('topbar_open');
+				$('.ct_main_dashboard').removeClass('topbar_open');
 				topbar.removeClass('toggled');
 				topbar_open = 0;
 			} else {
-				$('html').addClass('topbar_open');
+				$('.ct_main_dashboard').addClass('topbar_open');
 				topbar.addClass('toggled');
 				topbar_open = 1;
 			}

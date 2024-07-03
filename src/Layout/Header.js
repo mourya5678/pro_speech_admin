@@ -4,9 +4,10 @@ import { useNavigate } from 'react-router-dom';
 import { pageRoutes } from '../Routes/pageRoutes';
 import { baseUrl } from '../Routes/bakendRoutes';
 
-const Header = () => {
+const Header = ({ onClick, onPress }) => {
     const navigate = useNavigate();
     const [userData, setUserData] = useState();
+    const [toggle, setToggle] = useState(false);
 
     useEffect(() => {
         const profileData = pipGetUserData();
@@ -25,16 +26,11 @@ const Header = () => {
         <>
             <div className="main-header">
                 <div className="main-header-logo">
-                    <div className="logo-header" data-background-color="dark">
-                        {/* <a href="index.html" className="logo">
-                            <img
-                                src="assets/img/user124.jpg"
-                                alt="navbar brand"
-                                className="navbar-brand"
-                                height="20"
-                            />
-                        </a> */}
-                        <div className="nav-toggle">
+                    <div className="logo-header" data-background-color="light">
+                        <a href="javascript:void(0)" className="logo">
+                            <img src="assets/img/logo.png" alt="navbar brand" className="navbar-brand" />
+                        </a>
+                        <div className="nav-toggle" onClick={onClick}>
                             <button className="btn btn-toggle toggle-sidebar">
                                 <i className="gg-menu-right"></i>
                             </button>
@@ -42,47 +38,23 @@ const Header = () => {
                                 <i className="gg-menu-left"></i>
                             </button>
                         </div>
-                        <button className="topbar-toggler more">
+                        <button className="topbar-toggler more" onClick={onPress}>
                             <i className="gg-more-vertical-alt"></i>
                         </button>
                     </div>
                 </div>
                 <nav
                     className="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom"
+
                 >
                     <div className="container-fluid">
                         <ul className="navbar-nav topbar-nav ms-md-auto align-items-center">
-                            <li
-                                className="nav-item topbar-icon dropdown hidden-caret d-flex d-lg-none"
-                            >
-                                <a
-                                    className="nav-link dropdown-toggle"
-                                    data-bs-toggle="dropdown"
-                                    href="javascipt:void(0)"
-                                    role="button"
-                                    aria-expanded="false"
-                                    aria-haspopup="true"
-                                >
-                                    <i className="fa fa-search"></i>
-                                </a>
-                                <ul className="dropdown-menu dropdown-search animated fadeIn">
-                                    <form className="navbar-left navbar-form nav-search">
-                                        <div className="input-group">
-                                            <input
-                                                type="text"
-                                                placeholder="Search ..."
-                                                className="form-control"
-                                            />
-                                        </div>
-                                    </form>
-                                </ul>
-                            </li>
                             <li className="nav-item topbar-user dropdown hidden-caret">
                                 <a
-                                    className="dropdown-toggle profile-pic"
+                                    className={toggle ? "dropdown-toggle profile-pic show" : "dropdown-toggle profile-pic"}
                                     data-bs-toggle="dropdown"
                                     href="javascript:void(0)"
-                                    aria-expanded="false"
+                                    aria-expanded={toggle ? "true" : "false"}
                                 >
                                     <div className="avatar-sm">
                                         <img
@@ -96,7 +68,7 @@ const Header = () => {
                                         <span className="fw-bold">{userData?.fullName}</span>
                                     </span>
                                 </a>
-                                <ul className="dropdown-menu dropdown-user animated fadeIn ct_profile_drop12">
+                                <ul className={toggle ? "dropdown-menu dropdown-user animated fadeIn ct_profile_drop12 show" : "dropdown-menu dropdown-user animated fadeIn ct_profile_drop12"}>
                                     <div className="dropdown-user-scroll scrollbar-outer">
                                         <li>
                                             <a className="dropdown-item" href="javascript:void(0)" onClick={() => navigate(pageRoutes.myprofile)}>My Profile</a>

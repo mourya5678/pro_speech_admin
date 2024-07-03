@@ -6,9 +6,11 @@ import { Formik } from 'formik';
 import { pipApiResponse } from '../Controllers/Pip';
 import ErrorMessage from '../Controllers/ErrorMessage';
 import { baseUrl, forgotPasswordEndPointURL } from '../Routes/bakendRoutes';
+import Loader from '../Controllers/Loader';
 
 const ForgotPassword = () => {
     const navigate = useNavigate();
+    const [isToggle, setIsToggle] = useState(false);
     const [isLoader, setIsLoader] = useState(false);
     const userData = {
         email: '',
@@ -36,9 +38,7 @@ const ForgotPassword = () => {
                             <h2 className="text-center">Forgot Password?</h2>
                         </div>
                         {isLoader == true ?
-                            <div className="ct_loader_main">
-                                <div className="loader"></div>
-                            </div>
+                            <Loader />
                             :
                             <Formik
                                 initialValues={userData}

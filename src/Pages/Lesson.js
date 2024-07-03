@@ -12,9 +12,11 @@ import ReactPagination from '../Component/reactPagination';
 
 const Lesson = () => {
     const { state } = useLocation();
+    const [isToggle, setIsToggle] = useState(false);
     const navigate = useNavigate();
     const [allLessons, setAllLessons] = useState([]);
     const [isLoader, setIsLoader] = useState(false);
+    const [isToggle1, setIsToggle1] = useState(false);
 
 
     useEffect(() => {
@@ -35,7 +37,7 @@ const Lesson = () => {
     }
 
     const [currentPage, setCurrentPage] = useState(0);
-    const [usersPerPage, setUserPerPages] = useState(25);
+    const [usersPerPage, setUserPerPages] = useState(10);
 
     const handlePageClick = (data) => {
         setCurrentPage(data.selected);
@@ -47,10 +49,10 @@ const Lesson = () => {
     );
 
     return (
-        <div className="wrapper ct_main_dashboard">
+        <div className={`wrapper ct_main_dashboard ${isToggle ? "nav_open" : ""} ${isToggle1 ? "topbar_open" : ""}`}>
             <Sidebar />
             <div className="main-panel">
-                <Header />
+                <Header onClick={() => setIsToggle(!isToggle)} onPress={() => setIsToggle1(!isToggle1)} />
                 <div className="container">
                     {isLoader == true ?
                         <div class="ct_loader_main">

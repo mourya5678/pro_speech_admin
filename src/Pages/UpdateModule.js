@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
+import Loader from '../Controllers/Loader'
 import { pipApiResponse, pipGetToken } from '../Controllers/Pip'
 import Footer from '../Layout/Footer'
 import Header from '../Layout/Header'
@@ -9,6 +10,8 @@ import { addSectionEndPointURL, baseUrl, updateModulesDetailEndPointURL } from '
 
 const UpdateModule = () => {
     const navigate = useNavigate();
+    const [isToggle, setIsToggle] = useState(false);
+    const [isToggle1, setIsToggle1] = useState(false);
     const { state } = useLocation();
     const [isLoader, setIsLoader] = useState(false);
     const [sectionImage, setSectionImage] = useState(state?.data?.module_image ?? '');
@@ -79,15 +82,13 @@ const UpdateModule = () => {
     };
 
     return (
-        <div className="wrapper ct_main_dashboard">
+        <div className={`wrapper ct_main_dashboard ${isToggle ? "nav_open" : ""} ${isToggle1 ? "topbar_open" : ""}`}>
             <Sidebar />
             <div className="main-panel">
-                <Header />
+                <Header onClick={() => setIsToggle(!isToggle)} onPress={() => setIsToggle1(!isToggle1)} />
                 <div className="container">
                     {isLoader == true ?
-                        <div className="ct_loader_main">
-                            <div className="loader"></div>
-                        </div>
+                        <Loader />
                         :
                         <div className="page-inner">
                             <div className="row">

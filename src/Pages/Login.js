@@ -7,9 +7,11 @@ import { useNavigate } from 'react-router-dom';
 import ErrorMessage from '../Controllers/ErrorMessage';
 import { baseUrl, getProfileDataEndPointURL, loginEndPointURL } from '../Routes/bakendRoutes';
 import EyeButton from '../Layout/EyeButton';
+import Loader from '../Controllers/Loader';
 
 const Login = () => {
     const navigate = useNavigate();
+    const [isToggle, setIsToggle] = useState(false);
     const [isLoader, setIsLoader] = useState(false);
     const [eyes, setEyes] = useState(false);
     const userData = {
@@ -52,9 +54,7 @@ const Login = () => {
                             <p className="mb-0 text-center">Sign in to continue</p>
                         </div>
                         {isLoader == true ?
-                            <div className="ct_loader_main">
-                                <div className="loader"></div>
-                            </div>
+                            <Loader />
                             :
                             <Formik
                                 initialValues={userData}

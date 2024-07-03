@@ -9,6 +9,7 @@ import { pageRoutes } from '../Routes/pageRoutes'
 // import ReactQuill from 'react-quill';
 // import 'react-quill/dist/quill.snow.css';
 import { Editor } from '@tinymce/tinymce-react';
+import Loader from '../Controllers/Loader'
 
 
 const AddLessonDetail = () => {
@@ -22,6 +23,8 @@ const AddLessonDetail = () => {
         nameError: '',
         editerError: ''
     });
+    const [isToggle, setIsToggle] = useState(false);
+    const [isToggle1, setIsToggle1] = useState(false);
 
     useEffect(() => {
         getLessonByID();
@@ -75,15 +78,13 @@ const AddLessonDetail = () => {
     };
 
     return (
-        <div className="wrapper ct_main_dashboard">
+        <div className={`wrapper ct_main_dashboard ${isToggle ? "nav_open" : ""} ${isToggle1 ? "topbar_open" : ""}`}>
             <Sidebar />
             <div className="main-panel">
-                <Header />
+                <Header onClick={() => setIsToggle(!isToggle)} onPress={() => setIsToggle1(!isToggle1)} />
                 <div className="container">
                     {isLoader == true ?
-                        <div className="ct_loader_main">
-                            <div className="loader"></div>
-                        </div>
+                        <Loader />
                         :
                         <div className="page-inner">
                             <div className="row">

@@ -43,7 +43,6 @@ const Sidebar = () => {
                             src="assets/img/logo.png"
                             alt="navbar brand"
                             className="navbar-brand"
-
                         />
                     </a>
                     <div className="nav-toggle">

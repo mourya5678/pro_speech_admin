@@ -10,9 +10,12 @@ import Sidebar from '../Layout/Sidebar'
 import { baseUrl, getProfileDataEndPointURL, updateUserProfileDataEndPointURL } from '../Routes/bakendRoutes'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import Loader from '../Controllers/Loader'
 
 const EditProfile = () => {
     const navigate = useNavigate();
+    const [isToggle, setIsToggle] = useState(false);
+    const [isToggle1, setIsToggle1] = useState(false);
     const [fullName, setFullName] = useState();
     const [dateOfBirth, setDateOfBirth] = useState();
     const [email, setEmail] = useState();
@@ -118,15 +121,13 @@ const EditProfile = () => {
     }
 
     return (
-        <div className="wrapper ct_main_dashboard">
+        <div className={`wrapper ct_main_dashboard ${isToggle ? "nav_open" : ""} ${isToggle1 ? "topbar_open" : ""}`}>
             <Sidebar />
             <div className="main-panel">
-                <Header />
+                <Header onClick={() => setIsToggle(!isToggle)} onPress={() => setIsToggle1(!isToggle1)} />
                 <div className="container">
                     {isLoader == true ?
-                        <div className="ct_loader_main">
-                            <div className="loader"></div>
-                        </div>
+                        <Loader />
                         :
                         <div className="page-inner">
                             <div className="row">

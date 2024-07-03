@@ -7,6 +7,9 @@
   justify-content: center;
   text-align: center;
 }
+.wrapper.ct_main_dashboard.topbar_open nav.navbar {
+  margin-top: 76px;
+}
 .ct_page_not_found_section {
   padding: 4rem 2rem;
 }

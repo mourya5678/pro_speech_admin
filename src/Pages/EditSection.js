@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import Loader from '../Controllers/Loader';
 import { pipApiResponse, pipGetToken, pipSaveUserData } from '../Controllers/Pip';
 import Footer from '../Layout/Footer';
 import Header from '../Layout/Header';
@@ -10,6 +11,8 @@ const EditSection = () => {
     const { state } = useLocation();
     const navigate = useNavigate();
     const [isLoader, setIsLoader] = useState(false);
+    const [isToggle1, setIsToggle1] = useState(false);
+    const [isToggle, setIsToggle] = useState(false);
     const [sectionImage, setSectionImage] = useState(state?.id?.section_image ?? '');
     const [sectionName, setSectionName] = useState(state?.id?.section_name ?? '');
     const [changeImage, setChangeImage] = useState();
@@ -76,15 +79,13 @@ const EditSection = () => {
     };
 
     return (
-        <div className="wrapper ct_main_dashboard">
+        <div className={`wrapper ct_main_dashboard ${isToggle ? "nav_open" : ""} ${isToggle1 ? "topbar_open" : ""}`}>
             <Sidebar />
             <div className="main-panel">
-                <Header />
+                <Header onClick={() => setIsToggle(!isToggle)} onPress={() => setIsToggle1(!isToggle1)} />
                 <div className="container">
                     {isLoader == true ?
-                        <div className="ct_loader_main">
-                            <div className="loader"></div>
-                        </div>
+                        <Loader />
                         :
                         <div className="page-inner">
                             <div className="row">

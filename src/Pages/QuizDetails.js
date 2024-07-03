@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
 import PaginationDropdown from '../Component/PaginationDropdown';
 import ReactPagination from '../Component/reactPagination';
+import Loader from '../Controllers/Loader';
 import { pipApiResponse, pipGetToken } from '../Controllers/Pip';
 import Footer from '../Layout/Footer';
 import Header from '../Layout/Header';
@@ -11,10 +12,12 @@ import { pageRoutes } from '../Routes/pageRoutes';
 
 const QuizDetails = () => {
     const navigate = useNavigate();
+    const [isToggle, setIsToggle] = useState(false);
+    const [isToggle1, setIsToggle1] = useState(false);
     const { state } = useLocation();
     const [isLoader, setIsLoader] = useState(false);
     const [currentPage, setCurrentPage] = useState(0);
-    const [usersPerPage, setUserPerPages] = useState(25);
+    const [usersPerPage, setUserPerPages] = useState(10);
     const [allModules, setAllModules] = useState([])
 
     const displayUsers = allModules.slice(
@@ -45,15 +48,13 @@ const QuizDetails = () => {
     };
 
     return (
-        <div className="wrapper ct_main_dashboard">
+        <div className={`wrapper ct_main_dashboard ${isToggle ? "nav_open" : ""} ${isToggle1 ? "topbar_open" : ""}`}>
             <Sidebar />
             <div className="main-panel">
-                <Header />
+                <Header onClick={() => setIsToggle(!isToggle)} onPress={() => setIsToggle1(!isToggle1)} />
                 <div className="container">
                     {isLoader == true ?
-                        <div className="ct_loader_main">
-                            <div className="loader"></div>
-                        </div>
+                        <Loader />
                         :
                         <div className="page-inner">
                             <div className="row">

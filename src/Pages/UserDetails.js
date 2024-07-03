@@ -8,12 +8,15 @@ import Header from '../Layout/Header';
 import Sidebar from '../Layout/Sidebar';
 import { SlideshowLightbox } from "lightbox.js-react";
 import { baseUrl, getUserDetailsEndPointURL } from '../Routes/bakendRoutes';
+import Loader from '../Controllers/Loader';
 
 const UserDetails = () => {
     const { state } = useLocation();
+    const [isToggle, setIsToggle] = useState(false);
+    const [isToggle1, setIsToggle1] = useState(false);
     const [isLoader, setIsLoader] = useState(false);
     const [currentPage, setCurrentPage] = useState(0);
-    const [usersPerPage, setUserPerPages] = useState(25);
+    const [usersPerPage, setUserPerPages] = useState(10);
     const [usersDetails, setUsersDetails] = useState([]);
     const [scoreData, setScoreData] = useState();
     const [userName, setUserName] = useState();
@@ -50,15 +53,13 @@ const UserDetails = () => {
     };
 
     return (
-        <div className="wrapper ct_main_dashboard">
+        <div className={`wrapper ct_main_dashboard ${isToggle ? "nav_open" : ""} ${isToggle1 ? "topbar_open" : ""}`}>
             <Sidebar />
             <div className="main-panel">
-                <Header />
+                <Header onClick={() => setIsToggle(!isToggle)} onPress={() => setIsToggle1(!isToggle1)} />
                 <div className="container">
                     {isLoader == true ?
-                        <div className="ct_loader_main">
-                            <div className="loader"></div>
-                        </div>
+                        <Loader />
                         :
                         <div className="page-inner">
                             <div

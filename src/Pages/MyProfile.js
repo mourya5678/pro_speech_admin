@@ -6,9 +6,12 @@ import { useNavigate } from 'react-router-dom';
 import { pageRoutes } from '../Routes/pageRoutes';
 import { baseUrl, getProfileDataEndPointURL } from '../Routes/bakendRoutes';
 import { pipApiResponse, pipDateFormate, pipGetToken, pipSaveUserData } from '../Controllers/Pip';
+import Loader from '../Controllers/Loader';
 
 const MyProfile = () => {
     const navigate = useNavigate();
+    const [isToggle, setIsToggle] = useState(false);
+    const [isToggle1, setIsToggle1] = useState(false);
     const [profileDetail, setProfileDetail] = useState({});
     const [isLoader, setIsLoader] = useState(false);
 
@@ -32,21 +35,17 @@ const MyProfile = () => {
     }
 
     return (
-        <div className="wrapper ct_main_dashboard">
+        <div className={`wrapper ct_main_dashboard ${isToggle ? "nav_open" : ""} ${isToggle1 ? "topbar_open" : ""}`}>
             <Sidebar />
             <div className="main-panel">
                 {isLoader == true ?
-                    <div className="ct_loader_main">
-                        <div className="loader"></div>
-                    </div>
+                    <Loader />
                     :
-                    <Header />
+                    <Header onClick={() => setIsToggle(!isToggle)} onPress={() => setIsToggle1(!isToggle1)} />
                 }
                 <div className="container">
                     {isLoader == true ?
-                        <div className="ct_loader_main">
-                            <div className="loader"></div>
-                        </div>
+                        <Loader />
                         :
                         <div className="page-inner">
                             <div className="row">
