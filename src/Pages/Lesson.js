@@ -17,7 +17,13 @@ const Lesson = () => {
     const [allLessons, setAllLessons] = useState([]);
     const [isLoader, setIsLoader] = useState(false);
     const [isToggle1, setIsToggle1] = useState(false);
+    const [currentPage, setCurrentPage] = useState(0);
+    const [usersPerPage, setUserPerPages] = useState(10);
 
+    const displayUsers = allLessons.slice(
+        currentPage * usersPerPage,
+        (currentPage + 1) * usersPerPage
+    );
 
     useEffect(() => {
         getSideBarValue();
@@ -36,17 +42,9 @@ const Lesson = () => {
         setIsLoader(false)
     }
 
-    const [currentPage, setCurrentPage] = useState(0);
-    const [usersPerPage, setUserPerPages] = useState(10);
-
     const handlePageClick = (data) => {
         setCurrentPage(data.selected);
     };
-
-    const displayUsers = allLessons.slice(
-        currentPage * usersPerPage,
-        (currentPage + 1) * usersPerPage
-    );
 
     return (
         <div className={`wrapper ct_main_dashboard ${isToggle ? "nav_open" : ""} ${isToggle1 ? "topbar_open" : ""}`}>

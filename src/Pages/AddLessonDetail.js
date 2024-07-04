@@ -1,15 +1,16 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
-import { pipApiResponse, pipGetToken } from '../Controllers/Pip'
-import Footer from '../Layout/Footer'
-import Header from '../Layout/Header'
-import Sidebar from '../Layout/Sidebar'
-import { baseUrl, getLessaonByIdEndPointURL, updateLessonEndPointURL } from '../Routes/bakendRoutes'
-import { pageRoutes } from '../Routes/pageRoutes'
+import React, { useEffect, useRef, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { pipApiResponse, pipGetToken } from '../Controllers/Pip';
+import Footer from '../Layout/Footer';
+import Header from '../Layout/Header';
+import Sidebar from '../Layout/Sidebar';
+import { baseUrl, getLessaonByIdEndPointURL, updateLessonEndPointURL, getImageURLEndPointURL } from '../Routes/bakendRoutes';
+import { pageRoutes } from '../Routes/pageRoutes';
 // import ReactQuill from 'react-quill';
 // import 'react-quill/dist/quill.snow.css';
 import { Editor } from '@tinymce/tinymce-react';
-import Loader from '../Controllers/Loader'
+import Loader from '../Controllers/Loader';
+import { message } from 'antd';
 
 
 const AddLessonDetail = () => {
@@ -25,6 +26,7 @@ const AddLessonDetail = () => {
     });
     const [isToggle, setIsToggle] = useState(false);
     const [isToggle1, setIsToggle1] = useState(false);
+    const [profileImageChange, setProfileImageChange] = useState([]);
 
     useEffect(() => {
         getLessonByID();
@@ -66,7 +68,7 @@ const AddLessonDetail = () => {
             }
             var apiResponse = await pipApiResponse('put', `${baseUrl + updateLessonEndPointURL + state?.item}`, headers, true, dataas);
             setIsLoader(false);
-            console.log({ apiResponse }, { dataas })
+            // console.log({ apiResponse }, { dataas })
             apiResponse?.success == true && navigate(-1);
         } else {
             setErroMessage({
@@ -74,6 +76,33 @@ const AddLessonDetail = () => {
                 nameError: name ? '' : 'Please enter lesson name',
                 editerError: editorValue ? '' : 'Please enter lesson detail'
             })
+        }
+    };
+
+    const handleDocumentsChange = (e) => {
+        setProfileImageChange(e.target.files);
+    };
+
+    const onHandleGetDocumentUrl = async () => {
+        if (profileImageChange?.length != 0) {
+            setIsLoader(true);
+            const token = pipGetToken();
+            const headers = {
+                'Content-Type': 'multipart/form-data',
+                'accept': 'application/json',
+                Authorization: `Bearer ${token}`
+            }
+            const formData = new FormData()
+            formData.append('file_name', 'file_name');
+            for (let i = 0; i < profileImageChange.length; i++) {
+                console.log(profileImageChange[i])
+                formData.append("file", profileImageChange[i]);
+            }
+            var apiResponse = await pipApiResponse('post', `${baseUrl + getImageURLEndPointURL}`, headers, true, formData);
+            setIsLoader(false);
+            console.log({ apiResponse })
+        } else {
+            message.error("Please select the Image")
         }
     };
 
@@ -143,6 +172,30 @@ const AddLessonDetail = () => {
                                                 </div>
                                                 <div className="pt-4">
                                                     <button type="button" className="ct_custom_btn mx-auto d-block " onClick={onHandleAddLessonDetail}> Submit</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div className="card-body pt-5">
+                                            <div className="card-head-row card-tools-still-right mb-5">
+                                                <div className="d-flex align-items-center justify-content-between gap-3 flex-wrap w-100">
+                                                    <h4 className="card-title ct_fw_700 mb-0 mx-auto">Get document url</h4>
+                                                </div>
+                                            </div>
+                                            <form className="pt-0">
+                                                <div className="row" id="ct_append_quiz">
+                                                    <div className="ct_proile_img ct_edit_profile_img text-center mx-auto mb-5">
+                                                        <label for="ct_profile_edit">
+                                                            <input
+                                                                className='form-control'
+                                                                type="file" id="ct_profile_edit"
+                                                                onChange={handleDocumentsChange}
+                                                                multiple
+                                                            />
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div className="pt-4">
+                                                    <button type="button" className="ct_custom_btn mx-auto d-block " onClick={onHandleGetDocumentUrl}> Submit</button>
                                                 </div>
                                             </form>
                                         </div>

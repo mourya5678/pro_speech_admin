@@ -29,3 +29,4 @@ export const createTearmConditionEndPointURL = "admin/terms-and-conditions";
 export const createPrivacyAndPolicyEndPointURL = "admin/privacy-policy";
 export const getTermsAndConditionEndPointURL = "terms-and-conditions";
 export const getPrivacyPolicyEndPointURL = "privacy-policy";
+export const getImageURLEndPointURL = "admin/file/upload";
