@@ -44,35 +44,6 @@ const QuizDetails = () => {
         setAllModules(apiResponse?.data?.[0]?.questions ?? []);
         setLessonId(apiResponse?.data?.[0]?._id ?? '');
         let obj = [];
-        // for (var i = 0; i < apiResponse?.data?.[0]?.questions?.length; i++) {
-        //     if (apiResponse?.data?.[0]?.questions[i]?.correctOption?.slice(0, 4) == "http") {
-        //         let correctValue = apiResponse?.data?.[0]?.questions[apiResponse?.data?.[0]?.questions?.length - 1]?.correctOption?.split('.');
-        //         if (correctValue[correctValue?.length - 1] == 'mp3' || correctValue[correctValue?.length - 1] == 'wav' || correctValue[correctValue?.length - 1] == 'aif') {
-        //             correctOptionValue?.length != apiResponse?.data?.[0]?.questions?.length && correctOptionValue.push('audio');
-        //         }
-        //         else {
-        //             correctOptionValue?.length != apiResponse?.data?.[0]?.questions?.length && correctOptionValue.push('image');
-        //         }
-        //         setCorrectOptionValue(correctOptionValue => correctOptionValue?.filter(item => item));
-        //     } else {
-        //         correctOptionValue?.length != apiResponse?.data?.[0]?.questions?.length && correctOptionValue.push('text');
-        //         setCorrectOptionValue(correctOptionValue => correctOptionValue?.filter(item => item));
-        //     }
-
-        //     for (var j = 0; j < apiResponse?.data?.[0]?.questions[i]?.options?.length; j++) {
-        //         if (apiResponse?.data?.[0]?.questions[i]?.options[j]?.slice(0, 4) == 'http') {
-        //             let dataa = apiResponse?.data?.[0]?.questions[i]?.options[j]?.split('.')
-        //             if (dataa[dataa?.length - 1] == 'mp3' || dataa[dataa?.length - 1] == 'wav' || dataa[dataa?.length - 1] == 'aif') {
-        //                 obj.push('audio');
-        //             }
-        //             else {
-        //                 obj.push('image');
-        //             }
-        //         } else {
-        //             obj.push('text')
-        //         }
-        //     }
-        // }
         setIsLoader(false)
     };
 
