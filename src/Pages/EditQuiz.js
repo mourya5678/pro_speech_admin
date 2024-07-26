@@ -1,6 +1,6 @@
 import { Editor } from '@tinymce/tinymce-react';
 import Header from '../Layout/Header';
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
 import Loader from '../Controllers/Loader';
 import Footer from '../Layout/Footer';
@@ -27,12 +27,27 @@ const EditQuiz = () => {
     });
     const [correctAnswer, setCorrectAnswer] = useState(state?.data?.correctOption ?? '');
     const [correctAnswerError, setCorrectAnswerError] = useState('');
+    const [questionOptions, setQuestionOptions] = useState([]);
     const question = useRef(null);
     let questions = state?.data?.text ?? '';
 
-    console.log({ state });
+    useEffect(() => {
+        for (var i = 0; i < 4; i++) {
+            if (state?.data?.options[i]?.slice(0, 4) == 'http') {
+                const data = state?.data?.options[i]?.split('.')
+                if (data[data?.length - 1] == 'mp3' || data[data?.length - 1] == 'wav') {
+                    questionOptions?.length != 4 && questionOptions?.push('audio')
+                } else {
+                    questionOptions?.length != 4 && questionOptions?.push('image')
+                }
+            } else {
+                questionOptions?.length != 4 && questionOptions?.push('text')
+            }
+            setQuestionOptions(questionOptions => questionOptions?.filter(item => item))
+        }
+    }, []);
 
-    const onHandleDataChange = (val, val2, val3, val4) => {
+    const onHandleDataChange = (val, val2, val3, val4, index) => {
         setQuizAnswer({
             ...quizAnswer,
             answer1: val,
@@ -43,7 +58,64 @@ const EditQuiz = () => {
             answer3Error: val3 != '' ? '' : 'Please Fill Option 3',
             answer4: val4,
             answer4Error: val4 != '' ? '' : 'Please Fill Option 4',
-        })
+        });
+        if (index == 0) {
+            if ((typeof val) == 'object') {
+                const value = val?.name?.split('.');
+                if (value[value?.length - 1] == 'mp3' || value[value?.length - 1] == 'wav') {
+                    console.log(value[value?.length - 1])
+                    questionOptions[index] = 'audio';
+                } else {
+                    questionOptions[index] = 'image';
+                }
+                setQuestionOptions(questionOptions => questionOptions?.filter(item => item))
+            } else {
+                questionOptions[index] = 'text';
+                setQuestionOptions(questionOptions => questionOptions?.filter(item => item))
+            }
+        } else if (index == 1) {
+            if ((typeof val2) == 'object') {
+                const value = val2?.name?.split('.');
+                if (value[value?.length - 1] == 'mp3' || value[value?.length - 1] == 'wav') {
+                    console.log(value[value?.length - 1])
+                    questionOptions[index] = 'audio';
+                } else {
+                    questionOptions[index] = 'image';
+                }
+                setQuestionOptions(questionOptions => questionOptions?.filter(item => item))
+            } else {
+                questionOptions[index] = 'text';
+                setQuestionOptions(questionOptions => questionOptions?.filter(item => item))
+            }
+        } else if (index == 2) {
+            if ((typeof val3) == 'object') {
+                const value = val3?.name?.split('.');
+                if (value[value?.length - 1] == 'mp3' || value[value?.length - 1] == 'wav') {
+                    console.log(value[value?.length - 1])
+                    questionOptions[index] = 'audio';
+                } else {
+                    questionOptions[index] = 'image';
+                }
+                setQuestionOptions(questionOptions => questionOptions?.filter(item => item))
+            } else {
+                questionOptions[index] = 'text';
+                setQuestionOptions(questionOptions => questionOptions?.filter(item => item))
+            }
+        } else if (index == 3) {
+            if ((typeof val4) == 'object') {
+                const value = val4?.name?.split('.');
+                if (value[value?.length - 1] == 'mp3' || value[value?.length - 1] == 'wav') {
+                    console.log(value[value?.length - 1])
+                    questionOptions[index] = 'audio';
+                } else {
+                    questionOptions[index] = 'image';
+                }
+                setQuestionOptions(questionOptions => questionOptions?.filter(item => item))
+            } else {
+                questionOptions[index] = 'text';
+                setQuestionOptions(questionOptions => questionOptions?.filter(item => item))
+            }
+        }
     };
 
     const selectCorrectAnswer = (val) => {
@@ -153,23 +225,30 @@ const EditQuiz = () => {
                                                             <input
                                                                 type="file"
                                                                 className="form-control"
-                                                                accept="image/*,application/pdf"
+                                                                accept="image/*,audio/mp3,audio/wav"
                                                                 onChange={(e) =>
-                                                                    onHandleDataChange(e.target.files[0], quizAnswer?.answer2, quizAnswer?.answer3, quizAnswer?.answer4)
+                                                                    onHandleDataChange(e.target.files[0], quizAnswer?.answer2, quizAnswer?.answer3, quizAnswer?.answer4, '0')
                                                                 }
                                                             />
                                                             <input type="text" className="form-control"
                                                                 value={(typeof quizAnswer?.answer1) != 'object' && quizAnswer?.answer1?.slice(0, 4) != 'http' ? quizAnswer?.answer1 : ' '}
                                                                 onChange={(e) =>
-                                                                    onHandleDataChange(e.target.value, quizAnswer?.answer2, quizAnswer?.answer3, quizAnswer?.answer4)
+                                                                    onHandleDataChange(e.target.value, quizAnswer?.answer2, quizAnswer?.answer3, quizAnswer?.answer4, '0')
                                                                 }
                                                                 id="floatingInput" placeholder="Enter Answer" />
-                                                            {(typeof quizAnswer?.answer1) == 'object' &&
+                                                            {(typeof quizAnswer?.answer1) == 'object' && questionOptions[0] == 'image' &&
                                                                 <img style={{ width: "150px", height: '100px' }} src={URL.createObjectURL(quizAnswer?.answer1)} />
                                                             }
+                                                            {(typeof quizAnswer?.answer1) == 'object' && questionOptions[0] == 'audio' &&
+                                                                <audio controls src={URL.createObjectURL(quizAnswer?.answer1)} style={{ width: "250px", height: '50' }} />
+                                                            }
                                                             {
-                                                                quizAnswer?.answer1?.slice(0, 4) == 'http' &&
+                                                                quizAnswer?.answer1?.slice(0, 4) == 'http' && questionOptions[0] == 'image' &&
                                                                 <img style={{ width: "150px", height: '100px' }} src={quizAnswer?.answer1} />
+                                                            }
+                                                            {
+                                                                quizAnswer?.answer1?.slice(0, 4) == 'http' && questionOptions[0] == 'audio' &&
+                                                                <audio controls src={quizAnswer?.answer1} style={{ width: "250px", height: '50' }} />
                                                             }
                                                             {quizAnswer?.answer1Error != '' &&
                                                                 <span style={{ color: "red" }}>
@@ -195,23 +274,31 @@ const EditQuiz = () => {
                                                             <input
                                                                 type="file"
                                                                 className="form-control"
-                                                                accept="image/*,application/pdf"
+                                                                accept="image/*,audio/mp3,audio/wav"
                                                                 onChange={(e) =>
-                                                                    onHandleDataChange(quizAnswer?.answer1, e.target.files[0], quizAnswer?.answer3, quizAnswer?.answer4)
+                                                                    onHandleDataChange(quizAnswer?.answer1, e.target.files[0], quizAnswer?.answer3, quizAnswer?.answer4, '1')
                                                                 }
                                                             />
                                                             <input type="text" className="form-control"
                                                                 value={(typeof quizAnswer?.answer2) != 'object' && quizAnswer?.answer2?.slice(0, 4) != 'http' ? quizAnswer?.answer2 : ' '}
                                                                 onChange={(e) =>
-                                                                    onHandleDataChange(quizAnswer?.answer1, e.target.value, quizAnswer?.answer3, quizAnswer?.answer4)
+                                                                    onHandleDataChange(quizAnswer?.answer1, e.target.value, quizAnswer?.answer3, quizAnswer?.answer4, '1')
                                                                 }
                                                                 id="floatingInput" placeholder="Enter Answer" />
-                                                            {(typeof quizAnswer?.answer2) == 'object' &&
+
+                                                            {(typeof quizAnswer?.answer2) == 'object' && questionOptions[1] == 'image' &&
                                                                 <img style={{ width: "150px", height: '100px' }} src={URL.createObjectURL(quizAnswer?.answer2)} />
                                                             }
+                                                            {(typeof quizAnswer?.answer2) == 'object' && questionOptions[1] == 'audio' &&
+                                                                <audio controls src={URL.createObjectURL(quizAnswer?.answer2)} style={{ width: "250px", height: '50' }} />
+                                                            }
                                                             {
-                                                                quizAnswer?.answer2?.slice(0, 4) == 'http' &&
+                                                                quizAnswer?.answer2?.slice(0, 4) == 'http' && questionOptions[1] == 'image' &&
                                                                 <img style={{ width: "150px", height: '100px' }} src={quizAnswer?.answer2} />
+                                                            }
+                                                            {
+                                                                quizAnswer?.answer2?.slice(0, 4) == 'http' && questionOptions[1] == 'audio' &&
+                                                                <audio controls src={quizAnswer?.answer2} style={{ width: "250px", height: '50' }} />
                                                             }
                                                             {quizAnswer?.answer2Error != '' &&
                                                                 <span style={{ color: "red" }}>
@@ -237,23 +324,30 @@ const EditQuiz = () => {
                                                             <input
                                                                 type="file"
                                                                 className="form-control"
-                                                                accept="image/*,application/pdf"
+                                                                accept="image/*,audio/mp3,audio/wav"
                                                                 onChange={(e) =>
-                                                                    onHandleDataChange(quizAnswer?.answer1, quizAnswer?.answer2, e.target.files[0], quizAnswer?.answer4)
+                                                                    onHandleDataChange(quizAnswer?.answer1, quizAnswer?.answer2, e.target.files[0], quizAnswer?.answer4, '2')
                                                                 }
                                                             />
                                                             <input type="text" className="form-control"
                                                                 value={(typeof quizAnswer?.answer3) != 'object' && quizAnswer?.answer3?.slice(0, 4) != 'http' ? quizAnswer?.answer3 : ' '}
                                                                 onChange={(e) =>
-                                                                    onHandleDataChange(quizAnswer?.answer1, quizAnswer?.answer2, e.target.value, quizAnswer?.answer4)
+                                                                    onHandleDataChange(quizAnswer?.answer1, quizAnswer?.answer2, e.target.value, quizAnswer?.answer4, '2')
                                                                 }
                                                                 id="floatingInput" placeholder="Enter Answer" />
-                                                            {(typeof quizAnswer?.answer3) == 'object' &&
+                                                            {(typeof quizAnswer?.answer3) == 'object' && questionOptions[2] == 'image' &&
                                                                 <img style={{ width: "150px", height: '100px' }} src={URL.createObjectURL(quizAnswer?.answer3)} />
                                                             }
+                                                            {(typeof quizAnswer?.answer3) == 'object' && questionOptions[2] == 'audio' &&
+                                                                <audio controls src={URL.createObjectURL(quizAnswer?.answer3)} style={{ width: "250px", height: '50' }} />
+                                                            }
                                                             {
-                                                                quizAnswer?.answer3?.slice(0, 4) == 'http' &&
+                                                                quizAnswer?.answer3?.slice(0, 4) == 'http' && questionOptions[2] == 'image' &&
                                                                 <img style={{ width: "150px", height: '100px' }} src={quizAnswer?.answer3} />
+                                                            }
+                                                            {
+                                                                quizAnswer?.answer3?.slice(0, 4) == 'http' && questionOptions[2] == 'audio' &&
+                                                                <audio controls src={quizAnswer?.answer3} style={{ width: "250px", height: '50' }} />
                                                             }
                                                             {quizAnswer?.answer3Error != '' &&
                                                                 <span style={{ color: "red" }}>
@@ -279,23 +373,30 @@ const EditQuiz = () => {
                                                             <input
                                                                 type="file"
                                                                 className="form-control"
-                                                                accept="image/*,application/pdf"
+                                                                accept="image/*,audio/mp3,audio/wav"
                                                                 onChange={(e) =>
-                                                                    onHandleDataChange(quizAnswer?.answer1, quizAnswer?.answer2, quizAnswer?.answer3, e.target.files[0])
+                                                                    onHandleDataChange(quizAnswer?.answer1, quizAnswer?.answer2, quizAnswer?.answer3, e.target.files[0], '3')
                                                                 }
                                                             />
                                                             <input type="text" className="form-control"
                                                                 value={(typeof quizAnswer?.answer4) != 'object' && quizAnswer?.answer4?.slice(0, 4) != 'http' ? quizAnswer?.answer4 : ' '}
                                                                 onChange={(e) =>
-                                                                    onHandleDataChange(quizAnswer?.answer1, quizAnswer?.answer2, quizAnswer?.answer3, e.target.value)
+                                                                    onHandleDataChange(quizAnswer?.answer1, quizAnswer?.answer2, quizAnswer?.answer3, e.target.value, '3')
                                                                 }
                                                                 id="floatingInput" placeholder="Enter Answer" />
-                                                            {(typeof quizAnswer?.answer4) == 'object' &&
+                                                            {(typeof quizAnswer?.answer4) == 'object' && questionOptions[3] == 'image' &&
                                                                 <img style={{ width: "150px", height: '100px' }} src={URL.createObjectURL(quizAnswer?.answer4)} />
                                                             }
+                                                            {(typeof quizAnswer?.answer4) == 'object' && questionOptions[3] == 'audio' &&
+                                                                <audio controls src={URL.createObjectURL(quizAnswer?.answer4)} style={{ width: "250px", height: '50' }} />
+                                                            }
                                                             {
-                                                                quizAnswer?.answer4?.slice(0, 4) == 'http' &&
+                                                                quizAnswer?.answer4?.slice(0, 4) == 'http' && questionOptions[3] == 'image' &&
                                                                 <img style={{ width: "150px", height: '100px' }} src={quizAnswer?.answer4} />
+                                                            }
+                                                            {
+                                                                quizAnswer?.answer4?.slice(0, 4) == 'http' && questionOptions[3] == 'audio' &&
+                                                                <audio controls src={quizAnswer?.answer4} style={{ width: "250px", height: '50' }} />
                                                             }
                                                             {quizAnswer?.answer4Error != '' &&
                                                                 <span style={{ color: "red" }}>
