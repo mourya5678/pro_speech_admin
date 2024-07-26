@@ -35,7 +35,7 @@ const EditQuiz = () => {
         for (var i = 0; i < 4; i++) {
             if (state?.data?.options[i]?.slice(0, 4) == 'http') {
                 const data = state?.data?.options[i]?.split('.')
-                if (data[data?.length - 1] == 'mp3' || data[data?.length - 1] == 'wav') {
+                if (data[data?.length - 1] == 'mp3' || data[data?.length - 1] == 'wav' || data[data?.length - 1] == 'aif') {
                     questionOptions?.length != 4 && questionOptions?.push('audio')
                 } else {
                     questionOptions?.length != 4 && questionOptions?.push('image')
@@ -62,7 +62,7 @@ const EditQuiz = () => {
         if (index == 0) {
             if ((typeof val) == 'object') {
                 const value = val?.name?.split('.');
-                if (value[value?.length - 1] == 'mp3' || value[value?.length - 1] == 'wav') {
+                if (value[value?.length - 1] == 'mp3' || value[value?.length - 1] == 'wav' || value[value?.length - 1] == 'aif') {
                     console.log(value[value?.length - 1])
                     questionOptions[index] = 'audio';
                 } else {
@@ -76,7 +76,7 @@ const EditQuiz = () => {
         } else if (index == 1) {
             if ((typeof val2) == 'object') {
                 const value = val2?.name?.split('.');
-                if (value[value?.length - 1] == 'mp3' || value[value?.length - 1] == 'wav') {
+                if (value[value?.length - 1] == 'mp3' || value[value?.length - 1] == 'wav' || value[value?.length - 1] == 'aif') {
                     console.log(value[value?.length - 1])
                     questionOptions[index] = 'audio';
                 } else {
@@ -90,7 +90,7 @@ const EditQuiz = () => {
         } else if (index == 2) {
             if ((typeof val3) == 'object') {
                 const value = val3?.name?.split('.');
-                if (value[value?.length - 1] == 'mp3' || value[value?.length - 1] == 'wav') {
+                if (value[value?.length - 1] == 'mp3' || value[value?.length - 1] == 'wav' || value[value?.length - 1] == 'aif') {
                     console.log(value[value?.length - 1])
                     questionOptions[index] = 'audio';
                 } else {
@@ -104,7 +104,7 @@ const EditQuiz = () => {
         } else if (index == 3) {
             if ((typeof val4) == 'object') {
                 const value = val4?.name?.split('.');
-                if (value[value?.length - 1] == 'mp3' || value[value?.length - 1] == 'wav') {
+                if (value[value?.length - 1] == 'mp3' || value[value?.length - 1] == 'wav' || value[value?.length - 1] == 'aif') {
                     console.log(value[value?.length - 1])
                     questionOptions[index] = 'audio';
                 } else {
@@ -225,7 +225,7 @@ const EditQuiz = () => {
                                                             <input
                                                                 type="file"
                                                                 className="form-control"
-                                                                accept="image/*,audio/mp3,audio/wav"
+                                                                accept="image/*,audio/mp3,audio/wav,audio/aiff"
                                                                 onChange={(e) =>
                                                                     onHandleDataChange(e.target.files[0], quizAnswer?.answer2, quizAnswer?.answer3, quizAnswer?.answer4, '0')
                                                                 }
@@ -274,7 +274,7 @@ const EditQuiz = () => {
                                                             <input
                                                                 type="file"
                                                                 className="form-control"
-                                                                accept="image/*,audio/mp3,audio/wav"
+                                                                accept="image/*,audio/mp3,audio/wav,audio/aiff"
                                                                 onChange={(e) =>
                                                                     onHandleDataChange(quizAnswer?.answer1, e.target.files[0], quizAnswer?.answer3, quizAnswer?.answer4, '1')
                                                                 }
@@ -324,7 +324,7 @@ const EditQuiz = () => {
                                                             <input
                                                                 type="file"
                                                                 className="form-control"
-                                                                accept="image/*,audio/mp3,audio/wav"
+                                                                accept="image/*,audio/mp3,audio/wav,audio/aiff"
                                                                 onChange={(e) =>
                                                                     onHandleDataChange(quizAnswer?.answer1, quizAnswer?.answer2, e.target.files[0], quizAnswer?.answer4, '2')
                                                                 }
@@ -373,7 +373,7 @@ const EditQuiz = () => {
                                                             <input
                                                                 type="file"
                                                                 className="form-control"
-                                                                accept="image/*,audio/mp3,audio/wav"
+                                                                accept="image/*,audio/mp3,audio/wav,audio/aiff"
                                                                 onChange={(e) =>
                                                                     onHandleDataChange(quizAnswer?.answer1, quizAnswer?.answer2, quizAnswer?.answer3, e.target.files[0], '3')
                                                                 }

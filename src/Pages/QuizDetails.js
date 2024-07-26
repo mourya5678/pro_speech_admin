@@ -20,12 +20,13 @@ const QuizDetails = () => {
     const [usersPerPage, setUserPerPages] = useState(10);
     const [allModules, setAllModules] = useState([])
     const [lesson_id, setLessonId] = useState('');
+    const [quizOptions, setQuizOptions] = useState([]);
+    const [correctOptionValue, setCorrectOptionValue] = useState([]);
 
     const displayUsers = allModules?.slice(
         currentPage * usersPerPage,
         (currentPage + 1) * usersPerPage
     );
-    console.log(state);
 
     useEffect(() => {
         getQuizById();
@@ -42,6 +43,36 @@ const QuizDetails = () => {
         var apiResponse = await pipApiResponse('get', `${baseUrl + getAllQuizByLessonIdEndPointURL + state?.id}`, headers, false);
         setAllModules(apiResponse?.data?.[0]?.questions ?? []);
         setLessonId(apiResponse?.data?.[0]?._id ?? '');
+        let obj = [];
+        // for (var i = 0; i < apiResponse?.data?.[0]?.questions?.length; i++) {
+        //     if (apiResponse?.data?.[0]?.questions[i]?.correctOption?.slice(0, 4) == "http") {
+        //         let correctValue = apiResponse?.data?.[0]?.questions[apiResponse?.data?.[0]?.questions?.length - 1]?.correctOption?.split('.');
+        //         if (correctValue[correctValue?.length - 1] == 'mp3' || correctValue[correctValue?.length - 1] == 'wav' || correctValue[correctValue?.length - 1] == 'aif') {
+        //             correctOptionValue?.length != apiResponse?.data?.[0]?.questions?.length && correctOptionValue.push('audio');
+        //         }
+        //         else {
+        //             correctOptionValue?.length != apiResponse?.data?.[0]?.questions?.length && correctOptionValue.push('image');
+        //         }
+        //         setCorrectOptionValue(correctOptionValue => correctOptionValue?.filter(item => item));
+        //     } else {
+        //         correctOptionValue?.length != apiResponse?.data?.[0]?.questions?.length && correctOptionValue.push('text');
+        //         setCorrectOptionValue(correctOptionValue => correctOptionValue?.filter(item => item));
+        //     }
+
+        //     for (var j = 0; j < apiResponse?.data?.[0]?.questions[i]?.options?.length; j++) {
+        //         if (apiResponse?.data?.[0]?.questions[i]?.options[j]?.slice(0, 4) == 'http') {
+        //             let dataa = apiResponse?.data?.[0]?.questions[i]?.options[j]?.split('.')
+        //             if (dataa[dataa?.length - 1] == 'mp3' || dataa[dataa?.length - 1] == 'wav' || dataa[dataa?.length - 1] == 'aif') {
+        //                 obj.push('audio');
+        //             }
+        //             else {
+        //                 obj.push('image');
+        //             }
+        //         } else {
+        //             obj.push('text')
+        //         }
+        //     }
+        // }
         setIsLoader(false)
     };
 
@@ -104,38 +135,82 @@ const QuizDetails = () => {
                                                                 <td>{i + 1}</td>
                                                                 <td dangerouslySetInnerHTML={{ __html: (item?.text) }}></td>
                                                                 <td className="text-left">
-                                                                    {console.log(item?.options[0])}
-                                                                    {(item?.options[0]?.slice(0, 4) == 'http') ?
-                                                                        <img style={{ width: "150px", height: '100px' }} src={item?.options[0]}></img>
+                                                                    {item?.options[0]?.slice(0, 4) == 'http' ?
+                                                                        item?.options[0]?.endsWith('.mp3') ?
+                                                                            <audio controls src={item?.options[0]} style={{ width: "250px", height: '50' }} />
+                                                                            :
+                                                                            item?.options[0]?.endsWith('.wav') ?
+                                                                                <audio controls src={item?.options[0]} style={{ width: "250px", height: '50' }} />
+                                                                                :
+                                                                                item?.options[0]?.endsWith('.aif') ?
+                                                                                    <audio controls src={item?.options[0]} style={{ width: "250px", height: '50' }} />
+                                                                                    :
+                                                                                    <img style={{ width: "150px", height: '100px' }} src={item?.options[0]}></img>
                                                                         :
                                                                         <span>{item?.options[0]}</span>
                                                                     }
                                                                 </td>
                                                                 <td className="text-left">
-                                                                    {(item?.options[1]?.slice(0, 4) == 'http') ?
-                                                                        <img style={{ width: "150px", height: '100px' }} src={item?.options[1]} ></img>
+                                                                    {item?.options[1]?.slice(0, 4) == 'http' ?
+                                                                        item?.options[1]?.endsWith('.mp3') ?
+                                                                            <audio controls src={item?.options[1]} style={{ width: "250px", height: '50' }} />
+                                                                            :
+                                                                            item?.options[1]?.endsWith('.wav') ?
+                                                                                <audio controls src={item?.options[1]} style={{ width: "250px", height: '50' }} />
+                                                                                :
+                                                                                item?.options[1]?.endsWith('.aif') ?
+                                                                                    <audio controls src={item?.options[1]} style={{ width: "250px", height: '50' }} />
+                                                                                    :
+                                                                                    <img style={{ width: "150px", height: '100px' }} src={item?.options[1]}></img>
                                                                         :
                                                                         <span>{item?.options[1]}</span>
                                                                     }
                                                                 </td>
                                                                 <td className="text-left">
-                                                                    {(item?.options[2]?.slice(0, 4) == 'http') ?
-                                                                        <img style={{ width: "150px", height: '100px' }} src={item?.options[2]} ></img>
+                                                                    {item?.options[2]?.slice(0, 4) == 'http' ?
+                                                                        item?.options[2]?.endsWith('.mp3') ?
+                                                                            <audio controls src={item?.options[2]} style={{ width: "250px", height: '50' }} />
+                                                                            :
+                                                                            item?.options[2]?.endsWith('.wav') ?
+                                                                                <audio controls src={item?.options[2]} style={{ width: "250px", height: '50' }} />
+                                                                                :
+                                                                                item?.options[2]?.endsWith('.aif') ?
+                                                                                    <audio controls src={item?.options[2]} style={{ width: "250px", height: '50' }} />
+                                                                                    :
+                                                                                    <img style={{ width: "150px", height: '100px' }} src={item?.options[2]}></img>
                                                                         :
                                                                         <span>{item?.options[2]}</span>
                                                                     }
                                                                 </td>
                                                                 <td className="text-left">
-                                                                    {(item?.options[3]?.slice(0, 4) == 'http') ?
-                                                                        <img style={{ width: "150px", height: '100px' }} src={item?.options[3]} />
+                                                                    {item?.options[3]?.slice(0, 4) == 'http' ?
+                                                                        item?.options[3]?.endsWith('.mp3') ?
+                                                                            <audio controls src={item?.options[3]} style={{ width: "250px", height: '50' }} />
+                                                                            :
+                                                                            item?.options[3]?.endsWith('.wav') ?
+                                                                                <audio controls src={item?.options[3]} style={{ width: "250px", height: '50' }} />
+                                                                                :
+                                                                                item?.options[3]?.endsWith('.aif') ?
+                                                                                    <audio controls src={item?.options[3]} style={{ width: "250px", height: '50' }} />
+                                                                                    :
+                                                                                    <img style={{ width: "150px", height: '100px' }} src={item?.options[3]}></img>
                                                                         :
                                                                         <span>{item?.options[3]}</span>
                                                                     }
                                                                 </td>
                                                                 <td className="text-left">
                                                                     <span>
-                                                                        {(item?.correctOption?.slice(0, 4) == 'http') ?
-                                                                            <img style={{ width: "150px", height: '100px' }} src={item?.correctOption} ></img>
+                                                                        {item?.correctOption?.slice(0, 4) == 'http' ?
+                                                                            item?.correctOption?.endsWith('.mp3') ?
+                                                                                <audio controls src={item?.correctOption} style={{ width: "250px", height: '50' }} />
+                                                                                :
+                                                                                item?.correctOption?.endsWith('.wav') ?
+                                                                                    <audio controls src={item?.correctOption} style={{ width: "250px", height: '50' }} />
+                                                                                    :
+                                                                                    item?.correctOption?.endsWith('.aif') ?
+                                                                                        <audio controls src={item?.correctOption} style={{ width: "250px", height: '50' }} />
+                                                                                        :
+                                                                                        <img style={{ width: "150px", height: '100px' }} src={item?.correctOption}></img>
                                                                             :
                                                                             <span>{item?.correctOption}</span>
                                                                         }
