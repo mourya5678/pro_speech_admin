@@ -7,7 +7,7 @@ import { pipApiResponse, pipGetToken } from '../Controllers/Pip';
 import Footer from '../Layout/Footer';
 import Header from '../Layout/Header';
 import Sidebar from '../Layout/Sidebar';
-import { baseUrl, getAllQuizByLessonIdEndPointURL } from '../Routes/bakendRoutes';
+import { baseUrl, updateQuizByIdEndPointURL, getAllQuizByLessonIdEndPointURL } from '../Routes/bakendRoutes';
 import { pageRoutes } from '../Routes/pageRoutes';
 
 const QuizDetails = () => {
@@ -49,8 +49,18 @@ const QuizDetails = () => {
         setCurrentPage(data.selected);
     };
 
-    const onHandleDeleteQuiz = (val, id) => {
+    const onHandleDeleteQuiz = async (val, id) => {
         console.log(val, id);
+        setIsLoader(true)
+        const token = pipGetToken();
+        const headers = {
+            'Content-Type': 'application/json',
+            'accept': 'application/json',
+            Authorization: `Bearer ${token}`
+        }
+        var apiResponse = await pipApiResponse('delete', `${baseUrl + updateQuizByIdEndPointURL + id}/questions/${val?._id}`, headers, true);
+        apiResponse?.success == true && getQuizById();
+        setIsLoader(false)
     };
 
     return (
@@ -94,22 +104,23 @@ const QuizDetails = () => {
                                                                 <td>{i + 1}</td>
                                                                 <td dangerouslySetInnerHTML={{ __html: (item?.text) }}></td>
                                                                 <td className="text-left">
+                                                                    {console.log(item?.options[0])}
                                                                     {(item?.options[0]?.slice(0, 4) == 'http') ?
-                                                                        <img style={{ width: "150px", height: '100px' }} src={item?.options[0]} />
+                                                                        <img style={{ width: "150px", height: '100px' }} src={item?.options[0]}></img>
                                                                         :
                                                                         <span>{item?.options[0]}</span>
                                                                     }
                                                                 </td>
                                                                 <td className="text-left">
                                                                     {(item?.options[1]?.slice(0, 4) == 'http') ?
-                                                                        <img style={{ width: "150px", height: '100px' }} src={item?.options[1]} />
+                                                                        <img style={{ width: "150px", height: '100px' }} src={item?.options[1]} ></img>
                                                                         :
                                                                         <span>{item?.options[1]}</span>
                                                                     }
                                                                 </td>
                                                                 <td className="text-left">
                                                                     {(item?.options[2]?.slice(0, 4) == 'http') ?
-                                                                        <img style={{ width: "150px", height: '100px' }} src={item?.options[2]} />
+                                                                        <img style={{ width: "150px", height: '100px' }} src={item?.options[2]} ></img>
                                                                         :
                                                                         <span>{item?.options[2]}</span>
                                                                     }
@@ -124,7 +135,7 @@ const QuizDetails = () => {
                                                                 <td className="text-left">
                                                                     <span>
                                                                         {(item?.correctOption?.slice(0, 4) == 'http') ?
-                                                                            <img style={{ width: "150px", height: '100px' }} src={item?.correctOption} />
+                                                                            <img style={{ width: "150px", height: '100px' }} src={item?.correctOption} ></img>
                                                                             :
                                                                             <span>{item?.correctOption}</span>
                                                                         }

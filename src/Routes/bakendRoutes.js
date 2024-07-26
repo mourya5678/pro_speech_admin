@@ -1,5 +1,5 @@
-// export const baseUrl = 'http://54.88.46.234:4000/api/';  // Live Url
-export const baseUrl = 'http://192.168.29.104:4011/api/'; // Local Url
+export const baseUrl = 'http://54.88.46.234:4000/api/';  // Live Url
+// export const baseUrl = 'http://192.168.29.104:4011/api/'; // Local Url
 export const loginEndPointURL = 'auth/login';
 export const forgotPasswordEndPointURL = "admin/forgot-password-admin";
 export const getProfileDataEndPointURL = "auth/profile";

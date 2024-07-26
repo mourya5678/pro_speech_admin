@@ -164,8 +164,12 @@ const EditQuiz = () => {
                                                                     onHandleDataChange(e.target.value, quizAnswer?.answer2, quizAnswer?.answer3, quizAnswer?.answer4)
                                                                 }
                                                                 id="floatingInput" placeholder="Enter Answer" />
-                                                            {(typeof quizAnswer?.answer1) == 'object' || quizAnswer?.answer1?.slice(0, 4) == 'http' &&
-                                                                <img style={{ width: "150px", height: '100px' }} src={quizAnswer?.answer1?.slice(0, 4) == 'http' ? quizAnswer?.answer1 : URL.createObjectURL(quizAnswer?.answer1)} />
+                                                            {(typeof quizAnswer?.answer1) == 'object' &&
+                                                                <img style={{ width: "150px", height: '100px' }} src={URL.createObjectURL(quizAnswer?.answer1)} />
+                                                            }
+                                                            {
+                                                                quizAnswer?.answer1?.slice(0, 4) == 'http' &&
+                                                                <img style={{ width: "150px", height: '100px' }} src={quizAnswer?.answer1} />
                                                             }
                                                             {quizAnswer?.answer1Error != '' &&
                                                                 <span style={{ color: "red" }}>
@@ -202,8 +206,12 @@ const EditQuiz = () => {
                                                                     onHandleDataChange(quizAnswer?.answer1, e.target.value, quizAnswer?.answer3, quizAnswer?.answer4)
                                                                 }
                                                                 id="floatingInput" placeholder="Enter Answer" />
-                                                            {(typeof quizAnswer?.answer2) == 'object' || quizAnswer?.answer2?.slice(0, 4) == 'http' &&
-                                                                <img style={{ width: "150px", height: '100px' }} src={quizAnswer?.answer2?.slice(0, 4) == 'http' ? quizAnswer?.answer2 : URL.createObjectURL(quizAnswer?.answer2)} />
+                                                            {(typeof quizAnswer?.answer2) == 'object' &&
+                                                                <img style={{ width: "150px", height: '100px' }} src={URL.createObjectURL(quizAnswer?.answer2)} />
+                                                            }
+                                                            {
+                                                                quizAnswer?.answer2?.slice(0, 4) == 'http' &&
+                                                                <img style={{ width: "150px", height: '100px' }} src={quizAnswer?.answer2} />
                                                             }
                                                             {quizAnswer?.answer2Error != '' &&
                                                                 <span style={{ color: "red" }}>
@@ -240,8 +248,12 @@ const EditQuiz = () => {
                                                                     onHandleDataChange(quizAnswer?.answer1, quizAnswer?.answer2, e.target.value, quizAnswer?.answer4)
                                                                 }
                                                                 id="floatingInput" placeholder="Enter Answer" />
-                                                            {(typeof quizAnswer?.answer3) == 'object' || quizAnswer?.answer3?.slice(0, 4) == 'http' &&
-                                                                <img style={{ width: "150px", height: '100px' }} src={quizAnswer?.answer3?.slice(0, 4) == 'http' ? quizAnswer?.answer3 : URL.createObjectURL(quizAnswer?.answer3)} />
+                                                            {(typeof quizAnswer?.answer3) == 'object' &&
+                                                                <img style={{ width: "150px", height: '100px' }} src={URL.createObjectURL(quizAnswer?.answer3)} />
+                                                            }
+                                                            {
+                                                                quizAnswer?.answer3?.slice(0, 4) == 'http' &&
+                                                                <img style={{ width: "150px", height: '100px' }} src={quizAnswer?.answer3} />
                                                             }
                                                             {quizAnswer?.answer3Error != '' &&
                                                                 <span style={{ color: "red" }}>
@@ -278,8 +290,12 @@ const EditQuiz = () => {
                                                                     onHandleDataChange(quizAnswer?.answer1, quizAnswer?.answer2, quizAnswer?.answer3, e.target.value)
                                                                 }
                                                                 id="floatingInput" placeholder="Enter Answer" />
-                                                            {(typeof quizAnswer?.answer4) == 'object' || quizAnswer?.answer4?.slice(0, 4) == 'http' &&
-                                                                <img style={{ width: "150px", height: '100px' }} src={quizAnswer?.answer4?.slice(0, 4) == 'http' ? quizAnswer?.answer4 : URL.createObjectURL(quizAnswer?.answer4)} />
+                                                            {(typeof quizAnswer?.answer4) == 'object' &&
+                                                                <img style={{ width: "150px", height: '100px' }} src={URL.createObjectURL(quizAnswer?.answer4)} />
+                                                            }
+                                                            {
+                                                                quizAnswer?.answer4?.slice(0, 4) == 'http' &&
+                                                                <img style={{ width: "150px", height: '100px' }} src={quizAnswer?.answer4} />
                                                             }
                                                             {quizAnswer?.answer4Error != '' &&
                                                                 <span style={{ color: "red" }}>
