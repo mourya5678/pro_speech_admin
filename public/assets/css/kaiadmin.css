@@ -3315,6 +3315,12 @@ body[data-background-color="dark"] .border-top {
   font-weight: 600;
   line-height: 1.6;
 }
+
+.card-title1234 {
+  margin: 0;
+  color: #2a2f5b;
+  line-height: 1.6;
+}
 .card-title a,
 .card-title a:hover,
 .card-title a:focus {

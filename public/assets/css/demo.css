@@ -546,7 +546,7 @@ table.dataTable td.dt-type-date {
 }
 .ct_cancle_btn {
   background-color: #eee;
-  color: #000 !important;
+  color: #fff !important;
 }
 .ct_dark_btn_clr:hover {
   color: #fff !important;

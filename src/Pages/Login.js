@@ -19,7 +19,8 @@ const Login = () => {
         password: ''
     }
 
-    const onHandleLogin = async (values, { resetForm }) => {
+    const onHandleLogin = async (values, { resetForm, setSubmitting }) => {
+        setSubmitting(false);
         setIsLoader(true);
         const headers = {
             'Content-Type': 'application/json',
@@ -105,7 +106,7 @@ const Login = () => {
                                                 <a href="javascript:void(0)" onClick={() => navigate(pageRoutes.forgotPassword)} className="ct_fs_16">Forgot Password?</a>
                                             </div>
                                             <div className="pt-4">
-                                                <button type="button" className="ct_custom_btn mx-auto d-block " onClick={handleSubmit}> Submit</button>
+                                                <button type="submit" className="ct_custom_btn mx-auto d-block " onClick={handleSubmit}> Submit</button>
                                             </div>
                                         </form>
                                     )

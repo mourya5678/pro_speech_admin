@@ -19,8 +19,9 @@ const QuizDetails = () => {
     const [currentPage, setCurrentPage] = useState(0);
     const [usersPerPage, setUserPerPages] = useState(10);
     const [allModules, setAllModules] = useState([])
+    const [lesson_id, setLessonId] = useState('');
 
-    const displayUsers = allModules.slice(
+    const displayUsers = allModules?.slice(
         currentPage * usersPerPage,
         (currentPage + 1) * usersPerPage
     );
@@ -40,11 +41,16 @@ const QuizDetails = () => {
         }
         var apiResponse = await pipApiResponse('get', `${baseUrl + getAllQuizByLessonIdEndPointURL + state?.id}`, headers, false);
         setAllModules(apiResponse?.data?.[0]?.questions ?? []);
+        setLessonId(apiResponse?.data?.[0]?._id ?? '');
         setIsLoader(false)
     };
 
     const handlePageClick = (data) => {
         setCurrentPage(data.selected);
+    };
+
+    const onHandleDeleteQuiz = (val, id) => {
+        console.log(val, id);
     };
 
     return (
@@ -79,27 +85,66 @@ const QuizDetails = () => {
                                                             <th>Option 3</th>
                                                             <th>Option 4</th>
                                                             <th>Answer</th>
+                                                            <th>Action</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         {displayUsers ? displayUsers?.map((item, i) => (
                                                             <tr>
                                                                 <td>{i + 1}</td>
-                                                                <td>{item?.text}</td>
+                                                                <td dangerouslySetInnerHTML={{ __html: (item?.text) }}></td>
                                                                 <td className="text-left">
-                                                                    <span>{item?.options[0]}</span>
+                                                                    {(item?.options[0]?.slice(0, 4) == 'http') ?
+                                                                        <img style={{ width: "150px", height: '100px' }} src={item?.options[0]} />
+                                                                        :
+                                                                        <span>{item?.options[0]}</span>
+                                                                    }
                                                                 </td>
                                                                 <td className="text-left">
-                                                                    <span>{item?.options[1]}</span>
+                                                                    {(item?.options[1]?.slice(0, 4) == 'http') ?
+                                                                        <img style={{ width: "150px", height: '100px' }} src={item?.options[1]} />
+                                                                        :
+                                                                        <span>{item?.options[1]}</span>
+                                                                    }
                                                                 </td>
                                                                 <td className="text-left">
-                                                                    <span>{item?.options[2]}</span>
+                                                                    {(item?.options[2]?.slice(0, 4) == 'http') ?
+                                                                        <img style={{ width: "150px", height: '100px' }} src={item?.options[2]} />
+                                                                        :
+                                                                        <span>{item?.options[2]}</span>
+                                                                    }
                                                                 </td>
                                                                 <td className="text-left">
-                                                                    <span>{item?.options[3]}</span>
+                                                                    {(item?.options[3]?.slice(0, 4) == 'http') ?
+                                                                        <img style={{ width: "150px", height: '100px' }} src={item?.options[3]} />
+                                                                        :
+                                                                        <span>{item?.options[3]}</span>
+                                                                    }
                                                                 </td>
                                                                 <td className="text-left">
-                                                                    <span>{item?.correctOption}</span>
+                                                                    <span>
+                                                                        {(item?.correctOption?.slice(0, 4) == 'http') ?
+                                                                            <img style={{ width: "150px", height: '100px' }} src={item?.correctOption} />
+                                                                            :
+                                                                            <span>{item?.correctOption}</span>
+                                                                        }
+                                                                    </span>
+                                                                </td>
+                                                                <td>
+                                                                    <a href="javascript:void(0)">
+                                                                        <button
+                                                                            onClick={() => navigate(pageRoutes.edit_quiz, { state: { data: item, lesson_id: lesson_id } })}
+                                                                            className="ct_edit_btn w-auto py-2 h-auto"
+                                                                        ><i className="fa-solid fa-edit" />
+                                                                        </button>
+                                                                    </a>
+                                                                    <a href="javascript:void(0)">
+                                                                        <button
+                                                                            className="ct_delete_btn w-auto py-2 h-auto"
+                                                                            onClick={() => onHandleDeleteQuiz(item, lesson_id)}
+                                                                        ><i className="fa-solid fa-trash" />
+                                                                        </button>
+                                                                    </a>
                                                                 </td>
                                                             </tr>
                                                         ))
@@ -110,6 +155,8 @@ const QuizDetails = () => {
                                                         }
                                                     </tbody>
                                                 </table>
+                                            </div>
+                                            <div className="mt-3">
                                                 {
                                                     allModules?.length > 0 && <div className="d-flex align-items-center flex-wrap justify-content-between gap-3 mb-3">
                                                         <PaginationDropdown
@@ -123,6 +170,7 @@ const QuizDetails = () => {
                                                                 allModules.length / usersPerPage
                                                             )}
                                                             onPageChange={handlePageClick}
+                                                            currentPage={currentPage}
                                                         />
                                                     </div>
                                                 }

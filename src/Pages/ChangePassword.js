@@ -28,7 +28,8 @@ const ChangePassword = () => {
         confirmPassword: ''
     };
 
-    const onHandleChangePassword = async (values, { resetForm }) => {
+    const onHandleChangePassword = async (values, { resetForm, setSubmitting }) => {
+        setSubmitting(false);
         setIsLoader(true);
         const token = pipGetToken();
         const data = {
@@ -114,7 +115,7 @@ const ChangePassword = () => {
                                                                 <ErrorMessage errors={errors} touched={touched} fieldName="confirmPassword" />
                                                             </div>
                                                             <div className="pt-4">
-                                                                <button type="button" className="ct_custom_btn mx-auto d-block " onClick={handleSubmit}> Submit</button>
+                                                                <button type="submit" className="ct_custom_btn mx-auto d-block " onClick={handleSubmit}> Submit</button>
                                                             </div>
                                                         </form>
                                                     )
@@ -133,4 +134,4 @@ const ChangePassword = () => {
     )
 }
 
-export default ChangePassword
+export default ChangePassword;

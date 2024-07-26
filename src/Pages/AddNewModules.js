@@ -1,20 +1,19 @@
-import React, { useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
-import Loader from '../Controllers/Loader'
-import { pipApiResponse, pipGetToken } from '../Controllers/Pip'
-import Footer from '../Layout/Footer'
-import Header from '../Layout/Header'
-import Sidebar from '../Layout/Sidebar'
-import { addSectionEndPointURL, baseUrl, updateModulesDetailEndPointURL } from '../Routes/bakendRoutes'
+import React, { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import Loader from '../Controllers/Loader';
+import { pipApiResponse, pipGetToken } from '../Controllers/Pip';
+import Footer from '../Layout/Footer';
+import Header from '../Layout/Header';
+import Sidebar from '../Layout/Sidebar';
+import { addSectionEndPointURL, baseUrl, createNewModuleEndPointURL, updateModulesDetailEndPointURL } from '../Routes/bakendRoutes';
 
-const UpdateModule = () => {
+const AddNewModules = () => {
     const navigate = useNavigate();
     const [isToggle, setIsToggle] = useState(false);
     const [isToggle1, setIsToggle1] = useState(false);
     const { state } = useLocation();
     const [isLoader, setIsLoader] = useState(false);
-    const [sectionImage, setSectionImage] = useState(state?.data?.module_image ?? '');
-    const [sectionName, setSectionName] = useState(state?.data?.module_name ?? '');
+    const [sectionName, setSectionName] = useState();
     const [changeImage, setChangeImage] = useState();
     const [errorMessage, setErrorMessage] = useState({
         sectionNameError: '',
@@ -23,7 +22,7 @@ const UpdateModule = () => {
     console.log({ state });
 
     const onHandleSubmitDetails = async () => {
-        if (sectionImage || changeImage && sectionName) {
+        if (changeImage && sectionName) {
             setErrorMessage({
                 ...errorMessage,
                 sectionNameError: '',
@@ -38,17 +37,16 @@ const UpdateModule = () => {
             }
             const formData = new FormData();
             formData.append("module_name", sectionName);
-            if (changeImage) {
-                formData.append("module_image", changeImage);
-            }
-            var apiResponse = await pipApiResponse('put', `${baseUrl + updateModulesDetailEndPointURL + state?.data?._id}`, headers, true, formData);
+            formData.append("module_image", changeImage);
+            formData.append("section_id", state?.data);
+            var apiResponse = await pipApiResponse('post', `${baseUrl + createNewModuleEndPointURL}`, headers, true, formData);
             setIsLoader(false);
             apiResponse?.success == true && navigate(-1);
         } else {
             setErrorMessage({
                 ...errorMessage,
                 sectionNameError: sectionName ? '' : "Please enter module name",
-                sectionImageError: sectionImage || changeImage ? '' : "Please select module image"
+                sectionImageError: changeImage ? '' : "Please select module image"
             })
         }
     };
@@ -95,18 +93,17 @@ const UpdateModule = () => {
                                         <div className="card-body">
                                             <div className="card-head-row card-tools-still-right mb-5">
                                                 <div className="d-flex align-items-center justify-content-center gap-3 flex-wrap w-100">
-                                                    <h4 className="card-title ct_fw_700 mb-0 text-center">Edit Module</h4>
+                                                    <h4 className="card-title ct_fw_700 mb-0 text-center">Add Module</h4>
                                                 </div>
                                             </div>
                                             <form className="pt-0">
                                                 <div className="row">
                                                     <div className="ct_proile_img ct_edit_profile_img text-center mx-auto mb-4">
                                                         <label for="ct_profile_edit">
-                                                            <img src={changeImage ? URL.createObjectURL(changeImage) : sectionImage ?? "assets/img/user124.jpg"} alt="" />
+                                                            <img src={changeImage ? URL.createObjectURL(changeImage) : "assets/img/user124.jpg"} alt="" />
                                                             <input
                                                                 className='form-control d-none'
                                                                 type="file" id="ct_profile_edit"
-                                                                // multiple
                                                                 onChange={handleDocumentsChange}
                                                                 accept="image/*,application/pdf"
                                                             />
@@ -155,4 +152,4 @@ const UpdateModule = () => {
     )
 }
 
-export default UpdateModule
+export default AddNewModules

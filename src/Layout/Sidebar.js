@@ -91,7 +91,7 @@ const Sidebar = () => {
                                 </li>
                             </>
                         ))}
-                        <li className="nav-item text-section">
+                        <li className="nav-item text-section mb-5">
                             <a href="javascript:void(0)" data-bs-toggle="collapse" onClick={() => onHandleOpenClose("Manage Content")}>
                                 <p>Manage Content</p>
                                 <span className="caret"></span>

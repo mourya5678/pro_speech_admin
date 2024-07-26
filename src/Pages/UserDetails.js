@@ -22,7 +22,7 @@ const UserDetails = () => {
     const [userName, setUserName] = useState();
     const [userImage, setUserImage] = useState();
 
-    const displayUsers = usersDetails.slice(
+    const displayUsers = usersDetails?.slice(
         currentPage * usersPerPage,
         (currentPage + 1) * usersPerPage
     );
@@ -48,7 +48,7 @@ const UserDetails = () => {
         console.log(apiResponse);
         setUsersDetails(apiResponse?.sectionsWithCompletion ?? []);
         setScoreData(apiResponse?.scoreData ?? {});
-        setUserName(apiResponse?.userData?.profile?.fullName)
+        setUserName(apiResponse?.userData?.profile)
         setUserImage(apiResponse?.userData?.profile?.profileImage)
     };
 
@@ -66,10 +66,17 @@ const UserDetails = () => {
                                 className="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4"
                             >
                                 <div>
-                                    <h3 className="fw-bold mb-3">{userName ?? ''}</h3>
-                                    {/* <SlideshowLightbox className=" mx-auto" data-bs-toggle="modal" data-bs-target="#ct_user_profile_img"> */}
-                                    <img className="ct_user_icon" data-bs-toggle="modal" data-bs-target="#ct_user_profile_img" src={userImage != '' ? userImage ?? "assets/img/user124.jpg" : "assets/img/user124.jpg"} />
-                                    {/* </SlideshowLightbox> */}
+                                    <h3 className="fw-bold mb-3">{userName?.fullName ?? ''}</h3>
+                                    <div className="d-flex align-items-center">
+                                        <div style={{ marginRight: "10px" }}>
+                                            <img className="ct_user_icon12" data-bs-toggle="modal" data-bs-target="#ct_user_profile_img" src={userImage != '' ? userImage ?? "assets/img/user124.jpg" : "assets/img/user124.jpg"} />
+                                        </div>
+                                        <div>
+                                            <p className="mb-0">{userName?.email ?? ''}</p>
+                                            <p className="mb-0">{pipDateFormate(userName?.dateOfBirth) ?? ''}</p>
+                                            <p className="mb-0">{userName?.phone ?? ''}</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div className="row">

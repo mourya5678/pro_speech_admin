@@ -1,7 +1,7 @@
-export const baseUrl = 'http://54.88.46.234:4000/api/';  // Live Url
-// export const baseUrl = 'http://192.168.29.104:4005/api/'; // Local Url
+// export const baseUrl = 'http://54.88.46.234:4000/api/';  // Live Url
+export const baseUrl = 'http://192.168.29.104:4011/api/'; // Local Url
 export const loginEndPointURL = 'auth/login';
-export const forgotPasswordEndPointURL = "auth/forgot-password";
+export const forgotPasswordEndPointURL = "admin/forgot-password-admin";
 export const getProfileDataEndPointURL = "auth/profile";
 export const updateProfileEndPointURl = "auth/profile";
 export const sideBarValuesEndPointURL = "admin/sidebar";
@@ -30,3 +30,5 @@ export const createPrivacyAndPolicyEndPointURL = "admin/privacy-policy";
 export const getTermsAndConditionEndPointURL = "terms-and-conditions";
 export const getPrivacyPolicyEndPointURL = "privacy-policy";
 export const getImageURLEndPointURL = "admin/file/upload";
+export const createNewModuleEndPointURL = "admin/modules";
+export const updateQuizByIdEndPointURL = "admin/quizzes/";

@@ -106,7 +106,7 @@ const Header = ({ onClick, onPress }) => {
                                     Are you sure, you want to logout? once you logout <br /> you need to login again?
               </p>
                                 <div className="modal-footer border-0 justify-content-center">
-                                    <button type="button" className="ct_custom_btn ct_dark_btn_clr ct_btn_radius ct_cancle_btn" data-bs-dismiss="modal" style={{ backgroundColor: "#eee" }}> Cancel</button>
+                                    <button type="button" className="ct_custom_btn ct_dark_btn_clr ct_btn_radius text-white ct_cancle_btn" data-bs-dismiss="modal" style={{ backgroundColor: "rgb(220, 53, 69)" }}> Cancel</button>
                                     <button type="button" className="ct_custom_btn ct_dark_btn_clr ct_btn_radius bg-danger text-white ct_logout_text_modal " data-bs-dismiss="modal" style={{ borderColor: "rgb(220, 53, 69)" }} onClick={onHandleLogout}>Log Out</button>
                                 </div>
                                 <div>

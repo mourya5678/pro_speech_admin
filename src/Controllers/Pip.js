@@ -55,7 +55,6 @@ export const pipApiResponse = async (method, url, headers = {}, isToast, data) =
             data: data,
             headers: headers
         });
-        // console.log(res);
         if (res?.data?.success == true) {
             isToast == true && pipSuccessMessage(res?.data?.message);
         } else {

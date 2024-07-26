@@ -5,7 +5,7 @@ import Sidebar from '../Layout/Sidebar';
 import { useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { pipApiResponse, pipGetToken } from '../Controllers/Pip';
-import { baseUrl, deleteLessonById, getLessonByIdEndpointURL } from '../Routes/bakendRoutes';
+import { baseUrl, getLessonByIdEndpointURL, updateLessonEndPointURL } from '../Routes/bakendRoutes';
 import { pageRoutes } from '../Routes/pageRoutes';
 import PaginationDropdown from '../Component/PaginationDropdown';
 import ReactPagination from '../Component/reactPagination';
@@ -20,7 +20,7 @@ const Lesson = () => {
     const [currentPage, setCurrentPage] = useState(0);
     const [usersPerPage, setUserPerPages] = useState(10);
 
-    const displayUsers = allLessons.slice(
+    let displayUsers = allLessons?.slice(
         currentPage * usersPerPage,
         (currentPage + 1) * usersPerPage
     );
@@ -40,11 +40,26 @@ const Lesson = () => {
         var apiResponse = await pipApiResponse('get', `${baseUrl + getLessonByIdEndpointURL + state?.data?._id}`, headers, false);
         setAllLessons(apiResponse?.data ?? []);
         setIsLoader(false)
-    }
+        setCurrentPage(currentPage)
+    };
 
     const handlePageClick = (data) => {
         setCurrentPage(data.selected);
     };
+
+    const onDeleteLessonById = async (val) => {
+        setIsLoader(true);
+        console.log({ val });
+        const token = pipGetToken();
+        const headers = {
+            'Content-Type': 'application/json',
+            'accept': 'application/json',
+            Authorization: `Bearer ${token}`
+        }
+        var apiResponse = await pipApiResponse('delete', `${baseUrl + updateLessonEndPointURL + `${val}`}`, headers, true);
+        setIsLoader(false);
+        getSideBarValue();
+    }
 
     return (
         <div className={`wrapper ct_main_dashboard ${isToggle ? "nav_open" : ""} ${isToggle1 ? "topbar_open" : ""}`}>
@@ -65,6 +80,7 @@ const Lesson = () => {
                                             <div className="card-head-row card-tools-still-right mb-4">
                                                 <div className="d-flex align-items-center justify-content-between gap-3 flex-wrap w-100">
                                                     <h4 className="card-title ct_fw_700 mb-0">{state?.section_name}</h4>
+                                                    <button type="button" onClick={() => navigate(pageRoutes.add_lesson, { state: { modal_id: state?.data?._id } })} className="ct_edit_btn ct_custom_btn w-auto py-2 h-auto"><i className="fa-solid fa-plus"></i> Add Lesson</button>
                                                 </div>
                                             </div>
                                             <div className="table-responsive ct_custom_table">
@@ -93,7 +109,9 @@ const Lesson = () => {
                                                                     <a href="javascript:void(0)"> <button className="ct_edit_btn  w-auto py-2 h-auto" onClick={() => navigate(pageRoutes.add_quiz, { state: { value: item, lesson_id: item?._id } })}><i className="fa-solid fa-plus me-2"></i></button></a>
                                                                 </td>
                                                                 <td className="text-end">
-                                                                    <a href="javascript:void(0)"><button className="ct_edit_btn  w-auto py-2 h-auto" onClick={() => navigate(pageRoutes.addLessonDetail, { state: { item: item?._id } })}>{item?.lessonDetails == "" ? <i className="fa-solid fa-plus me-2"></i> : <button className="ct_eye_btn" ><i className="fa-solid fa-edit"></i></button>}</button></a>
+                                                                    <button className="ct_eye_btn" onClick={() => navigate(pageRoutes.lesson_detail, { state: { id: item?._id, data: item } })}><i className="fa-solid fa-eye"></i></button>
+                                                                    <a href="javascript:void(0)"><button className="ct_edit_btn w-auto py-2 h-auto" onClick={() => navigate(pageRoutes.addLessonDetail, { state: { item: item?._id } })}>{item?.lessonDetails == "" ? <i className="fa-solid fa-plus me-2"></i> : <button className="ct_eye_btn" ><i className="fa-solid fa-edit"></i></button>}</button></a>
+                                                                    <a href="javascript:void(0)"><button className="ct_delete_btn w-auto py-2 h-auto" onClick={() => onDeleteLessonById(item?._id)}><i className="fa-solid fa-trash"></i></button></a>
                                                                 </td>
                                                             </tr>
                                                         ))}
@@ -112,6 +130,7 @@ const Lesson = () => {
                                                                 allLessons.length / usersPerPage
                                                             )}
                                                             onPageChange={handlePageClick}
+                                                            currentPage={currentPage}
                                                         />
                                                     </div>
                                                 }

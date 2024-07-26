@@ -3,7 +3,7 @@ import { pipApiResponse, pipDateFormate, pipGetToken } from '../Controllers/Pip'
 import Footer from '../Layout/Footer';
 import Header from '../Layout/Header';
 import Sidebar from '../Layout/Sidebar';
-import { baseUrl, deleteUserDataEndPointURL, getAllSectionEndPointURL, getAllUserDataEndPointURL, } from '../Routes/bakendRoutes';
+import { baseUrl, deleteUserDataEndPointURL, getAllSectionEndPointURL, getAllUserDataEndPointURL, updateSectionDetailsEndPointURL, } from '../Routes/bakendRoutes';
 import PaginationDropdown from '../Component/PaginationDropdown';
 import ReactPagination from '../Component/reactPagination';
 import { useNavigate } from 'react-router-dom';
@@ -22,12 +22,12 @@ const Home = () => {
     const [isToggle, setIsToggle] = useState(false);
     const [isToggle1, setIsToggle1] = useState(false);
 
-    const displayUsers = apiData.slice(
+    const displayUsers = apiData?.slice(
         currentPage * usersPerPage,
         (currentPage + 1) * usersPerPage
     );
 
-    const displaySection = sectionData.slice(
+    const displaySection = sectionData?.slice(
         currentPageSection * usersPerPageSection,
         (currentPageSection + 1) * usersPerPageSection
     );
@@ -88,8 +88,18 @@ const Home = () => {
         navigate(pageRoutes.edit_user_profile, { state: { id: id } });
     };
 
-    const onHandleAddSection = async (id) => {
-        navigate(pageRoutes.add_section, { state: { id: id } });
+    const onHandleDeleteSection = async (val) => {
+        console.log({ val });
+        // setIsLoader(true);
+        // const token = pipGetToken();
+        // const headers = {
+        //     'Content-Type': 'application/json',
+        //     'accept': 'application/json',
+        //     Authorization: `Bearer ${token}`
+        // }
+        // var apiResponse = await pipApiResponse('delete', baseUrl + updateSectionDetailsEndPointURL + val, headers, true);
+        // setIsLoader(false);
+        // apiResponse.success == true && getSectionApiData();
     };
 
     return (
@@ -165,6 +175,7 @@ const Home = () => {
                                                                 apiData.length / usersPerPage
                                                             )}
                                                             onPageChange={handlePageClick}
+                                                            currentPage={currentPage}
                                                         />
                                                     </div>
                                                 }
@@ -175,9 +186,9 @@ const Home = () => {
                                 <div className="col-md-12">
                                     <div className="card card-round">
                                         <div className="card-body">
-                                            <div className="card-head-row card-tools-still-right mb-4">
+                                            <div className="card-head-row card-tools-still-right mb-4 justify-content-between gap-3">
                                                 <div className="card-title ct_fw_700">All Section</div>
-                                                {/* <a href="javascript:void(0)" onClick={() => navigate(pageRoutes.add_section)}> <button className="ct_edit_btn ct_custom_btn w-auto py-2 h-auto"><i className="fa-solid fa-plus me-2"></i> Add Section</button></a> */}
+                                                <button type="button" onClick={() => navigate(pageRoutes.add_section)} className="ct_edit_btn ct_custom_btn w-auto py-2 h-auto"><i className="fa-solid fa-plus"></i> Add Section</button>
                                             </div>
                                             <div className="table-responsive ct_custom_table">
                                                 <table
@@ -200,6 +211,9 @@ const Home = () => {
                                                                     <td>
                                                                         <button className="ct_eye_btn" onClick={() => navigate(pageRoutes.section_detail, { state: { id: item } })}><i className="fa-solid fa-eye"></i></button>
                                                                         <button className="ct_eye_btn" onClick={() => navigate(pageRoutes.edit_section, { state: { id: item } })}><i className="fa-solid fa-edit"></i></button>
+                                                                        <button className="ct_delete_btn"
+                                                                            onClick={() => onHandleDeleteSection(item?._id)}
+                                                                        ><i className="fa-solid fa-trash"></i></button>
                                                                     </td>
                                                                 </tr>
                                                             ))
@@ -219,6 +233,7 @@ const Home = () => {
                                                                 sectionData.length / usersPerPageSection
                                                             )}
                                                             onPageChange={handlePageSectionClick}
+                                                            currentPage={currentPage}
                                                         />
                                                     </div>
                                                 }

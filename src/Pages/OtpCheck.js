@@ -15,7 +15,9 @@ const OtpCheck = () => {
     const [isLoader, setIsLoader] = useState(false);
     const [otp, setOtp] = useState('');
     const [otpError, setOtpError] = useState('');
-    const onHandleSubmit = async () => {
+
+    const onHandleSubmit = async (e) => {
+        e.preventDefault();
         if (otp?.length >= 4 && otp) {
             setOtpError('');
             setIsLoader(true);
@@ -34,7 +36,8 @@ const OtpCheck = () => {
         } else {
             setOtpError("Please enter your 4 digit otp")
         }
-    }
+    };
+    
     return (
         <div className="container">
             <div className="col-md-5 mx-auto">
@@ -66,7 +69,7 @@ const OtpCheck = () => {
                                     }
                                 </div>
                                 <div className="pt-4">
-                                    <button type="button" className="ct_custom_btn mx-auto d-block" onClick={onHandleSubmit}> Submit</button>
+                                    <button type="submit" className="ct_custom_btn mx-auto d-block" onClick={(e) => onHandleSubmit(e)}> Submit</button>
                                 </div>
                             </form>
                         }

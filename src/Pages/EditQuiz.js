@@ -9,28 +9,28 @@ import { message } from 'antd';
 import { pipApiResponse, pipGetToken } from '../Controllers/Pip';
 import { baseUrl, updateQuizByIdEndPointURL } from '../Routes/bakendRoutes';
 
-const AddQuiz = () => {
+const EditQuiz = () => {
     const navigate = useNavigate();
     const { state } = useLocation();
     const [isToggle, setIsToggle] = useState(false);
     const [isToggle1, setIsToggle1] = useState(false);
     const [isLoader, setIsLoader] = useState(false);
     const [quizAnswer, setQuizAnswer] = useState({
-        answer1: '',
+        answer1: state?.data?.options[0] ?? '',
         answer1Error: '',
-        answer2: '',
+        answer2: state?.data?.options[1] ?? '',
         answer2Error: '',
-        answer3: '',
+        answer3: state?.data?.options[2] ?? '',
         answer3Error: '',
-        answer4: '',
+        answer4: state?.data?.options[3] ?? '',
         answer4Error: ''
     });
-    const [correctAnswer, setCorrectAnswer] = useState('');
+    const [correctAnswer, setCorrectAnswer] = useState(state?.data?.correctOption ?? '');
     const [correctAnswerError, setCorrectAnswerError] = useState('');
     const question = useRef(null);
     let questions = state?.data?.text ?? '';
 
-    console.log(state);
+    console.log({ state });
 
     const onHandleDataChange = (val, val2, val3, val4) => {
         setQuizAnswer({
@@ -56,7 +56,8 @@ const AddQuiz = () => {
             setIsLoader(true);
             const token = pipGetToken();
             const formData = new FormData();
-            const textData = question?.getContent();
+            console.log({ question }, "question")
+            const textData = question?.current?.getContent() ?? question;
             formData.append('text', textData);
             formData.append('correctOption', correctAnswer);
             formData.append('options', quizAnswer?.answer1);
@@ -68,7 +69,7 @@ const AddQuiz = () => {
                 'accept': 'application/json',
                 Authorization: `Bearer ${token}`
             }
-            var apiResponse = await pipApiResponse('post', `${baseUrl + updateQuizByIdEndPointURL + state?.lesson_id}/questions`, headers, true, formData);
+            var apiResponse = await pipApiResponse('put', `${baseUrl + updateQuizByIdEndPointURL + state?.lesson_id}/questions/${state?.data?._id}`, headers, true, formData);
             apiResponse?.success == true && navigate(-1);
             setIsLoader(false);
         } else {
@@ -108,7 +109,7 @@ const AddQuiz = () => {
                                                     <a href="javascript:void(0)" onClick={() => navigate(-1)} className="ct_back_btn">
                                                         <i className="fa-solid fa-arrow-left-long"></i>
                                                     </a>
-                                                    <h4 className="card-title ct_fw_700 mb-0 mx-auto">Add Quiz</h4>
+                                                    <h4 className="card-title ct_fw_700 mb-0 mx-auto">Edit Quiz</h4>
                                                 </div>
                                             </div>
                                             <form className="pt-0">
@@ -158,13 +159,13 @@ const AddQuiz = () => {
                                                                 }
                                                             />
                                                             <input type="text" className="form-control"
-                                                                value={(typeof quizAnswer?.answer1) != 'object' ? quizAnswer?.answer1 : ' '}
+                                                                value={(typeof quizAnswer?.answer1) != 'object' && quizAnswer?.answer1?.slice(0, 4) != 'http' ? quizAnswer?.answer1 : ' '}
                                                                 onChange={(e) =>
                                                                     onHandleDataChange(e.target.value, quizAnswer?.answer2, quizAnswer?.answer3, quizAnswer?.answer4)
                                                                 }
                                                                 id="floatingInput" placeholder="Enter Answer" />
-                                                            {(typeof quizAnswer?.answer1) == 'object' &&
-                                                                <img style={{ width: "150px", height: '100px' }} src={URL.createObjectURL(quizAnswer?.answer1)} />
+                                                            {(typeof quizAnswer?.answer1) == 'object' || quizAnswer?.answer1?.slice(0, 4) == 'http' &&
+                                                                <img style={{ width: "150px", height: '100px' }} src={quizAnswer?.answer1?.slice(0, 4) == 'http' ? quizAnswer?.answer1 : URL.createObjectURL(quizAnswer?.answer1)} />
                                                             }
                                                             {quizAnswer?.answer1Error != '' &&
                                                                 <span style={{ color: "red" }}>
@@ -196,13 +197,13 @@ const AddQuiz = () => {
                                                                 }
                                                             />
                                                             <input type="text" className="form-control"
-                                                                value={(typeof quizAnswer?.answer2) != 'object' ? quizAnswer?.answer2 : ' '}
+                                                                value={(typeof quizAnswer?.answer2) != 'object' && quizAnswer?.answer2?.slice(0, 4) != 'http' ? quizAnswer?.answer2 : ' '}
                                                                 onChange={(e) =>
                                                                     onHandleDataChange(quizAnswer?.answer1, e.target.value, quizAnswer?.answer3, quizAnswer?.answer4)
                                                                 }
                                                                 id="floatingInput" placeholder="Enter Answer" />
-                                                            {(typeof quizAnswer?.answer2) == 'object' &&
-                                                                <img style={{ width: "150px", height: '100px' }} src={URL.createObjectURL(quizAnswer?.answer2)} />
+                                                            {(typeof quizAnswer?.answer2) == 'object' || quizAnswer?.answer2?.slice(0, 4) == 'http' &&
+                                                                <img style={{ width: "150px", height: '100px' }} src={quizAnswer?.answer2?.slice(0, 4) == 'http' ? quizAnswer?.answer2 : URL.createObjectURL(quizAnswer?.answer2)} />
                                                             }
                                                             {quizAnswer?.answer2Error != '' &&
                                                                 <span style={{ color: "red" }}>
@@ -234,13 +235,13 @@ const AddQuiz = () => {
                                                                 }
                                                             />
                                                             <input type="text" className="form-control"
-                                                                value={(typeof quizAnswer?.answer3) != 'object' ? quizAnswer?.answer3 : ' '}
+                                                                value={(typeof quizAnswer?.answer3) != 'object' && quizAnswer?.answer3?.slice(0, 4) != 'http' ? quizAnswer?.answer3 : ' '}
                                                                 onChange={(e) =>
                                                                     onHandleDataChange(quizAnswer?.answer1, quizAnswer?.answer2, e.target.value, quizAnswer?.answer4)
                                                                 }
                                                                 id="floatingInput" placeholder="Enter Answer" />
-                                                            {(typeof quizAnswer?.answer3) == 'object' &&
-                                                                <img style={{ width: "150px", height: '100px' }} src={URL.createObjectURL(quizAnswer?.answer3)} />
+                                                            {(typeof quizAnswer?.answer3) == 'object' || quizAnswer?.answer3?.slice(0, 4) == 'http' &&
+                                                                <img style={{ width: "150px", height: '100px' }} src={quizAnswer?.answer3?.slice(0, 4) == 'http' ? quizAnswer?.answer3 : URL.createObjectURL(quizAnswer?.answer3)} />
                                                             }
                                                             {quizAnswer?.answer3Error != '' &&
                                                                 <span style={{ color: "red" }}>
@@ -272,13 +273,13 @@ const AddQuiz = () => {
                                                                 }
                                                             />
                                                             <input type="text" className="form-control"
-                                                                value={(typeof quizAnswer?.answer4) != 'object' ? quizAnswer?.answer4 : ' '}
+                                                                value={(typeof quizAnswer?.answer4) != 'object' && quizAnswer?.answer4?.slice(0, 4) != 'http' ? quizAnswer?.answer4 : ' '}
                                                                 onChange={(e) =>
                                                                     onHandleDataChange(quizAnswer?.answer1, quizAnswer?.answer2, quizAnswer?.answer3, e.target.value)
                                                                 }
                                                                 id="floatingInput" placeholder="Enter Answer" />
-                                                            {(typeof quizAnswer?.answer4) == 'object' &&
-                                                                <img style={{ width: "150px", height: '100px' }} src={URL.createObjectURL(quizAnswer?.answer4)} />
+                                                            {(typeof quizAnswer?.answer4) == 'object' || quizAnswer?.answer4?.slice(0, 4) == 'http' &&
+                                                                <img style={{ width: "150px", height: '100px' }} src={quizAnswer?.answer4?.slice(0, 4) == 'http' ? quizAnswer?.answer4 : URL.createObjectURL(quizAnswer?.answer4)} />
                                                             }
                                                             {quizAnswer?.answer4Error != '' &&
                                                                 <span style={{ color: "red" }}>
@@ -309,4 +310,4 @@ const AddQuiz = () => {
     )
 }
 
-export default AddQuiz;
+export default EditQuiz;

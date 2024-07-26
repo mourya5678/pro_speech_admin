@@ -125,7 +125,7 @@ const AddLessonDetail = () => {
                                                     <a href="javascript:void(0)" onClick={() => navigate(-1)} className="ct_back_btn">
                                                         <i className="fa-solid fa-arrow-left-long"></i>
                                                     </a>
-                                                    <h4 className="card-title ct_fw_700 mb-0 mx-auto">Add Lesson Detail</h4>
+                                                    <h4 className="card-title ct_fw_700 mb-0 mx-auto">Edit Lesson Detail</h4>
                                                 </div>
                                             </div>
                                             <form className="pt-0">
@@ -146,7 +146,7 @@ const AddLessonDetail = () => {
                                                             <label className="ct_fw_600 mb-2">Lesson Detail</label>
                                                             <div id="">
                                                                 <Editor
-                                                                    apiKey='iu3kqbs7z6b23a94nqmktcf7ay4gvdpky5fz85bh1qsv3h9x'
+                                                                    apiKey='k8k0zif94r5v1y87swuchtsj0r9f26gj5t7eptehjuhtmvsn'
                                                                     onInit={(evt, editor) => (editorRef.current = editor)}
                                                                     init={{
                                                                         plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate ai mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss markdown',
@@ -175,7 +175,7 @@ const AddLessonDetail = () => {
                                                 </div>
                                             </form>
                                         </div>
-                                        <div className="card-body pt-5">
+                                        {/* <div className="card-body pt-5">
                                             <div className="card-head-row card-tools-still-right mb-5">
                                                 <div className="d-flex align-items-center justify-content-between gap-3 flex-wrap w-100">
                                                     <h4 className="card-title ct_fw_700 mb-0 mx-auto">Get document url</h4>
@@ -198,7 +198,7 @@ const AddLessonDetail = () => {
                                                     <button type="button" className="ct_custom_btn mx-auto d-block " onClick={onHandleGetDocumentUrl}> Submit</button>
                                                 </div>
                                             </form>
-                                        </div>
+                                        </div> */}
                                     </div>
                                 </div>
                             </div>

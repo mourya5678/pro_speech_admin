@@ -225,6 +225,12 @@
   border-radius: 100px;
   object-fit: cover;
 }
+.ct_user_icon12 {
+  width: 100px;
+  height: 100px;
+  border-radius: 100px;
+  object-fit: cover;
+}
 .form-control {
   background-color: whitesmoke;
 }

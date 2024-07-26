@@ -5,7 +5,6 @@ import { pageRoutes } from '../Routes/pageRoutes';
 
 const PrivateRoute = ({ children }) => {
     const isAuth = pipGetToken();
-    // console.log({ isAuth })
     return (
         isAuth ? children : <Navigate to={pageRoutes.login} />
     )

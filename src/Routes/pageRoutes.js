@@ -14,7 +14,11 @@ import UpdateModule from "../Pages/UpdateModule";
 import QuizDetails from "../Pages/QuizDetails";
 import TermsCondition from "../Pages/TermsCondition";
 import PrivacyPolicy from "../Pages/PrivacyPolicy";
-
+import LessonDetails from "../Pages/LessonDetails";
+import AddNewLesson from "../Pages/AddNewLesson";
+import AddNewModules from "../Pages/AddNewModules";
+import SurveyCreator from "../Component/SurveyCreators";
+import EditQuiz from "../Pages/EditQuiz";
 
 export const pageRoutes = {
     login: '/login',
@@ -25,7 +29,8 @@ export const pageRoutes = {
     editProfile: '/edit-profile',
     changePassword: '/change-password',
     lesson: '/lesson',
-    addLessonDetail: '/add-lesson-details',
+    lesson_detail: '/lesson_detail',
+    addLessonDetail: '/edit-lesson-details',
     add_quiz: '/add-quiz',
     otp_check: '/opt-check',
     new_password: "/new-password",
@@ -37,7 +42,11 @@ export const pageRoutes = {
     edit_module: "/edit-module",
     quiz_Details: "/quiz-detail",
     manage_Content: "/terms-condition",
-    privacy_policy: "/privacy-policy"
+    privacy_policy: "/privacy-policy",
+    add_lesson: "/add_lesson",
+    add_module: '/add-module',
+    create_quiz: '/create-quiz',
+    edit_quiz: '/edit-quiz',
 };
 
 export const AllRoutes = [
@@ -72,8 +81,20 @@ export const AllRoutes = [
         isPrivate: true
     },
     {
+        name: 'LessonDetails',
+        path: '/lesson_detail',
+        element: <LessonDetails />,
+        isPrivate: true
+    },
+    {
+        name: 'AddNewLesson',
+        path: '/add_lesson',
+        element: <AddNewLesson />,
+        isPrivate: true
+    },
+    {
         name: 'Lesson-Details',
-        path: '/add-lesson-details',
+        path: '/edit-lesson-details',
         element: <AddLessonDetail />,
         isPrivate: true
     },
@@ -81,6 +102,12 @@ export const AllRoutes = [
         name: 'Add_Quiz',
         path: '/add-quiz',
         element: <AddQuiz />,
+        isPrivate: true
+    },
+    {
+        name: 'Edit_Quiz',
+        path: '/edit-quiz',
+        element: <EditQuiz />,
         isPrivate: true
     },
     {
@@ -135,6 +162,18 @@ export const AllRoutes = [
         name: 'Privacy_Policy',
         path: '/privacy-policy',
         element: <PrivacyPolicy />,
+        isPrivate: true
+    },
+    {
+        name: 'AddNewModule',
+        path: '/add-module',
+        element: <AddNewModules />,
+        isPrivate: true
+    },
+    {
+        name: 'CreateQuiz',
+        path: '/create-quiz',
+        element: <SurveyCreator />,
         isPrivate: true
     },
 ]

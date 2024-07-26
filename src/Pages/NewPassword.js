@@ -18,7 +18,8 @@ const NewPassword = () => {
         confirmPassword: ''
     }
 
-    const onHandleSubmit = async (values, { resetForm }) => {
+    const onHandleSubmit = async (values, { resetForm, setSubmitting }) => {
+        setSubmitting(false);
         setIsLoader(true);
         const data = {
             email: state?.email,
@@ -90,7 +91,7 @@ const NewPassword = () => {
                                                 <ErrorMessage errors={errors} touched={touched} fieldName="confirmPassword" />
                                             </div>
                                             <div className="pt-4">
-                                                <button type="button" className="ct_custom_btn mx-auto d-block " onClick={handleSubmit}> Submit</button>
+                                                <button type="submit" className="ct_custom_btn mx-auto d-block " onClick={handleSubmit}> Submit</button>
                                             </div>
                                         </form>
                                     )

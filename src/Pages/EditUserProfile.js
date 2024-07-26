@@ -56,9 +56,10 @@ const EditUserProfile = () => {
         console.log(apiResponse?.userData?.profile)
     };
 
-    const onHandleSubmitData = async () => {
+    const onHandleSubmitData = async (e) => {
+        e.preventDefault();
         const mobileNumberPattern = /^\d{10}$/;
-        if (fullName && dateOfBirth && mobileNumberPattern.test(phone) && profileImage || profileImageChange && gender) {
+        if (fullName && dateOfBirth && mobileNumberPattern.test(phone) && gender) {
             setIsLoader(true)
             setErrorMessage({
                 ...errorMessage, fullNameError: '',
@@ -90,7 +91,7 @@ const EditUserProfile = () => {
             setErrorMessage({
                 ...errorMessage, fullNameError: !fullName ? "Please enter fullName" : '',
                 dateOfBirth: !dateOfBirth ? "Please select the Dob" : '',
-                phone: "Please enter 10 digit phone number",
+                phone: !mobileNumberPattern.test(phone) ? "Please enter 10 digit phone number" : '',
                 gender: !gender ? "Please select gender" : '',
             })
             setIsLoader(false);
@@ -210,7 +211,7 @@ const EditUserProfile = () => {
                                                     </div>
                                                 </div>
                                                 <div className="pt-4">
-                                                    <button type="button" onClick={onHandleSubmitData} className="ct_custom_btn mx-auto d-block"> Submit</button>
+                                                    <button type="submit" onClick={(e) => onHandleSubmitData(e)} className="ct_custom_btn mx-auto d-block"> Submit</button>
                                                 </div>
                                             </form>
                                         </div>
