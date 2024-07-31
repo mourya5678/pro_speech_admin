@@ -33,17 +33,25 @@ const EditQuiz = () => {
 
     useEffect(() => {
         for (var i = 0; i < 4; i++) {
-            if (state?.data?.options[i]?.slice(0, 4) == 'http') {
-                const data = state?.data?.options[i]?.split('.')
-                if (data[data?.length - 1] == 'mp3' || data[data?.length - 1] == 'wav' || data[data?.length - 1] == 'aif') {
+            if (state?.data?.options[i]?.slice(0, 5) == 'https') {
+                const data = state?.data?.options[i]?.split('.');
+                if (data[data?.length - 1] == 'mp3') {
                     questionOptions?.length != 4 && questionOptions?.push('audio')
+                    setQuestionOptions(questionOptions => questionOptions?.filter(item => item))
+                } else if (data[data?.length - 1] == 'wav') {
+                    questionOptions?.length != 4 && questionOptions?.push('audio')
+                    setQuestionOptions(questionOptions => questionOptions?.filter(item => item))
+                } else if (data[data?.length - 1] == 'aif') {
+                    questionOptions?.length != 4 && questionOptions?.push('audio')
+                    setQuestionOptions(questionOptions => questionOptions?.filter(item => item))
                 } else {
                     questionOptions?.length != 4 && questionOptions?.push('image')
+                    setQuestionOptions(questionOptions => questionOptions?.filter(item => item))
                 }
             } else {
                 questionOptions?.length != 4 && questionOptions?.push('text')
+                setQuestionOptions(questionOptions => questionOptions?.filter(item => item))
             }
-            setQuestionOptions(questionOptions => questionOptions?.filter(item => item))
         }
     }, []);
 
@@ -125,25 +133,29 @@ const EditQuiz = () => {
 
     const onHandleAddAnswer = async () => {
         if (quizAnswer?.answer1 && quizAnswer?.answer2 && quizAnswer?.answer3 && quizAnswer?.answer4 && correctAnswer) {
-            setIsLoader(true);
-            const token = pipGetToken();
-            const formData = new FormData();
-            console.log({ question }, "question")
-            const textData = question?.current?.getContent() ?? question;
-            formData.append('text', textData);
-            formData.append('correctOption', correctAnswer);
-            formData.append('options', quizAnswer?.answer1);
-            formData.append('options', quizAnswer?.answer2);
-            formData.append('options', quizAnswer?.answer3);
-            formData.append('options', quizAnswer?.answer4);
-            const headers = {
-                'Content-Type': 'multipart/form-data',
-                'accept': 'application/json',
-                Authorization: `Bearer ${token}`
+            if (quizAnswer?.answer1 == correctAnswer || quizAnswer?.answer2 == correctAnswer || quizAnswer?.answer3 == correctAnswer || quizAnswer?.answer4 == correctAnswer) {
+                setIsLoader(true);
+                const token = pipGetToken();
+                const formData = new FormData();
+                console.log({ question }, "question")
+                const textData = question?.current?.getContent() ?? question;
+                formData.append('text', textData);
+                formData.append('correctOption', correctAnswer);
+                formData.append('options', quizAnswer?.answer1);
+                formData.append('options', quizAnswer?.answer2);
+                formData.append('options', quizAnswer?.answer3);
+                formData.append('options', quizAnswer?.answer4);
+                const headers = {
+                    'Content-Type': 'multipart/form-data',
+                    'accept': 'application/json',
+                    Authorization: `Bearer ${token}`
+                }
+                var apiResponse = await pipApiResponse('put', `${baseUrl + updateQuizByIdEndPointURL + state?.lesson_id}/questions/${state?.data?._id}`, headers, true, formData);
+                apiResponse?.success == true && navigate(-1);
+                setIsLoader(false);
+            } else {
+                message.error("Please select the correct answer");
             }
-            var apiResponse = await pipApiResponse('put', `${baseUrl + updateQuizByIdEndPointURL + state?.lesson_id}/questions/${state?.data?._id}`, headers, true, formData);
-            apiResponse?.success == true && navigate(-1);
-            setIsLoader(false);
         } else {
             setQuizAnswer({
                 ...quizAnswer,
@@ -231,24 +243,35 @@ const EditQuiz = () => {
                                                                 }
                                                             />
                                                             <input type="text" className="form-control"
-                                                                value={(typeof quizAnswer?.answer1) != 'object' && quizAnswer?.answer1?.slice(0, 4) != 'http' ? quizAnswer?.answer1 : ' '}
+                                                                value={(typeof quizAnswer?.answer1) != 'object' && quizAnswer?.answer1?.slice(0, 5) != 'https' ? quizAnswer?.answer1 : ' '}
                                                                 onChange={(e) =>
                                                                     onHandleDataChange(e.target.value, quizAnswer?.answer2, quizAnswer?.answer3, quizAnswer?.answer4, '0')
                                                                 }
                                                                 id="floatingInput" placeholder="Enter Answer" />
-                                                            {(typeof quizAnswer?.answer1) == 'object' && questionOptions[0] == 'image' &&
-                                                                <img style={{ width: "150px", height: '100px' }} src={URL.createObjectURL(quizAnswer?.answer1)} />
-                                                            }
-                                                            {(typeof quizAnswer?.answer1) == 'object' && questionOptions[0] == 'audio' &&
+                                                            {(typeof quizAnswer?.answer1) == 'object' &&
+                                                                quizAnswer?.answer1?.name?.endsWith('.mp3') ?
                                                                 <audio controls src={URL.createObjectURL(quizAnswer?.answer1)} style={{ width: "250px", height: '50' }} />
+                                                                :
+                                                                quizAnswer?.answer1?.name?.endsWith('.wav') ?
+                                                                    <audio controls src={URL.createObjectURL(quizAnswer?.answer1)} style={{ width: "250px", height: '50' }} />
+                                                                    :
+                                                                    quizAnswer?.answer1?.name?.endsWith('.aif') ?
+                                                                        <audio controls src={URL.createObjectURL(quizAnswer?.answer1)} style={{ width: "250px", height: '50' }} />
+                                                                        :
+                                                                        (typeof quizAnswer?.answer1) == 'object' && <img style={{ width: "150px", height: '100px' }} src={URL.createObjectURL(quizAnswer?.answer1)} />
+
                                                             }
-                                                            {
-                                                                quizAnswer?.answer1?.slice(0, 4) == 'http' && questionOptions[0] == 'image' &&
-                                                                <img style={{ width: "150px", height: '100px' }} src={quizAnswer?.answer1} />
-                                                            }
-                                                            {
-                                                                quizAnswer?.answer1?.slice(0, 4) == 'http' && questionOptions[0] == 'audio' &&
+                                                            {quizAnswer?.answer1?.slice(0, 5) == 'https' &&
+                                                                (typeof quizAnswer?.answer1) != 'object' && quizAnswer?.answer1?.endsWith('.mp3') ?
                                                                 <audio controls src={quizAnswer?.answer1} style={{ width: "250px", height: '50' }} />
+                                                                :
+                                                                (typeof quizAnswer?.answer1) != 'object' && quizAnswer?.answer1?.endsWith('.wav') ?
+                                                                    <audio controls src={quizAnswer?.answer1} style={{ width: "250px", height: '50' }} />
+                                                                    :
+                                                                    (typeof quizAnswer?.answer1) != 'object' && quizAnswer?.answer1?.endsWith('.aif') ?
+                                                                        <audio controls src={quizAnswer?.answer1} style={{ width: "250px", height: '50' }} />
+                                                                        :
+                                                                        quizAnswer?.answer1?.slice(0, 5) == 'https' && <img style={{ width: "150px", height: '100px' }} src={quizAnswer?.answer1}></img>
                                                             }
                                                             {quizAnswer?.answer1Error != '' &&
                                                                 <span style={{ color: "red" }}>
@@ -280,25 +303,36 @@ const EditQuiz = () => {
                                                                 }
                                                             />
                                                             <input type="text" className="form-control"
-                                                                value={(typeof quizAnswer?.answer2) != 'object' && quizAnswer?.answer2?.slice(0, 4) != 'http' ? quizAnswer?.answer2 : ' '}
+                                                                value={(typeof quizAnswer?.answer2) != 'object' && quizAnswer?.answer2?.slice(0, 5) != 'https' ? quizAnswer?.answer2 : ' '}
                                                                 onChange={(e) =>
                                                                     onHandleDataChange(quizAnswer?.answer1, e.target.value, quizAnswer?.answer3, quizAnswer?.answer4, '1')
                                                                 }
                                                                 id="floatingInput" placeholder="Enter Answer" />
 
-                                                            {(typeof quizAnswer?.answer2) == 'object' && questionOptions[1] == 'image' &&
-                                                                <img style={{ width: "150px", height: '100px' }} src={URL.createObjectURL(quizAnswer?.answer2)} />
-                                                            }
-                                                            {(typeof quizAnswer?.answer2) == 'object' && questionOptions[1] == 'audio' &&
+                                                            {(typeof quizAnswer?.answer2) == 'object' &&
+                                                                quizAnswer?.answer2?.name?.endsWith('.mp3') ?
                                                                 <audio controls src={URL.createObjectURL(quizAnswer?.answer2)} style={{ width: "250px", height: '50' }} />
+                                                                :
+                                                                quizAnswer?.answer2?.name?.endsWith('.wav') ?
+                                                                    <audio controls src={URL.createObjectURL(quizAnswer?.answer2)} style={{ width: "250px", height: '50' }} />
+                                                                    :
+                                                                    quizAnswer?.answer2?.name?.endsWith('.aif') ?
+                                                                        <audio controls src={URL.createObjectURL(quizAnswer?.answer2)} style={{ width: "250px", height: '50' }} />
+                                                                        :
+                                                                        (typeof quizAnswer?.answer2) == 'object' && <img style={{ width: "150px", height: '100px' }} src={URL.createObjectURL(quizAnswer?.answer2)} />
+
                                                             }
-                                                            {
-                                                                quizAnswer?.answer2?.slice(0, 4) == 'http' && questionOptions[1] == 'image' &&
-                                                                <img style={{ width: "150px", height: '100px' }} src={quizAnswer?.answer2} />
-                                                            }
-                                                            {
-                                                                quizAnswer?.answer2?.slice(0, 4) == 'http' && questionOptions[1] == 'audio' &&
+                                                            {quizAnswer?.answer2?.slice(0, 5) == 'https' &&
+                                                                (typeof quizAnswer?.answer2) != 'object' && quizAnswer?.answer2?.endsWith('.mp3') ?
                                                                 <audio controls src={quizAnswer?.answer2} style={{ width: "250px", height: '50' }} />
+                                                                :
+                                                                (typeof quizAnswer?.answer2) != 'object' && quizAnswer?.answer2?.endsWith('.wav') ?
+                                                                    <audio controls src={quizAnswer?.answer2} style={{ width: "250px", height: '50' }} />
+                                                                    :
+                                                                    (typeof quizAnswer?.answer2) != 'object' && quizAnswer?.answer2?.endsWith('.aif') ?
+                                                                        <audio controls src={quizAnswer?.answer2} style={{ width: "250px", height: '50' }} />
+                                                                        :
+                                                                        quizAnswer?.answer2?.slice(0, 5) == 'https' && <img style={{ width: "150px", height: '100px' }} src={quizAnswer?.answer2}></img>
                                                             }
                                                             {quizAnswer?.answer2Error != '' &&
                                                                 <span style={{ color: "red" }}>
@@ -330,24 +364,35 @@ const EditQuiz = () => {
                                                                 }
                                                             />
                                                             <input type="text" className="form-control"
-                                                                value={(typeof quizAnswer?.answer3) != 'object' && quizAnswer?.answer3?.slice(0, 4) != 'http' ? quizAnswer?.answer3 : ' '}
+                                                                value={(typeof quizAnswer?.answer3) != 'object' && quizAnswer?.answer3?.slice(0, 5) != 'https' ? quizAnswer?.answer3 : ' '}
                                                                 onChange={(e) =>
                                                                     onHandleDataChange(quizAnswer?.answer1, quizAnswer?.answer2, e.target.value, quizAnswer?.answer4, '2')
                                                                 }
                                                                 id="floatingInput" placeholder="Enter Answer" />
-                                                            {(typeof quizAnswer?.answer3) == 'object' && questionOptions[2] == 'image' &&
-                                                                <img style={{ width: "150px", height: '100px' }} src={URL.createObjectURL(quizAnswer?.answer3)} />
-                                                            }
-                                                            {(typeof quizAnswer?.answer3) == 'object' && questionOptions[2] == 'audio' &&
+                                                            {(typeof quizAnswer?.answer3) == 'object' &&
+                                                                quizAnswer?.answer3?.name?.endsWith('.mp3') ?
                                                                 <audio controls src={URL.createObjectURL(quizAnswer?.answer3)} style={{ width: "250px", height: '50' }} />
+                                                                :
+                                                                quizAnswer?.answer3?.name?.endsWith('.wav') ?
+                                                                    <audio controls src={URL.createObjectURL(quizAnswer?.answer3)} style={{ width: "250px", height: '50' }} />
+                                                                    :
+                                                                    quizAnswer?.answer3?.name?.endsWith('.aif') ?
+                                                                        <audio controls src={URL.createObjectURL(quizAnswer?.answer3)} style={{ width: "250px", height: '50' }} />
+                                                                        :
+                                                                        (typeof quizAnswer?.answer3) == 'object' && <img style={{ width: "150px", height: '100px' }} src={URL.createObjectURL(quizAnswer?.answer3)} />
+
                                                             }
-                                                            {
-                                                                quizAnswer?.answer3?.slice(0, 4) == 'http' && questionOptions[2] == 'image' &&
-                                                                <img style={{ width: "150px", height: '100px' }} src={quizAnswer?.answer3} />
-                                                            }
-                                                            {
-                                                                quizAnswer?.answer3?.slice(0, 4) == 'http' && questionOptions[2] == 'audio' &&
+                                                            {quizAnswer?.answer3?.slice(0, 5) == 'https' &&
+                                                                (typeof quizAnswer?.answer3) != 'object' && quizAnswer?.answer3?.endsWith('.mp3') ?
                                                                 <audio controls src={quizAnswer?.answer3} style={{ width: "250px", height: '50' }} />
+                                                                :
+                                                                (typeof quizAnswer?.answer3) != 'object' && quizAnswer?.answer3?.endsWith('.wav') ?
+                                                                    <audio controls src={quizAnswer?.answer3} style={{ width: "250px", height: '50' }} />
+                                                                    :
+                                                                    (typeof quizAnswer?.answer3) != 'object' && quizAnswer?.answer3?.endsWith('.aif') ?
+                                                                        <audio controls src={quizAnswer?.answer3} style={{ width: "250px", height: '50' }} />
+                                                                        :
+                                                                        quizAnswer?.answer3?.slice(0, 5) == 'https' && <img style={{ width: "150px", height: '100px' }} src={quizAnswer?.answer3}></img>
                                                             }
                                                             {quizAnswer?.answer3Error != '' &&
                                                                 <span style={{ color: "red" }}>
@@ -379,24 +424,35 @@ const EditQuiz = () => {
                                                                 }
                                                             />
                                                             <input type="text" className="form-control"
-                                                                value={(typeof quizAnswer?.answer4) != 'object' && quizAnswer?.answer4?.slice(0, 4) != 'http' ? quizAnswer?.answer4 : ' '}
+                                                                value={(typeof quizAnswer?.answer4) != 'object' && quizAnswer?.answer4?.slice(0, 5) != 'https' ? quizAnswer?.answer4 : ' '}
                                                                 onChange={(e) =>
                                                                     onHandleDataChange(quizAnswer?.answer1, quizAnswer?.answer2, quizAnswer?.answer3, e.target.value, '3')
                                                                 }
                                                                 id="floatingInput" placeholder="Enter Answer" />
-                                                            {(typeof quizAnswer?.answer4) == 'object' && questionOptions[3] == 'image' &&
-                                                                <img style={{ width: "150px", height: '100px' }} src={URL.createObjectURL(quizAnswer?.answer4)} />
-                                                            }
-                                                            {(typeof quizAnswer?.answer4) == 'object' && questionOptions[3] == 'audio' &&
+                                                            {(typeof quizAnswer?.answer4) == 'object' &&
+                                                                quizAnswer?.answer4?.name?.endsWith('.mp3') ?
                                                                 <audio controls src={URL.createObjectURL(quizAnswer?.answer4)} style={{ width: "250px", height: '50' }} />
+                                                                :
+                                                                quizAnswer?.answer4?.name?.endsWith('.wav') ?
+                                                                    <audio controls src={URL.createObjectURL(quizAnswer?.answer4)} style={{ width: "250px", height: '50' }} />
+                                                                    :
+                                                                    quizAnswer?.answer4?.name?.endsWith('.aif') ?
+                                                                        <audio controls src={URL.createObjectURL(quizAnswer?.answer4)} style={{ width: "250px", height: '50' }} />
+                                                                        :
+                                                                        (typeof quizAnswer?.answer4) == 'object' && <img style={{ width: "150px", height: '100px' }} src={URL.createObjectURL(quizAnswer?.answer4)} />
+
                                                             }
-                                                            {
-                                                                quizAnswer?.answer4?.slice(0, 4) == 'http' && questionOptions[3] == 'image' &&
-                                                                <img style={{ width: "150px", height: '100px' }} src={quizAnswer?.answer4} />
-                                                            }
-                                                            {
-                                                                quizAnswer?.answer4?.slice(0, 4) == 'http' && questionOptions[3] == 'audio' &&
+                                                            {quizAnswer?.answer4?.slice(0, 5) == 'https' &&
+                                                                (typeof quizAnswer?.answer4) != 'object' && quizAnswer?.answer4?.endsWith('.mp3') ?
                                                                 <audio controls src={quizAnswer?.answer4} style={{ width: "250px", height: '50' }} />
+                                                                :
+                                                                (typeof quizAnswer?.answer4) != 'object' && quizAnswer?.answer4?.endsWith('.wav') ?
+                                                                    <audio controls src={quizAnswer?.answer4} style={{ width: "250px", height: '50' }} />
+                                                                    :
+                                                                    (typeof quizAnswer?.answer4) != 'object' && quizAnswer?.answer4?.endsWith('.aif') ?
+                                                                        <audio controls src={quizAnswer?.answer4} style={{ width: "250px", height: '50' }} />
+                                                                        :
+                                                                        quizAnswer?.answer4?.slice(0, 5) == 'https' && <img style={{ width: "150px", height: '100px' }} src={quizAnswer?.answer4}></img>
                                                             }
                                                             {quizAnswer?.answer4Error != '' &&
                                                                 <span style={{ color: "red" }}>
