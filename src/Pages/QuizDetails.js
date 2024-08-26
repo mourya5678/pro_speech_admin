@@ -106,7 +106,7 @@ const QuizDetails = () => {
                                                                 <td>{i + 1}</td>
                                                                 <td dangerouslySetInnerHTML={{ __html: (item?.text) }}></td>
                                                                 <td className="text-left">
-                                                                    {item?.options[0]?.slice(0, 5) == 'https' ?
+                                                                    {item?.options[0]?.slice(0, 4) == 'http' ?
                                                                         item?.options[0]?.endsWith('.mp3') ?
                                                                             <audio controls src={item?.options[0]} style={{ width: "250px", height: '50' }} />
                                                                             :
@@ -118,11 +118,11 @@ const QuizDetails = () => {
                                                                                     :
                                                                                     <img style={{ width: "150px", height: '100px' }} src={item?.options[0]}></img>
                                                                         :
-                                                                        <span>{item?.options[0]}</span>
+                                                                        <span>{item?.options[0] ?? "NA"}</span>
                                                                     }
                                                                 </td>
                                                                 <td className="text-left">
-                                                                    {item?.options[1]?.slice(0, 5) == 'https' ?
+                                                                    {item?.options[1]?.slice(0, 4) == 'http' ?
                                                                         item?.options[1]?.endsWith('.mp3') ?
                                                                             <audio controls src={item?.options[1]} style={{ width: "250px", height: '50' }} />
                                                                             :
@@ -134,11 +134,11 @@ const QuizDetails = () => {
                                                                                     :
                                                                                     <img style={{ width: "150px", height: '100px' }} src={item?.options[1]}></img>
                                                                         :
-                                                                        <span>{item?.options[1]}</span>
+                                                                        <span>{item?.options[1] ?? "NA"}</span>
                                                                     }
                                                                 </td>
                                                                 <td className="text-left">
-                                                                    {item?.options[2]?.slice(0, 5) == 'https' ?
+                                                                    {item?.options[2]?.slice(0, 4) == 'http' ?
                                                                         item?.options[2]?.endsWith('.mp3') ?
                                                                             <audio controls src={item?.options[2]} style={{ width: "250px", height: '50' }} />
                                                                             :
@@ -150,11 +150,11 @@ const QuizDetails = () => {
                                                                                     :
                                                                                     <img style={{ width: "150px", height: '100px' }} src={item?.options[2]}></img>
                                                                         :
-                                                                        <span>{item?.options[2]}</span>
+                                                                        <span>{item?.options[2] ?? "NA"}</span>
                                                                     }
                                                                 </td>
                                                                 <td className="text-left">
-                                                                    {item?.options[3]?.slice(0, 5) == 'https' ?
+                                                                    {item?.options[3]?.slice(0, 4) == 'http' ?
                                                                         item?.options[3]?.endsWith('.mp3') ?
                                                                             <audio controls src={item?.options[3]} style={{ width: "250px", height: '50' }} />
                                                                             :
@@ -166,12 +166,12 @@ const QuizDetails = () => {
                                                                                     :
                                                                                     <img style={{ width: "150px", height: '100px' }} src={item?.options[3]}></img>
                                                                         :
-                                                                        <span>{item?.options[3]}</span>
+                                                                        <span>{item?.options[3] ?? "NA"}</span>
                                                                     }
                                                                 </td>
                                                                 <td className="text-left">
                                                                     <span>
-                                                                        {item?.correctOption?.slice(0, 5) == 'https' ?
+                                                                        {item?.correctOption?.slice(0, 4) == 'http' ?
                                                                             item?.correctOption?.endsWith('.mp3') ?
                                                                                 <audio controls src={item?.correctOption} style={{ width: "250px", height: '50' }} />
                                                                                 :

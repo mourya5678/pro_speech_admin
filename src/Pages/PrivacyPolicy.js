@@ -98,7 +98,7 @@ const PrivacyPolicy = () => {
                                                             <label className="ct_fw_600 mb-2">Content</label>
                                                             <div id="">
                                                                 <Editor
-                                                                    apiKey='k8k0zif94r5v1y87swuchtsj0r9f26gj5t7eptehjuhtmvsn'
+                                                                    apiKey='utc9w7lm5ym3sm21k8qj60va6g446pxihgy2olr03e2pvx0l'
                                                                     onInit={(evt, editor) => (editorRef.current = editor)}
                                                                     init={{
                                                                         plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate ai mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss markdown',

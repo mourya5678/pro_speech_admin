@@ -239,3 +239,8 @@
   border-radius: 6px !important;
   font-weight: 600;
 }
+
+.ct_mcq_btns {
+  width: 100% !important;
+  font-size: 18px;
+}
