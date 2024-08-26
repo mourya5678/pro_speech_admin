@@ -213,12 +213,12 @@ const Home = () => {
                                                                     <td>
                                                                         <button className="ct_eye_btn" onClick={() => navigate(pageRoutes.section_detail, { state: { id: item } })}><i className="fa-solid fa-eye"></i></button>
                                                                         <button className="ct_eye_btn" onClick={() => navigate(pageRoutes.edit_section, { state: { id: item } })}><i className="fa-solid fa-edit"></i></button>
-                                                                        <button className="ct_delete_btn"
+                                                                        {/* <button className="ct_delete_btn"
                                                                             onClick={() => onHandleDeleteSection(item?._id)}
-                                                                        ><i className="fa-solid fa-trash"></i></button>
+                                                                        ><i className="fa-solid fa-trash"></i></button> */}
                                                                     </td>
                                                                 </tr>
-                                                            ))
+                                                            ))  
                                                         }
                                                     </tbody>
                                                 </table>
