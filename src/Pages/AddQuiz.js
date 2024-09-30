@@ -230,7 +230,7 @@ const AddQuiz = () => {
                                                                 <label className="ct_fw_600 mb-2">Question</label>
                                                                 <div id="">
                                                                     <Editor
-                                                                        apiKey='utc9w7lm5ym3sm21k8qj60va6g446pxihgy2olr03e2pvx0l'
+                                                                        apiKey='4i95y50ct2tihx3zg66rhna21lwwipz918qjr551cuylgc7r'
                                                                         onInit={(evt, editor) =>
                                                                             (question.current = editor)
                                                                         }

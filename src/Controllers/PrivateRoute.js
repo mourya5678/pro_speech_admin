@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Outlet, Navigate } from 'react-router-dom'
+import React, { useState } from 'react';
+import { Outlet, Navigate } from 'react-router-dom';
 import { pipGetToken } from './Pip';
 import { pageRoutes } from '../Routes/pageRoutes';
 
@@ -10,4 +10,4 @@ const PrivateRoute = ({ children }) => {
     )
 }
 
-export default PrivateRoute
+export default PrivateRoute;
