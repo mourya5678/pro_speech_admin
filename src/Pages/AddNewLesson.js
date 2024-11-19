@@ -130,7 +130,7 @@ const AddNewLesson = () => {
                                                             <label className="ct_fw_600 mb-2">Lesson Detail</label>
                                                             <div id="">
                                                                 <Editor
-                                                                    apiKey='aynaroijysl9bncyuprl6n6y4n5suak8k57kmv3o1ohrgddd'
+                                                                    apiKey='wktniooejiqmie525277g1ahvtfe22675gwhubq182ctzspc'
                                                                     onInit={(evt, editor) => (editorRef.current = editor)}
                                                                     init={{
                                                                         plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate ai mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss markdown',
